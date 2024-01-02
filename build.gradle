@@ -6,8 +6,8 @@ buildscript {
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.7'
-	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.springframework.boot' version '2.7.17'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	//querydsl 추가
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
@@ -16,7 +16,7 @@ group = 'sample'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '21'
+	sourceCompatibility = '11'
 }
 
 configurations {
@@ -32,15 +32,15 @@ repositories {
 dependencies {
 	// Spring boot
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
-	implementation 'org.thymeleaf:thymeleaf-spring5:3.1.2.RELEASE'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -57,6 +57,7 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 }
 

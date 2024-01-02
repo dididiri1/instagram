@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AuthController {
 
-    @GetMapping("/auth/signin")
+    @GetMapping("/login")
     public String signinForm() {
         return "auth/signin";
     }

@@ -1,4 +1,4 @@
-package sample.instagram.dto.response;
+package sample.instagram.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

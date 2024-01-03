@@ -1,0 +1,49 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= Photogram REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== API 공통 가이드
+
+=== HTTP Methods
+|===
+| Methods | 설명
+| GET
+| 리소스 조회
+| POST
+| 리소스 생성
+| PUT
+| 리소스 수정
+| DELETE
+| 리소스 삭제
+|===
+
+=== HTTP Status Code
+|===
+| Status Code | 설명
+| 200 OK
+| 요청 정상 처리
+| 201 Created
+| 생성 요청 정상 처리
+| 400 Bad Request
+| 잘못된 요청
+| 401 Unauthorized
+| 인증 실패
+| 403 Forbidden
+| 권한 없음
+| 409 Conflict
+| 중복 데이터
+| 500 Internal Server error
+| 서버 에러
+|===
+
+[[Member-API]]
+== Member API
+
+include::api/member/member.adoc[]

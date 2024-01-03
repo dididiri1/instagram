@@ -3,13 +3,12 @@ package sample.instagram.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sample.instagram.api.service.AuthService;
 import sample.instagram.api.service.MemberService;
 import sample.instagram.domain.member.Member;
-import sample.instagram.dto.request.MemberCreateRequest;
-import sample.instagram.dto.response.ResponseDto;
+import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.member.response.MemberResponse;
 
 import javax.validation.Valid;
 
@@ -36,8 +35,7 @@ public class MemberApiController {
      */
     @PostMapping("/api/members")
     public ResponseEntity<?> createMember(@RequestBody @Valid MemberCreateRequest request) {
-        Member member = memberService.createMember(request);
-
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "회원가입 성공", null), HttpStatus.CREATED);
+        MemberResponse memberResponse = memberService.createMember(request);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "회원가입 성공", memberResponse), HttpStatus.CREATED);
     }
 }

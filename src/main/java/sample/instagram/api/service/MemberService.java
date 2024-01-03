@@ -5,9 +5,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
-import sample.instagram.dto.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.handler.ex.CustomApiDuplicateKey;
-import sample.instagram.handler.ex.CustomApiException;
 
 @RequiredArgsConstructor
 @Service
@@ -24,14 +24,13 @@ public class MemberService {
         }
     }
 
-    public Member createMember(MemberCreateRequest request) {
+    public MemberResponse createMember(MemberCreateRequest request) {
         String rawPassword = request.getPassword();
         String encPassowrd = bCryptPasswordEncoder.encode(rawPassword);
         Member member = request.toEntity(encPassowrd);
-
         Member memberEntity = memberRepository.save(member);
 
-        return memberEntity;
+        return MemberResponse.of(memberEntity);
     }
 
 

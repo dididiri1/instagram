@@ -1,10 +1,10 @@
 package sample.instagram.handler.ex;
 
-public class CustomApiException extends RuntimeException {
+public class CustomApiDuplicateKey extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public CustomApiException(String message) {
+    public CustomApiDuplicateKey(String message) {
         super(message);
     }
 

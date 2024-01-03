@@ -1,6 +1,7 @@
 package sample.instagram.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import sample.instagram.dto.response.ResponseDto;
+import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 
 import java.util.HashMap;
@@ -30,5 +32,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomApiException.class)
     public ResponseEntity<ResponseDto<?>> apiException(CustomApiException e) {
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CustomApiDuplicateKey.class)
+    public ResponseEntity<ResponseDto<?>> apiDuplicateKeyException(CustomApiDuplicateKey e) {
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CONFLICT.value(), e.getMessage(), null), HttpStatus.CONFLICT);
     }
 }

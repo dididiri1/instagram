@@ -32,7 +32,7 @@ public class AuthController {
 
     @PostMapping("/auth/signup")
     public String signup(@ModelAttribute @Valid MemberCreateRequest request, BindingResult bindingResult) {
-        Member member = authService.save(request);
+        Member member = authService.createMember(request);
 
         return "auth/signin";
     }

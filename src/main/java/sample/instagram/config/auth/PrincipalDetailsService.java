@@ -15,14 +15,10 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Autowired
     private MemberRepository memberRepository;
 
-    // 1. 패스워드는 알아서 체킹하니깐 신경쓸 필요 없다.
-    // 2. 리턴이 잘되면 자동으로 세션을 만든다.
-
-
     @Override
-    public UserDetails loadUserByUsername(String userid) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member memberEntity = memberRepository.findByUsername(userid);
+        Member memberEntity = memberRepository.findByUsername(username);
 
         if(memberEntity == null){
             return null;

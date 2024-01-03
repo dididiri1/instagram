@@ -33,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.headers().frameOptions().disable();
+        http.headers().frameOptions().disable(); // iframe 허용 안함.
         http.authorizeRequests()
                 .antMatchers("/user/**").authenticated()
                 .anyRequest().permitAll()

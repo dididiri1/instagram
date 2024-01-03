@@ -1,12 +1,15 @@
 package sample.instagram.domain.member;
 
-import lombok.Getter;
+import lombok.*;
+import sample.instagram.domain.BaseEntity;
 
 import javax.persistence.*;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member {
+@Setter
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -17,19 +20,20 @@ public class Member {
 
     private String password;
 
-    private String name;
-
-    private String webSite;
-
-    private String bio;
-
     private String email;
 
-    private String gender;
+    private String name;
 
-    private String phone;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    private String profileImageUrl;
-
-    private String role;
+    @Builder
+    public Member(Long id, String username, String password, String email, String name, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.role = role;
+    }
 }

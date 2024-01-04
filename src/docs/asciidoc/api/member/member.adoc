@@ -8,3 +8,14 @@ include::{snippets}/member-create/request-fields.adoc[]
 ==== HTTP Response
 include::{snippets}/member-create/http-response.adoc[]
 include::{snippets}/member-create/response-fields.adoc[]
+
+=== 중복 유저명 체크
+
+==== HTTP Request
+include::{snippets}/member-check-username/http-request.adoc[]
+include::{snippets}/member-check-username/path-parameters.adoc[]
+
+
+==== HTTP Response
+include::{snippets}/member-check-username/http-response.adoc[]
+include::{snippets}/member-check-username/response-fields.adoc[]

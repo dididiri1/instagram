@@ -18,7 +18,7 @@ endif::[]
 | 리소스 조회
 | POST
 | 리소스 생성
-| PUT
+| PATCH
 | 리소스 수정
 | DELETE
 | 리소스 삭제

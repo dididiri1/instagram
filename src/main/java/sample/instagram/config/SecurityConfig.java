@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/login")
                 .usernameParameter("username")
-                .loginProcessingUrl("/auth/signin")
+                .loginProcessingUrl("/api/auth/login")
                 .defaultSuccessUrl("/")
                 .successHandler(authSuccessHandler)
                 .failureHandler(authFailureHandler)

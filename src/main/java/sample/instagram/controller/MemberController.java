@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class MemberController {
 
-    @GetMapping("/member/{pageUserId}")
-    public String profile(@PathVariable int pageUserId, Model model) {
+    @GetMapping("/member/{memberId}")
+    public String profile(@PathVariable int memberId, Model model) {
 
         return "member/profile";
     }
 
-    @GetMapping("/member/{id}/update")
-    public String update(@PathVariable int id, Model model) {
+    @GetMapping("/member/{memberId}/update")
+    public String update(@PathVariable int memberId, Model model) {
+        model.addAttribute("memberId", memberId);
 
         return "member/update";
     }

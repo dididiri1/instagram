@@ -6,11 +6,12 @@
     <!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
 
     <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
-    <script th:src="@{/js/profile.js}"></script>
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/member/profile.js}"></script>
 </head>
-
+<div layout:fragment="content">
 <!--프로필 섹션-->
-<section layout:fragment="content" class="profile">
+<section class="profile">
     <!--유저정보 컨테이너-->
     <div class="profileContainer">
 
@@ -107,7 +108,7 @@
 <!--로그아웃, 회원정보변경 모달-->
 <div class="modal-info" onclick="modalInfo()">
     <div class="modal">
-        <button onclick="location.href='/user/update'">회원정보 변경</button>
+        <button onclick="location.href='/member/1/update'">회원정보 변경</button>
         <button onclick="location.href='/logout'">로그아웃</button>
         <button onclick="closePopup('.modal-info')">취소</button>
     </div>
@@ -162,6 +163,6 @@
             </div>
         </div>
     </div>
-
+</div>
 </div>
 </html>

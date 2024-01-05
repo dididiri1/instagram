@@ -1,5 +1,6 @@
 [[member-create]]
-=== 신규 회원 등록
+
+=== 회원 등록
 
 ==== HTTP Request
 include::{snippets}/member-create/http-request.adoc[]
@@ -9,7 +10,18 @@ include::{snippets}/member-create/request-fields.adoc[]
 include::{snippets}/member-create/http-response.adoc[]
 include::{snippets}/member-create/response-fields.adoc[]
 
-=== 중복 유저명 체크
+=== 회원 단건 조회
+
+==== HTTP Request
+include::{snippets}/member-one/http-request.adoc[]
+include::{snippets}/member-one/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/member-one/http-response.adoc[]
+include::{snippets}/member-one/response-fields.adoc[]
+
+
+=== 회원 유저명 중복 체크
 
 ==== HTTP Request
 include::{snippets}/member-check-username/http-request.adoc[]

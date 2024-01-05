@@ -35,7 +35,7 @@ public class SecurityConfig {
         http.csrf().disable();
         http.headers().frameOptions().disable(); // iframe 허용 안함.
         http.authorizeRequests()
-                .antMatchers("/user/**").authenticated()
+                .antMatchers("/member/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

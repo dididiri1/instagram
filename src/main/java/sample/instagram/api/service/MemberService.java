@@ -33,5 +33,8 @@ public class MemberService {
         return MemberResponse.of(memberEntity);
     }
 
-
+    public MemberResponse findMemberOne(Long id) {
+        Member memberEntity = memberRepository.findById(id).get();
+        return MemberResponse.of(memberEntity);
+    }
 }

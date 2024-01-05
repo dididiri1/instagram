@@ -15,6 +15,7 @@ import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -46,13 +47,12 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 .email("kmkim6368@gmail.com")
                 .build();
 
-        BDDMockito.given(memberService.createMember(any(MemberCreateRequest.class)))
+        given(memberService.createMember(any(MemberCreateRequest.class)))
                 .willReturn(MemberResponse.builder()
                         .id(1L)
                         .username("kangmin")
                         .email("kmkim6368@gmail.com")
                         .name("김강민")
-                        .role(Role.ROLE_USER)
                         .build());
 
         // expected
@@ -94,9 +94,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("email").type(JsonFieldType.STRING)
                                         .description("이메일"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
-                                        .description("이름"),
-                                fieldWithPath("role").type(JsonFieldType.STRING)
-                                        .description("권한")
+                                        .description("이름")
                         )
                 ));
     }
@@ -130,4 +128,53 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("회원 단건 조회")
+    void getMemberOne() throws Exception {
+
+        // given
+        long memberId = 1L;
+
+        given(memberService.findMemberOne(memberId))
+                .willReturn(MemberResponse.builder()
+                        .id(1L)
+                        .username("kangmin")
+                        .email("kmkim6368@gmail.com")
+                        .name("김강민")
+                        .build());
+
+        // expected
+        this.mockMvc.perform(get("/api/members/{id}", memberId)
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("member-one",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("회원 ID")
+                        ),
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT)
+                                        .description("데이터")
+                        ).andWithPrefix("data.",
+                                fieldWithPath("id").type(JsonFieldType.NUMBER)
+                                        .description("회원 ID"),
+                                fieldWithPath("username").type(JsonFieldType.STRING)
+                                        .description("유저명"),
+                                fieldWithPath("email").type(JsonFieldType.STRING)
+                                        .description("이메일"),
+                                fieldWithPath("name").type(JsonFieldType.STRING)
+                                        .description("이름")
+                        )
+                ));
+    }
 }
+
+

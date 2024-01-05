@@ -12,15 +12,13 @@ public class MemberResponse {
     private String username;
     private String email;
     private String name;
-    private Role role;
 
     @Builder
-    private MemberResponse(Long id, String username, String email, String name, Role role) {
+    private MemberResponse(Long id, String username, String email, String name) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.name = name;
-        this.role = role;
     }
 
     public static MemberResponse of(Member member) {
@@ -29,7 +27,6 @@ public class MemberResponse {
                 .username(member.getUsername())
                 .email(member.getEmail())
                 .name(member.getName())
-                .role(member.getRole())
                 .build();
     }
 }

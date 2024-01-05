@@ -37,7 +37,7 @@ $(document).ready(function(){
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
                 dataType: "json"
             }).done(res => {
-                location.href = res.returnUrl;
+                location.href = res.data.returnUrl;
             }).fail(error => {
                 alert("아이디 또는 비밀번호가 일치하지 않습니다.")
                 return;

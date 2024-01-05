@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.auth.AuthResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,13 +16,17 @@ import java.io.IOException;
 @Configuration
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
-
+    private String returnUrl = "/";
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String returnUrl = request.getSession().getAttribute("prevPage").toString();
+        Object prevPageAttribute = request.getSession().getAttribute("prevPage");
+
+        if (prevPageAttribute != null) {
+            returnUrl = prevPageAttribute.toString();
+        }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(new ResponseDto<>(HttpStatus.OK.value(), "OK", "{\"returnUrl\": \""+returnUrl+"\"}"));
+        String jsonResponse = objectMapper.writeValueAsString(new ResponseDto<>(HttpStatus.OK.value(), "OK", new AuthResponse(returnUrl)));
 
         request.getSession(false).setMaxInactiveInterval(120*60);
         response.setStatus(HttpServletResponse.SC_OK);

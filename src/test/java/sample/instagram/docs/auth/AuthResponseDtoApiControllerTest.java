@@ -1,6 +1,7 @@
 package sample.instagram.docs.auth;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import sample.instagram.api.controller.MemberApiController;
@@ -33,11 +34,19 @@ public class AuthResponseDtoApiControllerTest extends RestDocsSupport {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken").isNotEmpty())
                 .andDo(document("login",
                         requestFields(
-                                fieldWithPath("username").description("The username for authentication"),
-                                fieldWithPath("password").description("The password for authentication")
+                                fieldWithPath("username").description("유저명"),
+                                fieldWithPath("password").description("패스워드")
                         ),
-                        responseFields(
-                                fieldWithPath("accessToken").description("JWT access token")
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT)
+                                        .description("데이터")
+                        ).andWithPrefix("data.",
+                                fieldWithPath("returnUrl").type(JsonFieldType.STRING)
+                                        .description("리다이렉트 URL")
                         )
                 ));
     }

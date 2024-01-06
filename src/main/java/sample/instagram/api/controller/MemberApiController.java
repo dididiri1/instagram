@@ -3,10 +3,13 @@ package sample.instagram.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sample.instagram.api.service.MemberService;
+import sample.instagram.config.auth.PrincipalDetails;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
 
 import javax.validation.Valid;
@@ -38,9 +41,28 @@ public class MemberApiController {
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "회원가입 성공", memberResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method: findMemberOne
+     * @Description: 회원 단건조회
+     */
     @GetMapping("/api/members/{id}")
     public ResponseEntity<?> findMemberOne(@PathVariable("id") Long id) {
         MemberResponse memberResponse = memberService.findMemberOne(id);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 단건조회 성공", memberResponse), HttpStatus.OK);
+    }
+
+    /**
+     * @Method: updateMember
+     * @Description: 회원 수정
+     */
+    @PatchMapping("/api/members/{id}")
+    public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest request) {
+
+        System.out.println("id = " + id);
+        System.out.println("request = " + request.getName());
+        System.out.println("request = " + request.getEmail());
+
+        MemberResponse memberResponse = memberService.updateMember(id, request);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 수정 성공", memberResponse), HttpStatus.OK);
     }
 }

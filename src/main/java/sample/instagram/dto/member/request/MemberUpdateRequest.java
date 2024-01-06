@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter
 @NoArgsConstructor
-public class MemberCreateRequest {
+public class MemberUpdateRequest {
 
     @Size(min = 2, max = 20)
     @NotBlank
@@ -25,7 +25,7 @@ public class MemberCreateRequest {
     private String name;
 
     @Builder
-    public MemberCreateRequest(String username, String password, String email, String name) {
+    public MemberUpdateRequest(String username, String password, String email, String name) {
         this.username = username;
         this.password = password;
         this.email = email;

@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import sample.instagram.api.service.AuthService;
+import sample.instagram.api.service.auth.AuthService;
 import sample.instagram.domain.member.Member;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 

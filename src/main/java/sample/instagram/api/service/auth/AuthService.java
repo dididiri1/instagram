@@ -1,4 +1,4 @@
-package sample.instagram.api.service;
+package sample.instagram.api.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

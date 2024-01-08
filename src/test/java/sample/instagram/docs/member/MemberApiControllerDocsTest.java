@@ -2,15 +2,11 @@ package sample.instagram.docs.member;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import sample.instagram.api.controller.MemberApiController;
-import sample.instagram.api.service.MemberService;
+import sample.instagram.api.service.member.MemberService;
 import sample.instagram.docs.RestDocsSupport;
-import sample.instagram.domain.member.Role;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
 

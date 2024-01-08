@@ -38,6 +38,7 @@ public class MemberCreateRequest {
                 .password(password)
                 .email(email)
                 .name(name)
+                .role(Role.ROLE_USER)
                 .build();
     }
 }

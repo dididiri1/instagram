@@ -55,11 +55,6 @@ public class MemberApiController {
      */
     @PatchMapping("/api/members/{id}")
     public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest request) {
-
-        System.out.println("id = " + id);
-        System.out.println("request = " + request.getName());
-        System.out.println("request = " + request.getEmail());
-
         MemberResponse memberResponse = memberService.updateMember(id, request);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 수정 성공", memberResponse), HttpStatus.OK);
     }

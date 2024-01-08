@@ -9,6 +9,7 @@ import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,7 +56,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
 
     @DisplayName("회원 정보를 조회 한다.")
     @Test
-    void findMemberOne() throws Exception {
+    void getMember() throws Exception {
 
         //given
 
@@ -70,6 +71,30 @@ public class MemberServiceTest extends IntegrationTestSupport {
         assertThat(memberResponse.getUsername()).isEqualTo("testUser");
         assertThat(memberResponse.getEmail()).isEqualTo("test@naver.com");
         assertThat(memberResponse.getName()).isEqualTo("홍길동");
+    }
+
+    @DisplayName("회원을 수정 한다.")
+    @Test
+    void updateMember() throws Exception {
+
+        //given
+        Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
+        memberRepository.save(member);
+
+        //when
+        MemberUpdateRequest request = MemberUpdateRequest.builder()
+                .password(bCryptPasswordEncoder.encode("1234"))
+                .email("test@gmail.com")
+                .name("김구라")
+                .build();
+
+
+        MemberResponse memberResponse = memberService.updateMember(member.getId(), request);
+
+        //then
+        assertThat(memberResponse).isNotNull();
+        assertThat(memberResponse.getEmail()).isEqualTo("test@gmail.com");
+        assertThat(memberResponse.getName()).isEqualTo("김구라");
     }
 
     private Member createMember(String username, String password, String email, String name) {

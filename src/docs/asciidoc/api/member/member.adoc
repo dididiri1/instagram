@@ -1,7 +1,15 @@
+[[member-check-username]]
+=== 회원 아이디 중복 체크
+==== HTTP Request
+include::{snippets}/member-check-username/http-request.adoc[]
+include::{snippets}/member-check-username/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/member-check-username/http-response.adoc[]
+include::{snippets}/member-check-username/response-fields.adoc[]
+
 [[member-create]]
-
 === 회원 등록
-
 ==== HTTP Request
 include::{snippets}/member-create/http-request.adoc[]
 include::{snippets}/member-create/request-fields.adoc[]
@@ -10,8 +18,9 @@ include::{snippets}/member-create/request-fields.adoc[]
 include::{snippets}/member-create/http-response.adoc[]
 include::{snippets}/member-create/response-fields.adoc[]
 
-=== 회원 단건 조회
 
+[[member-one]]
+=== 회원 정보 조회
 ==== HTTP Request
 include::{snippets}/member-one/http-request.adoc[]
 include::{snippets}/member-one/path-parameters.adoc[]
@@ -20,14 +29,16 @@ include::{snippets}/member-one/path-parameters.adoc[]
 include::{snippets}/member-one/http-response.adoc[]
 include::{snippets}/member-one/response-fields.adoc[]
 
-
-=== 회원 유저명 중복 체크
-
+[[member-update]]
+=== 회원 정보 수정
 ==== HTTP Request
-include::{snippets}/member-check-username/http-request.adoc[]
-include::{snippets}/member-check-username/path-parameters.adoc[]
-
+include::{snippets}/member-update/http-request.adoc[]
+include::{snippets}/member-update/path-parameters.adoc[]
+include::{snippets}/member-update/request-fields.adoc[]
 
 ==== HTTP Response
-include::{snippets}/member-check-username/http-response.adoc[]
-include::{snippets}/member-check-username/response-fields.adoc[]
+include::{snippets}/member-update/http-response.adoc[]
+include::{snippets}/member-update/response-fields.adoc[]
+
+
+

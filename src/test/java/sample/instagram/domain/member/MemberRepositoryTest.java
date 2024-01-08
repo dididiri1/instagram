@@ -52,6 +52,24 @@ public class MemberRepositoryTest extends IntegrationTestSupport {
         assertThat(findMember).isNotNull();
     }
 
+    @DisplayName("회원을 수정 한다.")
+    @Test
+    void updateMember() throws Exception {
+        //given
+        Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
+        memberRepository.save(member);
+
+        //when
+        Member findMember = memberRepository.findById(member.getId()).orElse(null);
+        findMember.setEmail("test@gmail.com");
+        findMember.setName("김구라");
+
+        //then
+        assertThat(findMember).isNotNull();
+        assertThat(findMember.getEmail()).isEqualTo("test@gmail.com");
+        assertThat(findMember.getName()).isEqualTo("김구라");
+    }
+
     private Member createMember(String username, String password, String email, String name) {
         return Member.builder()
                 .username(username)

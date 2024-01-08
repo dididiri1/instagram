@@ -44,8 +44,8 @@ public class MemberApiController {
      * @Description: 회원 단건조회
      */
     @GetMapping("/api/members/{id}")
-    public ResponseEntity<?> findMemberOne(@PathVariable("id") Long id) {
-        MemberResponse memberResponse = memberService.findMemberOne(id);
+    public ResponseEntity<?> getMember(@PathVariable("id") Long id) {
+        MemberResponse memberResponse = memberService.getMember(id);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 단건조회 성공", memberResponse), HttpStatus.OK);
     }
 

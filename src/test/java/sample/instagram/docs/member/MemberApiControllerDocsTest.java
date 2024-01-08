@@ -132,7 +132,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         // given
         long memberId = 1L;
 
-        given(memberService.findMemberOne(memberId))
+        given(memberService.getMember(memberId))
                 .willReturn(MemberResponse.builder()
                         .id(1L)
                         .username("kangmin")

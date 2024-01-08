@@ -63,7 +63,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
         memberRepository.save(member);
 
         //when
-        MemberResponse memberResponse = memberService.findMemberOne(member.getId());
+        MemberResponse memberResponse = memberService.getMember(member.getId());
 
         //then
         assertThat(memberResponse).isNotNull();

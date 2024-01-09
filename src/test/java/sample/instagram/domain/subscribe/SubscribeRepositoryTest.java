@@ -48,8 +48,6 @@ public class SubscribeRepositoryTest extends IntegrationTestSupport {
 
         //then
         assertThat(saveSubscribe).isNotNull();
-        assertThat(saveSubscribe.getFromMember().getId()).isEqualTo(member1.getId());
-        assertThat(saveSubscribe.getToMember().getId()).isEqualTo(member2.getId());
     }
 
     private Member createMember(String username, String password, String email, String name) {

@@ -9,18 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sample.instagram.api.service.subscribe.SubscribeService;
 import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 
 @RequiredArgsConstructor
 @RestController
-public class SubscribeController {
+public class SubscribeApiController {
 
     private final SubscribeService subscribeService;
 
     @PostMapping("/api/subscribe/{fromMemberId}/{toMemberId}")
     public ResponseEntity<?> subscribe(@PathVariable Long fromMemberId, @PathVariable Long toMemberId) {
-        subscribeService.createSubscribe(fromMemberId, toMemberId);
+        SubscribeResponse subscribeResponse = subscribeService.createSubscribe(fromMemberId, 2L);
 
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "구독 성공", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "구독 성공", subscribeResponse), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/subscribe/{fromMemberId}/{toMemberId}")

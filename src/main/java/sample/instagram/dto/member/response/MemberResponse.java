@@ -3,7 +3,6 @@ package sample.instagram.dto.member.response;
 import lombok.Builder;
 import lombok.Getter;
 import sample.instagram.domain.member.Member;
-import sample.instagram.domain.member.Role;
 
 @Getter
 public class MemberResponse {

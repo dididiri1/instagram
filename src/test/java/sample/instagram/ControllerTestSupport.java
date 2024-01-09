@@ -6,10 +6,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import sample.instagram.api.controller.member.MemberApiController;
+import sample.instagram.api.controller.subscribe.SubscribeApiController;
 import sample.instagram.api.service.member.MemberService;
+import sample.instagram.api.service.subscribe.SubscribeService;
 
 @WebMvcTest(controllers = {
-        MemberApiController.class
+        MemberApiController.class,
+        SubscribeApiController.class
 })
 public abstract class ControllerTestSupport {
 
@@ -21,6 +24,9 @@ public abstract class ControllerTestSupport {
 
     @MockBean
     protected MemberService memberService;
+
+    @MockBean
+    protected SubscribeService subscribeService;
 
 
 }

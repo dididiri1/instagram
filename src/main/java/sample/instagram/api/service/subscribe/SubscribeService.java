@@ -8,6 +8,7 @@ import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
+import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
 
 @Transactional(readOnly = true)
@@ -21,17 +22,21 @@ public class SubscribeService {
 
 
     @Transactional
-    public void createSubscribe(Long fromMemberId, Long toMemberId) {
+    public SubscribeResponse createSubscribe(Long fromMemberId, Long toMemberId) {
+        Subscribe subscribeEntity = null;
+
         try {
             Member fromMember = memberRepository.findOne(fromMemberId);
             Member toMember = memberRepository.findOne(toMemberId);
 
             Subscribe subscribe = Subscribe.create(fromMember, toMember);
-            subscribeRepositoryJpa.save(subscribe);
+            subscribeEntity = subscribeRepositoryJpa.save(subscribe);
 
         } catch (Exception e) {
             throw new CustomApiException("이미 구독을 하였습니다.");
         }
+
+        return SubscribeResponse.of(subscribeEntity);
     }
 
     @Transactional

@@ -19,7 +19,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
 
     @DisplayName("신규 회원을 등록한다.")
     @Test
-    @WithMockUser(username = "testUser", roles = "USER")
+    @WithMockUser(authorities = "ROLE_USER")
     void createMember() throws Exception {
         //given
         MemberCreateRequest request = MemberCreateRequest.builder()
@@ -64,7 +64,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
 
     @DisplayName("회원 정보를 조회 한다.")
     @Test
-    @WithMockUser(username = "testUser", roles = "USER")
+    @WithMockUser(authorities = "ROLE_USER")
     void getMember() throws Exception {
         //given
         long memberId = 1L;
@@ -79,7 +79,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
 
     @DisplayName("회원 정보를 수정 한다.")
     @Test
-    @WithMockUser(username = "testUser", roles = "USER")
+    @WithMockUser(authorities = "ROLE_USER")
     void updateMember() throws Exception {
         //given
         long memberId = 1L;

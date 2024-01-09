@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.member.Member;
-import sample.instagram.domain.member.MemberRepository;
+import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
@@ -21,14 +21,14 @@ public class MemberServiceTest extends IntegrationTestSupport {
     MemberService memberService;
 
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepositoryJpa memberRepositoryJpa;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @AfterEach
     void tearDown() {
-        memberRepository.deleteAllInBatch();
+        memberRepositoryJpa.deleteAllInBatch();
     }
 
     @DisplayName("신규 회원을 등록 한다.")
@@ -61,7 +61,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
         //given
 
         Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
-        memberRepository.save(member);
+        memberRepositoryJpa.save(member);
 
         //when
         MemberResponse memberResponse = memberService.getMember(member.getId());
@@ -79,7 +79,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
 
         //given
         Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
-        memberRepository.save(member);
+        memberRepositoryJpa.save(member);
 
         //when
         MemberUpdateRequest request = MemberUpdateRequest.builder()

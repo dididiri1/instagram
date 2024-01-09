@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
 
-    $("#form").validate({
+    $("#insertForm").validate({
         onkeyup:false,
         onclick:false,
         onfocusout:false,

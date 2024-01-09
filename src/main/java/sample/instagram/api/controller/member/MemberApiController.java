@@ -1,4 +1,4 @@
-package sample.instagram.api.controller;
+package sample.instagram.api.controller.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,22 +31,22 @@ public class MemberApiController {
 
     /**
      * @Method: createMember
-     * @Description: 회원가입
+     * @Description: 회원 등록
      */
     @PostMapping("/api/members")
     public ResponseEntity<?> createMember(@RequestBody @Valid MemberCreateRequest request) {
         MemberResponse memberResponse = memberService.createMember(request);
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "회원가입 성공", memberResponse), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "회원 등록 성공", memberResponse), HttpStatus.CREATED);
     }
 
     /**
      * @Method: findMemberOne
-     * @Description: 회원 단건조회
+     * @Description: 회원 조회
      */
     @GetMapping("/api/members/{id}")
     public ResponseEntity<?> getMember(@PathVariable("id") Long id) {
         MemberResponse memberResponse = memberService.getMember(id);
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 단건조회 성공", memberResponse), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 조회 성공", memberResponse), HttpStatus.OK);
     }
 
     /**

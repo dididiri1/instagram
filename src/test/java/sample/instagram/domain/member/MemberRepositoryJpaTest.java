@@ -6,18 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.IntegrationTestSupport;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 @Transactional
-public class MemberRepositoryTest extends IntegrationTestSupport {
+public class MemberRepositoryJpaTest extends IntegrationTestSupport {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberRepositoryJpa memberRepositoryJpa;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -29,7 +26,7 @@ public class MemberRepositoryTest extends IntegrationTestSupport {
         Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
 
         //when
-        Member saveMember = memberRepository.save(member);
+        Member saveMember = memberRepositoryJpa.save(member);
 
         //then
         assertThat(saveMember).isNotNull();
@@ -43,10 +40,10 @@ public class MemberRepositoryTest extends IntegrationTestSupport {
     void findByMember() throws Exception {
         //given
         Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
-        memberRepository.save(member);
+        memberRepositoryJpa.save(member);
 
         //when
-        Member findMember = memberRepository.findById(member.getId()).orElse(null);
+        Member findMember = memberRepositoryJpa.findById(member.getId()).orElse(null);
 
         //then
         assertThat(findMember).isNotNull();
@@ -57,10 +54,10 @@ public class MemberRepositoryTest extends IntegrationTestSupport {
     void updateMember() throws Exception {
         //given
         Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
-        memberRepository.save(member);
+        memberRepositoryJpa.save(member);
 
         //when
-        Member findMember = memberRepository.findById(member.getId()).orElse(null);
+        Member findMember = memberRepositoryJpa.findById(member.getId()).orElse(null);
         findMember.setEmail("test@gmail.com");
         findMember.setName("김구라");
 

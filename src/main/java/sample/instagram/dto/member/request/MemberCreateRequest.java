@@ -15,16 +15,16 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class MemberCreateRequest {
 
-    @NotNull(message = "유저명 타입은 필수입니다.")
+    @NotBlank(message = "유저명 타입은 필수입니다.")
     private String username;
 
-    @NotNull(message = "패스워드 타입은 필수입니다.")
+    @NotBlank(message = "패스워드 타입은 필수입니다.")
     private String password;
 
-    @NotNull(message = "이메일 타입은 필수입니다.")
+    @NotBlank(message = "이메일 타입은 필수입니다.")
     private String email;
 
-    @NotNull(message = "이름 타입은 필수입니다.")
+    @NotBlank(message = "이름 타입은 필수입니다.")
     private String name;
 
     @Builder

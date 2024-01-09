@@ -2,10 +2,8 @@ package sample.instagram.docs.member;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import sample.instagram.api.controller.MemberApiController;
+import sample.instagram.api.controller.member.MemberApiController;
 import sample.instagram.api.service.member.MemberService;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
@@ -211,7 +209,6 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         ),
                         requestFields(
                                 fieldWithPath("password").type(JsonFieldType.STRING)
-                                        .optional()
                                         .description("비밀번호"),
                                 fieldWithPath("email").type(JsonFieldType.STRING)
                                         .optional()

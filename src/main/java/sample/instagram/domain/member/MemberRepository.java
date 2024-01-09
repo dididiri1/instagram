@@ -1,8 +1,17 @@
 package sample.instagram.domain.member;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+import javax.persistence.EntityManager;
 
-    Member findByUsername(String username);
+@RequiredArgsConstructor
+@Repository
+public class MemberRepository {
+
+    private final EntityManager em;
+
+    public Member findOne(Long id) {
+        return em.find(Member.class, id);
+    }
 }

@@ -6,21 +6,21 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import sample.instagram.domain.member.Member;
-import sample.instagram.domain.member.MemberRepository;
+import sample.instagram.domain.member.MemberRepositoryJpa;
 
 
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberRepositoryJpa memberRepositoryJpa;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         System.out.println("username = " + username);
 
-        Member memberEntity = memberRepository.findByUsername(username);
+        Member memberEntity = memberRepositoryJpa.findByUsername(username);
 
         System.out.println("memberEntity = " + memberEntity);
 

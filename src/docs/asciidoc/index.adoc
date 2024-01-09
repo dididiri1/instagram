@@ -47,3 +47,8 @@ endif::[]
 == Member API
 
 include::api/member/member.adoc[]
+
+[[Subscribe-API]]
+== Subscribe API
+
+include::api/subscribe/subscribe.adoc[]

@@ -1,0 +1,9 @@
+[[subscribe]]
+=== 구독 등륵
+==== HTTP Request
+include::{snippets}/subscribe-create/http-request.adoc[]
+include::{snippets}/subscribe-create/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/subscribe-create/http-response.adoc[]
+include::{snippets}/subscribe-create/response-fields.adoc[]

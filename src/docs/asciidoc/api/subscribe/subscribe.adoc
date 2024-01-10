@@ -7,3 +7,12 @@ include::{snippets}/subscribe-create/path-parameters.adoc[]
 ==== HTTP Response
 include::{snippets}/subscribe-create/http-response.adoc[]
 include::{snippets}/subscribe-create/response-fields.adoc[]
+
+=== 구독 취소
+==== HTTP Request
+include::{snippets}/subscribe-delete/http-request.adoc[]
+include::{snippets}/subscribe-create/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/subscribe-delete/http-response.adoc[]
+include::{snippets}/subscribe-delete/response-fields.adoc[]

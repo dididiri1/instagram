@@ -2,10 +2,14 @@ package sample.instagram.docs.subscribe;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import sample.instagram.api.controller.subscribe.SubscribeApiController;
 import sample.instagram.api.service.subscribe.SubscribeService;
 import sample.instagram.docs.RestDocsSupport;
+import sample.instagram.dto.DeleteResponse;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
@@ -13,9 +17,10 @@ import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -35,8 +40,8 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("구독 등록")
-    void createMember() throws Exception {
+    @DisplayName("구독 등록 문서")
+    void createSubscribe() throws Exception {
 
         // given
         Long fromMemberId = 1L;
@@ -76,6 +81,44 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
                                         .description("구독자 ID"),
                                 fieldWithPath("toMemberId").type(JsonFieldType.NUMBER)
                                         .description("발행자 ID")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("구독 취소")
+    void deleteSubscribe() throws Exception {
+
+        // given
+        Long fromMemberId = 1L;
+        Long toMemberId = 2L;
+
+        // when
+        when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DeleteResponse.of());
+
+        // expected
+        this.mockMvc.perform(delete("/api/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("subscribe-delete",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("fromMemberId").description("구독자 ID"),
+                                parameterWithName("toMemberId").description("발행자 ID")
+                        ),
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT)
+                                        .description("데이터")
+                        ).andWithPrefix("data.",
+                                fieldWithPath("result").type(JsonFieldType.STRING)
+                                        .description("결과")
                         )
                 ));
     }

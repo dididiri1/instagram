@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -31,11 +33,11 @@ public class Subscribe extends BaseEntity {
     private Long id;
 
     @JoinColumn(name = "from_member_id")
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     private Member fromMember;
 
     @JoinColumn(name = "to_member_id")
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     private Member toMember;
 
     @Builder

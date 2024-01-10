@@ -2,16 +2,12 @@ package sample.instagram.docs.subscribe;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import sample.instagram.api.controller.subscribe.SubscribeApiController;
 import sample.instagram.api.service.subscribe.SubscribeService;
 import sample.instagram.docs.RestDocsSupport;
-import sample.instagram.dto.DeleteResponse;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.dto.DataResponse;
+import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -94,7 +90,7 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
         Long toMemberId = 2L;
 
         // when
-        when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DeleteResponse.of());
+        when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DataResponse.of(ResultStatus.SUCCESS));
 
         // expected
         this.mockMvc.perform(delete("/api/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)

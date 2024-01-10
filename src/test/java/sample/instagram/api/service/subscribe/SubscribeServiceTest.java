@@ -11,8 +11,7 @@ import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
 
@@ -20,7 +19,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
@@ -99,10 +97,10 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
         Long toMemberId = 2L;
 
         //when
-        subscribeService.deleteSubscribe(fromMemberId, toMemberId);
+        DataResponse dataResponse = subscribeService.deleteSubscribe(fromMemberId, toMemberId);
 
         //then
-        verify(subscribeRepositoryJpa, times(1)).deleteByFromMemberIdAndToMemberId(fromMemberId, toMemberId);
+        assertThat(dataResponse.getResult()).isEqualTo("success");
 
     }
 

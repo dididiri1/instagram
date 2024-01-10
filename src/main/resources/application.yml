@@ -15,6 +15,22 @@ spring:
     hibernate:
       ddl-auto: none
 
+cloud:
+  aws:
+    credentials:
+      instance-profile: false
+      accessKey: AKIA4JHZUL4EY4NEHJUT
+      secretKey: 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
+    region:
+      auto: false
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket: kangmin-s3-bucket
+      endPoint: https://s3.ap-northeast-2.amazonaws.com
+      folder: storage
+
 ---
 spring:
   config:

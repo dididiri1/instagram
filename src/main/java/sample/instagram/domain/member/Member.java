@@ -5,10 +5,9 @@ import sample.instagram.domain.BaseEntity;
 
 import javax.persistence.*;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Setter
 public class Member extends BaseEntity {
 
     @Id

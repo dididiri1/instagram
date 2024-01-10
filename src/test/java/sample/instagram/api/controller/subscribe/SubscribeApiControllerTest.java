@@ -4,7 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.ControllerTestSupport;
-import sample.instagram.dto.DeleteResponse;
+import sample.instagram.dto.DataResponse;
+import sample.instagram.dto.ResultStatus;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -43,7 +44,7 @@ public class SubscribeApiControllerTest extends ControllerTestSupport {
         Long toMemberId = 2L;
 
         //when
-        when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DeleteResponse.of());
+        when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DataResponse.of(ResultStatus.SUCCESS));
 
         // then
         mockMvc.perform(delete("/api/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)

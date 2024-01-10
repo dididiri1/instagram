@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
-import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
-import sample.instagram.dto.DeleteResponse;
+import sample.instagram.dto.DataResponse;
+import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
 
@@ -41,8 +41,8 @@ public class SubscribeService {
     }
 
     @Transactional
-    public DeleteResponse deleteSubscribe(Long fromUserId, Long toUserId) {
+    public DataResponse deleteSubscribe(Long fromUserId, Long toUserId) {
         subscribeRepositoryJpa.deleteByFromMemberIdAndToMemberId(fromUserId, toUserId);
-        return DeleteResponse.of();
+        return DataResponse.of(ResultStatus.SUCCESS);
     }
 }

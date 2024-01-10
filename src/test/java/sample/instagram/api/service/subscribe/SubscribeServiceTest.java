@@ -20,6 +20,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 public class SubscribeServiceTest extends IntegrationTestSupport {
@@ -34,7 +36,7 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     private MemberRepositoryJpa memberRepositoryJpa;
 
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -85,6 +87,22 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
         assertThatThrownBy(() -> subscribeService.createSubscribe(fromMember.getId(), toMember.getId()))
                 .isInstanceOf(CustomApiException.class)
                 .hasMessage("이미 구독을 하였습니다.");
+
+    }
+
+    @DisplayName("구독을 취소 한다.")
+    @Test
+    void deleteSubscribe() throws Exception {
+
+        //given
+        Long fromMemberId = 1L;
+        Long toMemberId = 2L;
+
+        //when
+        subscribeService.deleteSubscribe(fromMemberId, toMemberId);
+
+        //then
+        verify(subscribeRepositoryJpa, times(1)).deleteByFromMemberIdAndToMemberId(fromMemberId, toMemberId);
 
     }
 

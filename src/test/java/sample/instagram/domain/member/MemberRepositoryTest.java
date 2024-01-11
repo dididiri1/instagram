@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 @Transactional
-public class MemberRepositoryJpaTest extends IntegrationTestSupport {
+public class MemberRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private MemberRepositoryJpa memberRepositoryJpa;

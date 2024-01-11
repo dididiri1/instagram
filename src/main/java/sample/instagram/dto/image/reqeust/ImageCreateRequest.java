@@ -1,5 +1,6 @@
 package sample.instagram.dto.image.reqeust;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,13 @@ public class ImageCreateRequest {
     private Long memberId;
     private MultipartFile file;
     private String caption;
+
+    @Builder
+    public ImageCreateRequest(Long memberId, MultipartFile file, String caption) {
+        this.memberId = memberId;
+        this.file = file;
+        this.caption = caption;
+    }
 
     public Image create(String imageUrl, Member member) {
         return Image.builder()

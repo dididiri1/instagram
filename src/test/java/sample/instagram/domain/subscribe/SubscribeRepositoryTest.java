@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.IntegrationTestSupport;
-import sample.instagram.api.service.subscribe.SubscribeService;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
@@ -16,14 +15,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.*;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 @Transactional
 public class SubscribeRepositoryTest extends IntegrationTestSupport {
-
-    @Autowired
-    private SubscribeService subscribeService;
 
     @Autowired
     private SubscribeRepositoryJpa subscribeRepositoryJpa;

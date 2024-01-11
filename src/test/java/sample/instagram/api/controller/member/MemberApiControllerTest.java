@@ -59,7 +59,8 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value("400"))
-                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."));
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 
     @DisplayName("회원 정보를 조회 한다.")
@@ -74,7 +75,10 @@ class MemberApiControllerTest extends ControllerTestSupport {
                         .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isEmpty());;
     }
 
     @DisplayName("회원 정보를 수정 한다.")
@@ -97,6 +101,9 @@ class MemberApiControllerTest extends ControllerTestSupport {
                         .with(csrf())
                 )
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isEmpty());;
     }
 }

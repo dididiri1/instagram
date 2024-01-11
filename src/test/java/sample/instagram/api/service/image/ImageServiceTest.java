@@ -10,8 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.api.service.aws.S3UploaderService;
 import sample.instagram.domain.member.Member;
-import sample.instagram.domain.member.MemberRepository;
-import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 
@@ -24,12 +22,6 @@ public class ImageServiceTest extends IntegrationTestSupport {
 
     @MockBean
     private S3UploaderService s3UploaderService;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private MemberRepositoryJpa memberRepositoryJpa;
 
     @Autowired
     private ImageService imageService;

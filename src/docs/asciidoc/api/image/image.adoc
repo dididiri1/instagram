@@ -1,0 +1,10 @@
+[[image-create]]
+=== 이미지 등록
+==== HTTP Request
+include::{snippets}/image-create/http-request.adoc[]
+include::{snippets}/image-create/request-parameters.adoc[]
+include::{snippets}/image-create/request-parts.adoc[]
+
+==== HTTP Response
+include::{snippets}/image-create/http-response.adoc[]
+include::{snippets}/image-create/response-fields.adoc[]

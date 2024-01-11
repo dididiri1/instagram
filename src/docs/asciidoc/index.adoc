@@ -52,3 +52,8 @@ include::api/member/member.adoc[]
 == Subscribe API
 
 include::api/subscribe/subscribe.adoc[]
+
+[[Image-API]]
+== Image API
+
+include::api/image/image.adoc[]

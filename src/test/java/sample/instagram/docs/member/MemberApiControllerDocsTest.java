@@ -14,7 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -53,7 +53,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .build());
 
         // expected
-        this.mockMvc.perform(post("/api/members")
+        this.mockMvc.perform(post("/api/v1/members")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -104,7 +104,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         String username = "kangmin";
 
         // expected
-        this.mockMvc.perform(get("/api/members/checkUsername/{username}", username)
+        this.mockMvc.perform(get("/api/v1/members/checkUsername/{username}", username)
                         .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -142,7 +142,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .build());
 
         // expected
-        this.mockMvc.perform(get("/api/members/{id}", memberId)
+        this.mockMvc.perform(get("/api/v1/members/{id}", memberId)
                         .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -195,7 +195,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .build());
 
         // expected
-        this.mockMvc.perform(patch("/api/members/{id}", memberId)
+        this.mockMvc.perform(patch("/api/v1/members/{id}", memberId)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                 )

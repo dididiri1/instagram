@@ -30,18 +30,19 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/members")
+        mockMvc.perform(post("/api/v1/members")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .with(csrf())
                 )
                 .andDo(print())
                 .andExpect(status().isCreated());
+
     }
 
     @DisplayName("신규 회원을 등록시 유저명은 필수값이다.")
     @Test
-    @WithMockUser(username = "testUser", roles = "USER")
+    @WithMockUser(authorities = "ROLE_USER")
     void createMemberWithoutUsername() throws Exception {
         //given
         MemberCreateRequest request = MemberCreateRequest.builder()
@@ -60,7 +61,55 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
-                .andExpect(jsonPath("$.data").isEmpty());
+                .andExpect(jsonPath("$.data").isNotEmpty());
+    }
+
+    @DisplayName("신규 회원을 등록시 이메일은 필수값이다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void createMemberWithoutEmail() throws Exception {
+        //given
+        MemberCreateRequest request = MemberCreateRequest.builder()
+                .password("1234")
+                .username("testUser")
+                .name("홍길동")
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/api/members")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value("400"))
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("$.data").isNotEmpty());
+    }
+
+    @DisplayName("신규 회원을 등록시 이름은 필수값이다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void createMemberWithoutName() throws Exception {
+        //given
+        MemberCreateRequest request = MemberCreateRequest.builder()
+                .password("1234")
+                .username("testUser")
+                .email("test@naver.com")
+                .build();
+
+        //when //then
+        mockMvc.perform(post("/api/members")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value("400"))
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
     @DisplayName("회원 정보를 조회 한다.")
@@ -78,7 +127,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.data").isEmpty());;
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 
     @DisplayName("회원 정보를 수정 한다.")

@@ -12,6 +12,7 @@ import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.DataResponse;
+import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
 
@@ -91,7 +92,6 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @DisplayName("구독을 취소 한다.")
     @Test
     void deleteSubscribe() throws Exception {
-
         //given
         Long fromMemberId = 1L;
         Long toMemberId = 2L;
@@ -100,7 +100,7 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
         DataResponse dataResponse = subscribeService.deleteSubscribe(fromMemberId, toMemberId);
 
         //then
-        assertThat(dataResponse.getResult()).isEqualTo("success");
+        assertThat(dataResponse.getResult()).isEqualTo(ResultStatus.SUCCESS);
 
     }
 

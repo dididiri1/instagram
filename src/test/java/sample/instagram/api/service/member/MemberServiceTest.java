@@ -34,7 +34,6 @@ public class MemberServiceTest extends IntegrationTestSupport {
     @DisplayName("신규 회원을 등록 한다.")
     @Test
     void createMember() throws Exception {
-
         //given
         MemberCreateRequest request = MemberCreateRequest.builder()
                 .username("testUser")
@@ -42,7 +41,6 @@ public class MemberServiceTest extends IntegrationTestSupport {
                 .email("test@naver.com")
                 .name("홍길동")
                 .build();
-
 
         //when
         MemberResponse memberResponse = memberService.createMember(request);
@@ -57,9 +55,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
     @DisplayName("회원 정보를 조회 한다.")
     @Test
     void getMember() throws Exception {
-
         //given
-
         Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
         memberRepositoryJpa.save(member);
 

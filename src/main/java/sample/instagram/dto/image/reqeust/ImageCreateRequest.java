@@ -8,17 +8,19 @@ import sample.instagram.domain.image.Image;
 import sample.instagram.domain.member.Member;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class ImageCreateRequest {
 
-    @NotBlank(message = "회원ID 타입은 필수입니다.")
+    @NotNull(message = "회원 ID는 필수입니다.")
     private Long memberId;
 
+    @NotNull(message = "이미지 첨부는 필수입니다.")
     private MultipartFile file;
 
-    @NotBlank(message = "머리말 타입은 필수입니다.")
+    @NotBlank(message = "사진 설명은 필수입니다.")
     private String caption;
 
     @Builder

@@ -50,12 +50,12 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
         given(imageService.createImage(any(ImageCreateRequest.class)))
                 .willReturn(ImageResponse.builder()
                         .id(1L)
-                        .caption("이미지 설명")
+                        .caption("사진설명")
                         .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                         .build());
 
         // expected
-        this.mockMvc.perform(multipart("/api/images")
+        this.mockMvc.perform(multipart("/api/v1/images")
                         .file("file", request.getFile().getBytes())
                         .param("memberId", request.getMemberId().toString())
                         .param("caption", request.getCaption())

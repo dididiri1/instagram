@@ -18,14 +18,14 @@ public class SubscribeApiController {
 
     private final SubscribeService subscribeService;
 
-    @PostMapping("/api/subscribe/{fromMemberId}/{toMemberId}")
+    @PostMapping("/api/v1/subscribe/{fromMemberId}/{toMemberId}")
     public ResponseEntity<?> subscribe(@PathVariable Long fromMemberId, @PathVariable Long toMemberId) {
         SubscribeResponse subscribeResponse = subscribeService.createSubscribe(fromMemberId, 2L);
 
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "구독 성공", subscribeResponse), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/subscribe/{fromMemberId}/{toMemberId}")
+    @DeleteMapping("/api/v1/subscribe/{fromMemberId}/{toMemberId}")
     public ResponseEntity<?> unSubscribe(@PathVariable Long fromMemberId, @PathVariable Long toMemberId) {
         DataResponse dataResponse = subscribeService.deleteSubscribe(fromMemberId, toMemberId);
 

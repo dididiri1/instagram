@@ -15,7 +15,7 @@ function toggleSubscribe(toUserId, obj) {
     if ($(obj).text() === "구독취소") {
         $.ajax({
             type:"delete",
-            url:"/api/subscribe/"+toUserId,
+            url:"/api/v1/subscribe/"+toUserId,
             dataType:"json"
         }).done(res => {
             $(obj).text("구독하기");
@@ -26,7 +26,7 @@ function toggleSubscribe(toUserId, obj) {
     } else {
         $.ajax({
             type:"post",
-            url:"/api/subscribe/"+toUserId,
+            url:"/api/v1/subscribe/"+toUserId,
             dataType:"json",
         }).done(res=>{
             $(obj).text("구독취소");
@@ -43,7 +43,7 @@ function subscribeInfoModalOpen(pageUserId) {
 
     $.ajax({
         type:"get",
-        url:"/api/user/"+pageUserId+"/subscribe",
+        url:"/api/v1/user/"+pageUserId+"/subscribe",
         dataType:"json",
     }).done(res=>{
         console.log(res);
@@ -128,7 +128,7 @@ function profileImageUpload(pageUserId, principalId) {
 
         $.ajax({
             type:"put",
-            url:"/api/user/"+principalId+"/profileImageUrl",
+            url:"/api/v1/user/"+principalId+"/profileImageUrl",
             data:formData,
             contentType: false, // 필수 : x-www-form-urlencoded로 파싱되는 것을 방지
             processData: false, // 필수 : contentType을 false로 줬을 때 QuertString 자동 설정됨. 해제됨

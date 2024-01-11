@@ -22,7 +22,7 @@ public class MemberApiController {
      * @Method: checkUsername
      * @Description: 유저명 중복 체크
      */
-    @GetMapping("/api/members/checkUsername/{username}")
+    @GetMapping("/api/v1/members/checkUsername/{username}")
     public ResponseEntity<?> checkUsername(@PathVariable String username) {
         memberService.checkUsername(username);
 
@@ -33,7 +33,7 @@ public class MemberApiController {
      * @Method: createMember
      * @Description: 회원 등록
      */
-    @PostMapping("/api/members")
+    @PostMapping("/api/v1/members")
     public ResponseEntity<?> createMember(@RequestBody @Valid MemberCreateRequest request) {
         MemberResponse memberResponse = memberService.createMember(request);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "회원 등록 성공", memberResponse), HttpStatus.CREATED);
@@ -43,7 +43,7 @@ public class MemberApiController {
      * @Method: findMemberOne
      * @Description: 회원 조회
      */
-    @GetMapping("/api/members/{id}")
+    @GetMapping("/api/v1/members/{id}")
     public ResponseEntity<?> getMember(@PathVariable("id") Long id) {
         MemberResponse memberResponse = memberService.getMember(id);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 조회 성공", memberResponse), HttpStatus.OK);
@@ -53,7 +53,7 @@ public class MemberApiController {
      * @Method: updateMember
      * @Description: 회원 수정
      */
-    @PatchMapping("/api/members/{id}")
+    @PatchMapping("/api/v1/members/{id}")
     public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest request) {
         MemberResponse memberResponse = memberService.updateMember(id, request);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 수정 성공", memberResponse), HttpStatus.OK);

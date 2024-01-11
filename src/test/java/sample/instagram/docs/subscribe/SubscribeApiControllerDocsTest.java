@@ -52,7 +52,7 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
                         .build());
 
         // expected
-        this.mockMvc.perform(post("/api/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
+        this.mockMvc.perform(post("/api/v1/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
                         .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -94,7 +94,7 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
         when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DataResponse.of(ResultStatus.SUCCESS));
 
         // expected
-        this.mockMvc.perform(delete("/api/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
+        this.mockMvc.perform(delete("/api/v1/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
                         .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())

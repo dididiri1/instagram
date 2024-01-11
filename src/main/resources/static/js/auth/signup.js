@@ -37,7 +37,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "get",
-                url: "/api/members/checkUsername/"+username,
+                url: "/api/v1/members/checkUsername/"+username,
                 dataType: "json"
             }).done(res => {
                 createMember();
@@ -56,7 +56,7 @@ function createMember() {
     let formData = new FormData($("#insertForm")[0]);
     $.ajax({
         type: "post",
-        url: "/api/members",
+        url: "/api/v1/members",
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: "application/json;charset=utf-8",
         dataType: 'json',

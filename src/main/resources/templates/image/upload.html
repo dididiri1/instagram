@@ -6,6 +6,11 @@
     <!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
 
     <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+    <script th:inline="javascript">
+        let memberId = [[${memberId}]];
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script th:src="@{/js/image/upload.js}"></script>
 </head>
 <!--사진 업로드페이지 중앙배치-->
@@ -23,7 +28,7 @@
         <!--사진업로드 로고 end-->
 
         <!--사진업로드 Form-->
-        <form class="upload-form">
+        <form id="imageUpload" class="upload-form" enctype="multipart/form-data">
             <input type="file" name="file" onchange="imageChoose(this)"/>
             <div class="upload-img">
                 <img src="/images/person.jpeg" alt="" id="imageUploadPreview"/>
@@ -31,11 +36,11 @@
 
             <!--사진설명 + 업로드버튼-->
             <div class="upload-form-detail">
-                <input type="text" placeholder="사진설명" name="caption">
-                <button class="cta blue">업로드</button>
+                <input type="text" placeholder="사진설명" name="caption" maxlength="50">
+                <button type="submit" class="cta blue">업로드</button>
             </div>
             <!--사진설명end-->
-
+            <input type="hidden" name="memberId" th:value="${memberId}">
         </form>
         <!--사진업로드 Form-->
     </section>

@@ -27,7 +27,7 @@ public class SubscribeApiControllerTest extends ControllerTestSupport {
         Long toMemberId = 2L;
 
         //when //then
-        mockMvc.perform(post("/api/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
+        mockMvc.perform(post("/api/v1/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
                         .contentType(APPLICATION_JSON)
                         .with(csrf())
 
@@ -51,7 +51,7 @@ public class SubscribeApiControllerTest extends ControllerTestSupport {
         when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DataResponse.of(ResultStatus.SUCCESS));
 
         // then
-        mockMvc.perform(delete("/api/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
+        mockMvc.perform(delete("/api/v1/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
                         .contentType(APPLICATION_JSON)
                         .with(csrf())
 
@@ -60,6 +60,6 @@ public class SubscribeApiControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.data").isEmpty());;
+                .andExpect(jsonPath("$.data").isNotEmpty());;
     }
 }

@@ -25,12 +25,12 @@ public class ImageApiControllerTest extends ControllerTestSupport {
         // given
         ImageCreateRequest request = ImageCreateRequest.builder()
                 .memberId(1L)
-                .caption("이미지 설명")
+                .caption("사진설명")
                 .file(createMockMultipartFile("test.jpg"))
                 .build();
 
         // when // then
-        mockMvc.perform(multipart("/api/images")
+        mockMvc.perform(multipart("/api/v1/images")
                         .file("file", request.getFile().getBytes())
                         .param("memberId", request.getMemberId().toString())
                         .param("caption", request.getCaption())

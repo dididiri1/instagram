@@ -32,7 +32,7 @@ $(document).ready(function(){
             }
             $.ajax({
                 type: "post",
-                url: "/api/auth/login",
+                url: "/api/v1/auth/login",
                 data: data,
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
                 dataType: "json"

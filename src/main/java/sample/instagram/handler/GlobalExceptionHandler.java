@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
+import sample.instagram.handler.ex.CustomValidationApiException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,5 +37,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomApiDuplicateKey.class)
     public ResponseEntity<ResponseDto<?>> apiDuplicateKeyException(CustomApiDuplicateKey e) {
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CONFLICT.value(), e.getMessage(), null), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CustomValidationApiException.class)
+    public ResponseEntity<ResponseDto<?>> validationApiException(CustomValidationApiException e) {
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), e.getErrorMap()), HttpStatus.BAD_REQUEST);
     }
 }

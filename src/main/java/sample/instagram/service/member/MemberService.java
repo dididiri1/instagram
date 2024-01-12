@@ -16,6 +16,8 @@ import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 import sample.instagram.handler.ex.CustomException;
 
+import java.util.List;
+
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -28,6 +30,10 @@ public class MemberService {
     private final SubscribeRepositoryJpa subscribeRepositoryJpa;
 
     public void checkUsername(String username) {
+        validateDuplicateUsername(username);
+    }
+
+    private void validateDuplicateUsername(String username) {
         Member memberEntity = memberRepositoryJpa.findByUsername(username);
         if (memberEntity != null) {
             throw new CustomApiDuplicateKey("이미 사용 중인 유저명입니다.");
@@ -45,15 +51,13 @@ public class MemberService {
     }
 
     public MemberResponse getMember(Long id) {
-        Member memberEntity = memberRepositoryJpa.findById(id).get();
+        Member memberEntity = getMemberEntity(id);
         return MemberResponse.of(memberEntity);
     }
 
     @Transactional
     public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
-
-        Member memberEntity = memberRepositoryJpa.findById(id)
-                .orElseThrow(() -> new CustomApiException("해당 ID에 해당하는 회원을 찾을 수 없습니다."));
+        Member memberEntity = getMemberEntity(id);
 
         memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         memberEntity.setName(request.getName());
@@ -62,25 +66,36 @@ public class MemberService {
         return MemberResponse.of(memberEntity);
     }
 
+    private Member getMemberEntity(Long id) {
+        return memberRepositoryJpa.findById(id)
+                .orElseThrow(() -> new CustomApiException("해당 ID에 해당하는 회원을 찾을 수 없습니다."));
+    }
+
     public MemberProfileResponse getMemberProfile(Long pageMemberId, Long memberId) {
+        Member member = validateDuplicateMember(pageMemberId);
+        boolean subscribeState = isSubscribeState(pageMemberId, memberId);
+        int subscribeCount = getSubscribeCount(pageMemberId);
 
-        MemberProfileResponse response = new MemberProfileResponse();
+        return MemberProfileResponse.of(member, isPageOwnerState(pageMemberId, memberId), subscribeState, subscribeCount);
+    }
 
-        Member memberEntity = memberRepositoryJpa.findById(pageMemberId).orElseThrow(() -> {
+    private Member validateDuplicateMember(Long memberId) {
+        Member memberEntity = memberRepositoryJpa.findById(memberId).orElseThrow(() -> {
             throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
         });
-
-        response.setMember(memberEntity);
-        response.setPageOwnerState(pageMemberId == memberId); // 1은 페이지 주인, -1은 주인이 아님
-        response.setImageCount(memberEntity.getImages().size());
-
-        boolean subscribeState = subscribeRepositoryJpa.existsByFromMemberIdAndToMemberId(pageMemberId, memberId);
-
-        int subscribeCount = subscribeRepositoryJpa.countByFromMemberId(pageMemberId);
-
-        response.setSubscribeState(subscribeState);
-        response.setSubscribeCount(subscribeCount);
-
-        return response;
+        return memberEntity;
     }
+
+    private int getSubscribeCount(Long pageMemberId) {
+        return subscribeRepositoryJpa.countByFromMemberId(pageMemberId);
+    }
+
+    private boolean isSubscribeState(Long pageMemberId, Long memberId) {
+        return subscribeRepositoryJpa.existsByFromMemberIdAndToMemberId(pageMemberId, memberId);
+    }
+
+    private boolean isPageOwnerState(Long pageMemberId, Long toMemberId) {
+        return (pageMemberId == toMemberId);
+    }
+
 }

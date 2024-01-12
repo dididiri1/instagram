@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import sample.instagram.controller.api.member.MemberApiController;
+import sample.instagram.domain.member.Member;
+import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
@@ -13,6 +15,7 @@ import sample.instagram.dto.member.response.MemberResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -236,6 +239,54 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         )
                 ));
     }
+
+   /* @Test
+    @DisplayName("회원 프로필 정보를 조회 한다.")
+    void getMemberProfile() throws Exception {
+
+        // given
+        long pageMemberId = 1L;
+        long memberId = 1L;
+
+        MemberProfileResponse response = new MemberProfileResponse();
+
+        when(memberService.getMemberProfile(pageMemberId, memberId)).thenReturn(response);
+
+        // expected
+        this.mockMvc.perform(get("/api/v1/members/{pageMemberId}/profile/{memberId}", pageMemberId, memberId)
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("member-get-profile",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("pageMemberId").description("페이지 회원 ID"),
+                                parameterWithName("memberId").description("회원 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").description("HTTP 상태 코드"),
+                                fieldWithPath("message").description("응답 메시지"),
+                                fieldWithPath("data.pageOwnerState").description("페이지 주인 여부"),
+                                fieldWithPath("data.imageCount").description("이미지 갯수"),
+                                fieldWithPath("data.subscribeState").description("구독 상태"),
+                                fieldWithPath("data.subscribeCount").description("구독 갯수"),
+                                fieldWithPath("data.member").description("멤버 정보").optional(), // Optional로 표시
+                                fieldWithPath("data.member.createDateTime").description("멤버 생성일시"),
+                                fieldWithPath("data.member.modifiedDateTime").description("멤버 수정일시"),
+                                fieldWithPath("data.member.id").description("멤버 ID"),
+                                fieldWithPath("data.member.username").description("멤버 사용자명"),
+                                fieldWithPath("data.member.email").description("멤버 이메일"),
+                                fieldWithPath("data.member.name").description("멤버 이름"),
+                                fieldWithPath("data.member.images[0].createDateTime").description("이미지 생성일시"),
+                                fieldWithPath("data.member.images[0].modifiedDateTime").description("이미지 수정일시"),
+                                fieldWithPath("data.member.images[0].id").description("이미지 ID"),
+                                fieldWithPath("data.member.images[0].caption").description("이미지 캡션"),
+                                fieldWithPath("data.member.images[0].imageUrl").description("이미지 URL")
+                        )
+                ));
+    }*/
 }
 
 

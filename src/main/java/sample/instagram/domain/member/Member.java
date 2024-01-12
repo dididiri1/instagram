@@ -1,5 +1,6 @@
 package sample.instagram.domain.member;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -35,8 +36,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"member"})
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @JsonBackReference // 역방향 참조를 무시
     private List<Image> images = new ArrayList<>(); // 양방향 매핑
 
     @Builder
@@ -48,4 +49,6 @@ public class Member extends BaseEntity {
         this.name = name;
         this.role = role;
     }
+
+
 }

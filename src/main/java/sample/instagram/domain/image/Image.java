@@ -1,5 +1,8 @@
 package sample.instagram.domain.image;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +12,7 @@ import sample.instagram.domain.member.Member;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +30,7 @@ public class Image extends BaseEntity {
 
     @JoinColumn(name = "memberId")
     @ManyToOne(fetch = LAZY)
+    @JsonManagedReference // 정방향 참조를 무시
     private Member member;
 
     @Builder

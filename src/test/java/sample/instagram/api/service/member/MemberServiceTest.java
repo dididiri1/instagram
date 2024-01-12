@@ -6,10 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sample.instagram.IntegrationTestSupport;
+import sample.instagram.domain.image.ImageRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.service.member.MemberService;
 
@@ -25,10 +27,14 @@ public class MemberServiceTest extends IntegrationTestSupport {
     MemberRepositoryJpa memberRepositoryJpa;
 
     @Autowired
+    ImageRepositoryJpa imageRepositoryJpa;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @AfterEach
     void tearDown() {
+
         memberRepositoryJpa.deleteAllInBatch();
     }
 
@@ -57,7 +63,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
     @Test
     void getMember() throws Exception {
         //given
-        Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
+        Member member = createMember("testUser","test@naver.com", "홍길동");
         memberRepositoryJpa.save(member);
 
         //when
@@ -75,7 +81,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
     void updateMember() throws Exception {
 
         //given
-        Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
+        Member member = createMember("testUser","test@naver.com", "홍길동");
         memberRepositoryJpa.save(member);
 
         //when
@@ -94,13 +100,40 @@ public class MemberServiceTest extends IntegrationTestSupport {
         assertThat(memberResponse.getName()).isEqualTo("김구라");
     }
 
-    private Member createMember(String username, String password, String email, String name) {
+    @DisplayName("회원 프로필을 조회 한다.")
+    @Test
+    void getMemberProfile() throws Exception {
+        //given
+        Long pageMemberId = 1L;
+        Long memberId = 1L;
+
+        Member member = createMember("testUser","test@naver.com", "홍길동");
+        memberRepositoryJpa.save(member);
+
+        //when
+        MemberProfileResponse response = memberService.getMemberProfile(pageMemberId, memberId);
+
+        //then
+        assertThat(response).isNotNull();
+        assertThat(response.isPageOwnerState()).isTrue();
+        assertThat(response.isSubscribeState()).isFalse();
+        assertThat(response.getImageCount()).isEqualTo(0);
+        assertThat(response.getSubscribeCount()).isEqualTo(0);
+        assertThat(response.getMember().getId()).isEqualTo(member.getId());
+        assertThat(response.getMember().getUsername()).isEqualTo(member.getUsername());
+        assertThat(response.getMember().getEmail()).isEqualTo(member.getEmail());
+        assertThat(response.getMember().getName()).isEqualTo(member.getName());
+
+    }
+
+    private Member createMember(String username, String email, String name) {
         return Member.builder()
                 .username(username)
-                .password(bCryptPasswordEncoder.encode(password))
+                .password(bCryptPasswordEncoder.encode("1234"))
                 .email(email)
                 .name(name)
                 .role(ROLE_USER)
                 .build();
     }
+
 }

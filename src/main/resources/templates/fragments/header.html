@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <header class="header" th:fragment="headerFragment">
         <div class="container">
             <a href="/" class="logo">
-                <img src="/images/logo.jpg" alt="">
+                <img th:src="@{/images/logo.jpg}" alt="">
             </a>
+
+            </th:block>
             <nav class="navi">
                 <ul class="navi-list">
-                    <li class="navi-item"><a href="/">
+                    <li class="navi-item"><a th:href="@{/}">
                         <i class="fas fa-home"></i>
                     </a></li>
-                    <li class="navi-item"><a href="/image/popular">
+                    <li class="navi-item"><a th:href="@{/image/popular}">
                         <i class="far fa-compass"></i>
                     </a></li>
-                    <li class="navi-item"><a href="/member/1">
-                        <i class="far fa-user"></i>
-                    </a></li>
+                    <li class="navi-item">
+                    <th:block sec:authorize="isAuthenticated()">
+                        <a th:href="@{|~/member/${#authentication.principal.member.id}|}"><i class="far fa-user"></i></a>
+                    </th:block>
+                    <th:block sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/}"><i class="far fa-user"></i></a>
+                    </th:block>
+                    </li>
                 </ul>
             </nav>
         </div>

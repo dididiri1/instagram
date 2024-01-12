@@ -20,7 +20,7 @@ public class SubscribeApiController {
 
     @PostMapping("/api/v1/subscribe/{fromMemberId}/{toMemberId}")
     public ResponseEntity<?> subscribe(@PathVariable Long fromMemberId, @PathVariable Long toMemberId) {
-        SubscribeResponse subscribeResponse = subscribeService.createSubscribe(fromMemberId, 2L);
+        SubscribeResponse subscribeResponse = subscribeService.createSubscribe(fromMemberId, toMemberId);
 
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "구독 성공", subscribeResponse), HttpStatus.CREATED);
     }

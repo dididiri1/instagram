@@ -78,9 +78,6 @@ public class MemberService {
 
         int subscribeCount = subscribeRepositoryJpa.countByFromMemberId(pageMemberId);
 
-        System.out.println("subscribeState = " + subscribeState);
-        System.out.println("subscribeCount = " + subscribeCount);
-
         response.setSubscribeState(subscribeState);
         response.setSubscribeCount(subscribeCount);
 

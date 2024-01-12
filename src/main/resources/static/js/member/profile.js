@@ -12,12 +12,12 @@
  */
 
 $(document).ready(function(){
-    getMemberProfile(pageMemberId, memberId);
+    getMemberProfile();
 
 });
 
 // (9) 유저 프로필 페이지 조회
-function getMemberProfile(pageMemberId, memberId) {
+function getMemberProfile() {
     $.ajax({
         type: "get",
         url: "/api/v1/members/"+pageMemberId+"/profile/"+memberId,
@@ -73,7 +73,7 @@ function toggleSubscribe(toUserId, obj) {
     if ($(obj).text() === "구독취소") {
         $.ajax({
             type:"delete",
-            url:"/api/v1/subscribe/"+toUserId,
+            url:"/api/v1/subscribe/"+memberId+"/"+toUserId,
             dataType:"json"
         }).done(res => {
             $(obj).text("구독하기");
@@ -84,7 +84,7 @@ function toggleSubscribe(toUserId, obj) {
     } else {
         $.ajax({
             type:"post",
-            url:"/api/v1/subscribe/"+toUserId,
+            url:"/api/v1/subscribe/"+memberId+"/"+toUserId,
             dataType:"json",
         }).done(res=>{
             $(obj).text("구독취소");
@@ -106,7 +106,7 @@ function subscribeInfoModalOpen(pageUserId) {
 
     $.ajax({
         type:"get",
-        url:"/api/v1/user/"+pageUserId+"/subscribe",
+        url:"/api/v1/member/"+pageUserId+"/subscribe",
         dataType:"json",
     }).done(res=>{
         console.log(res);

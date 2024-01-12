@@ -115,4 +115,7 @@
   cursor: pointer;
 }
 
+.none {
+  display: none;
+}
 

@@ -60,9 +60,13 @@ public class MemberApiController {
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 수정 성공", memberResponse), HttpStatus.OK);
     }
 
-    @GetMapping("/api/v1/members/{id}/profile")
-    public ResponseEntity<?> getMemberProfile(@PathVariable("id") Long memberId) {
-        MemberProfileResponse response = memberService.getMemberProfile(1L, memberId);
+    /**
+     * @Method: getMemberProfile
+     * @Description: 회원 프로필 조회
+     */
+    @GetMapping("/api/v1/members/{pageMemberId}/profile/{id}")
+    public ResponseEntity<?> getMemberProfile(@PathVariable("pageMemberId") Long pageMemberId, @PathVariable("id") Long id) {
+        MemberProfileResponse response = memberService.getMemberProfile(pageMemberId, id);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회 성공", response), HttpStatus.OK);
     }
 }

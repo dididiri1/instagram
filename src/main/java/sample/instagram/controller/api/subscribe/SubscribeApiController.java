@@ -1,4 +1,4 @@
-package sample.instagram.api.controller.subscribe;
+package sample.instagram.controller.api.subscribe;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sample.instagram.api.service.subscribe.SubscribeService;
+import sample.instagram.service.subscribe.SubscribeService;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;

@@ -2,10 +2,9 @@ package sample.instagram.docs.subscribe;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import sample.instagram.api.controller.subscribe.SubscribeApiController;
-import sample.instagram.api.service.subscribe.SubscribeService;
+import sample.instagram.controller.api.subscribe.SubscribeApiController;
+import sample.instagram.service.subscribe.SubscribeService;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;

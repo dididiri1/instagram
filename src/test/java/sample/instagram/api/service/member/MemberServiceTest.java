@@ -11,6 +11,7 @@ import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.service.member.MemberService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.member.Role.ROLE_USER;

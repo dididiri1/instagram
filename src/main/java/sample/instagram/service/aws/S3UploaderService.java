@@ -1,4 +1,4 @@
-package sample.instagram.api.service.aws;
+package sample.instagram.service.aws;
 
 
 import com.amazonaws.AmazonClientException;

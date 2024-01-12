@@ -52,7 +52,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/members")
+        mockMvc.perform(post("/api/v1/members")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -76,7 +76,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/members")
+        mockMvc.perform(post("/api/v1/members")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -100,7 +100,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/members")
+        mockMvc.perform(post("/api/v1/members")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -120,7 +120,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
         long memberId = 1L;
 
         //when //then
-        mockMvc.perform(get("/api/members/{id}", memberId)
+        mockMvc.perform(get("/api/v1/members/{id}", memberId)
                         .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -144,7 +144,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(patch("/api/members/{id}", memberId)
+        mockMvc.perform(patch("/api/v1/members/{id}", memberId)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .with(csrf())

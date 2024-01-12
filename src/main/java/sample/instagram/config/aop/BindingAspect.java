@@ -17,12 +17,19 @@ import java.util.Map;
 @Aspect
 public class BindingAspect {
 
-    @Around("execution(* sample.instagram.api.controller.image.ImageApiController.*(..))")
+    @Around("execution(* sample.instagram.controller.api.image.ImageApiController.*(..))")
     public Object validCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //String type = proceedingJoinPoint.getSignature().getDeclaringTypeName();
         //String method = proceedingJoinPoint.getSignature().getName();
 
+        System.out.println("AOP Aspect validCheck is invoked.");
+
         Object[] args = proceedingJoinPoint.getArgs();
+
+        for (Object arg : args) {
+            System.out.println("Argument: " + arg);
+        }
+
         for (Object arg:args){
             if(arg instanceof BindingResult){
                 BindingResult bindingResult = (BindingResult) arg;

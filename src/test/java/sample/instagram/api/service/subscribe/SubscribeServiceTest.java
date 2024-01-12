@@ -15,6 +15,7 @@ import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
+import sample.instagram.service.subscribe.SubscribeService;
 
 import java.util.List;
 

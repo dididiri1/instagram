@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import sample.instagram.IntegrationTestSupport;
-import sample.instagram.api.service.aws.S3UploaderService;
+import sample.instagram.service.aws.S3UploaderService;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.service.image.ImageService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

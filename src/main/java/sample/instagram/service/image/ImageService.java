@@ -1,8 +1,8 @@
-package sample.instagram.api.service.image;
+package sample.instagram.service.image;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sample.instagram.api.service.aws.S3UploaderService;
+import sample.instagram.service.aws.S3UploaderService;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
 import sample.instagram.domain.member.Member;

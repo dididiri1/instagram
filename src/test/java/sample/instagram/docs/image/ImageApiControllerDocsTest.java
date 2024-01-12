@@ -5,13 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
-import sample.instagram.api.controller.image.ImageApiController;
-import sample.instagram.api.service.image.ImageService;
+import sample.instagram.controller.api.image.ImageApiController;
+import sample.instagram.service.image.ImageService;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 
 import java.io.IOException;
 

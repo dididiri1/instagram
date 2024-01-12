@@ -1,4 +1,4 @@
-package sample.instagram.api.controller.image;
+package sample.instagram.controller.api.image;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -7,7 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sample.instagram.api.service.image.ImageService;
+import sample.instagram.service.image.ImageService;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;

@@ -1,4 +1,4 @@
-package sample.instagram.api.service.subscribe;
+package sample.instagram.service.subscribe;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

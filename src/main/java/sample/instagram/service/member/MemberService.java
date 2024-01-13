@@ -8,15 +8,12 @@ import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.member.request.MemberProfileRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 import sample.instagram.handler.ex.CustomException;
-
-import java.util.List;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -43,8 +40,7 @@ public class MemberService {
     @Transactional
     public MemberResponse createMember(MemberCreateRequest request) {
         String rawPassword = request.getPassword();
-        String encPassowrd = bCryptPasswordEncoder.encode(rawPassword);
-        Member member = request.toEntity(encPassowrd);
+        Member member = request.toEntity(bCryptPasswordEncoder.encode(rawPassword));
         Member memberEntity = memberRepositoryJpa.save(member);
 
         return MemberResponse.of(memberEntity);
@@ -75,8 +71,9 @@ public class MemberService {
         Member member = validateDuplicateMember(pageMemberId);
         boolean subscribeState = isSubscribeState(pageMemberId, memberId);
         int subscribeCount = getSubscribeCount(pageMemberId);
+        boolean pageOwnerState = isPageOwnerState(pageMemberId, memberId);
 
-        return MemberProfileResponse.of(member, isPageOwnerState(pageMemberId, memberId), subscribeState, subscribeCount);
+        return MemberProfileResponse.of(member, pageOwnerState, subscribeState, subscribeCount);
     }
 
     private Member validateDuplicateMember(Long memberId) {

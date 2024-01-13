@@ -53,17 +53,17 @@ public class MemberRepositoryTest extends IntegrationTestSupport {
     @Test
     void updateMember() throws Exception {
         //given
-        Member member = createMember("testUser", "1234","test@naver.com", "홍길동");
+        Member member = createMember("testUser", "1234","test1@example.com", "홍길동");
         memberRepositoryJpa.save(member);
 
         //when
         Member findMember = memberRepositoryJpa.findById(member.getId()).orElse(null);
-        findMember.setEmail("test@gmail.com");
+        findMember.setEmail("test2@example.com");
         findMember.setName("김구라");
 
         //then
         assertThat(findMember).isNotNull();
-        assertThat(findMember.getEmail()).isEqualTo("test@gmail.com");
+        assertThat(findMember.getEmail()).isEqualTo("test2@example.com");
         assertThat(findMember.getName()).isEqualTo("김구라");
     }
 

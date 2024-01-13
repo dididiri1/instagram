@@ -3,10 +3,7 @@ package sample.instagram.domain.image;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import sample.instagram.domain.BaseEntity;
 import sample.instagram.domain.member.Member;
 
@@ -16,7 +13,7 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Getter @Setter
 @Entity
 public class Image extends BaseEntity {
 

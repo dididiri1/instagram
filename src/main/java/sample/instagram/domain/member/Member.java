@@ -22,7 +22,7 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(length = 50, unique = true)
+    @Column(length = 50)
     private String username;
 
     @JsonIgnore
@@ -36,7 +36,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference // 역방향 참조를 무시
     private List<Image> images = new ArrayList<>(); // 양방향 매핑
 
@@ -50,5 +50,13 @@ public class Member extends BaseEntity {
         this.role = role;
     }
 
+    public void addImage(Image image) {
+        images.add(image);
+        image.setMember(this);
+    }
 
+    public void removeImage(Image image) {
+        images.remove(image);
+        image.setMember(null);
+    }
 }

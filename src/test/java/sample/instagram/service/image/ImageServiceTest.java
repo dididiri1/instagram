@@ -1,4 +1,4 @@
-package sample.instagram.api.service.image;
+package sample.instagram.service.image;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

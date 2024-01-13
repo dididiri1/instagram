@@ -41,4 +41,17 @@ include::{snippets}/member-update/http-response.adoc[]
 include::{snippets}/member-update/response-fields.adoc[]
 
 
+[[member-get-profile]]
+=== 회원 프로필 정보 조회
+==== HTTP Request
+include::{snippets}/member-get-profile/http-request.adoc[]
+include::{snippets}/member-get-profile/path-parameters.adoc[]
+
+
+==== HTTP Response
+include::{snippets}/member-get-profile/http-response.adoc[]
+include::{snippets}/member-get-profile/response-fields.adoc[]
+
+
+
 

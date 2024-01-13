@@ -1,4 +1,4 @@
-package sample.instagram.api.service.member;
+package sample.instagram.service.member;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,16 +40,12 @@ public class MemberServiceTest extends IntegrationTestSupport {
     ImageRepositoryJpa imageRepositoryJpa;
 
     @Autowired
-    SubscribeRepositoryJpa subscribeRepositoryJpa;
-
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @AfterEach
     void tearDown() {
         imageRepositoryJpa.deleteAllInBatch();
         memberRepositoryJpa.deleteAllInBatch();
-        //subscribeRepositoryJpa.deleteAllInBatch();
     }
 
     @DisplayName("신규 회원을 등록 한다.")
@@ -148,7 +144,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
         return Member.builder()
                 .username(username)
                 .password(bCryptPasswordEncoder.encode("1234"))
-                .email("test@example.com")
+                .email(email)
                 .name(name)
                 .role(ROLE_USER)
                 .build();

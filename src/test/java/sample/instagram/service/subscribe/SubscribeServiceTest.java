@@ -1,4 +1,4 @@
-package sample.instagram.api.service.subscribe;
+package sample.instagram.service.subscribe;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

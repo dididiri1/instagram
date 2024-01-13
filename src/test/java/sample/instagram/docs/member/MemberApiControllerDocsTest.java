@@ -5,12 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.domain.member.Member;
+import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -240,7 +243,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 ));
     }
 
-   /* @Test
+    @Test
     @DisplayName("회원 프로필 정보를 조회 한다.")
     void getMemberProfile() throws Exception {
 
@@ -248,9 +251,17 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         long pageMemberId = 1L;
         long memberId = 1L;
 
-        MemberProfileResponse response = new MemberProfileResponse();
+        List<ImageResponse> images = getImageResponses();
 
-        when(memberService.getMemberProfile(pageMemberId, memberId)).thenReturn(response);
+        given(memberService.getMemberProfile(any(Long.class), any(Long.class)))
+                .willReturn(MemberProfileResponse.builder()
+                        .pageOwnerState(true)
+                        .imageCount(2)
+                        .subscribeState(false)
+                        .subscribeCount(0)
+                        .name("홍길동")
+                        .images(images)
+                        .build());
 
         // expected
         this.mockMvc.perform(get("/api/v1/members/{pageMemberId}/profile/{memberId}", pageMemberId, memberId)
@@ -265,28 +276,51 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 parameterWithName("pageMemberId").description("페이지 회원 ID"),
                                 parameterWithName("memberId").description("회원 ID")
                         ),
-                        responseFields(
-                                fieldWithPath("status").description("HTTP 상태 코드"),
-                                fieldWithPath("message").description("응답 메시지"),
-                                fieldWithPath("data.pageOwnerState").description("페이지 주인 여부"),
-                                fieldWithPath("data.imageCount").description("이미지 갯수"),
-                                fieldWithPath("data.subscribeState").description("구독 상태"),
-                                fieldWithPath("data.subscribeCount").description("구독 갯수"),
-                                fieldWithPath("data.member").description("멤버 정보").optional(), // Optional로 표시
-                                fieldWithPath("data.member.createDateTime").description("멤버 생성일시"),
-                                fieldWithPath("data.member.modifiedDateTime").description("멤버 수정일시"),
-                                fieldWithPath("data.member.id").description("멤버 ID"),
-                                fieldWithPath("data.member.username").description("멤버 사용자명"),
-                                fieldWithPath("data.member.email").description("멤버 이메일"),
-                                fieldWithPath("data.member.name").description("멤버 이름"),
-                                fieldWithPath("data.member.images[0].createDateTime").description("이미지 생성일시"),
-                                fieldWithPath("data.member.images[0].modifiedDateTime").description("이미지 수정일시"),
-                                fieldWithPath("data.member.images[0].id").description("이미지 ID"),
-                                fieldWithPath("data.member.images[0].caption").description("이미지 캡션"),
-                                fieldWithPath("data.member.images[0].imageUrl").description("이미지 URL")
+
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT)
+                                        .description("데이터")
+                        ).andWithPrefix("data.",
+                                fieldWithPath("pageOwnerState").type(JsonFieldType.BOOLEAN)
+                                        .description("페이지 주인 여부"),
+                                fieldWithPath("imageCount").type(JsonFieldType.NUMBER)
+                                        .description("이미지 갯수"),
+                                fieldWithPath("subscribeState").type(JsonFieldType.BOOLEAN)
+                                        .description("구독 상태"),
+                                fieldWithPath("subscribeCount").type(JsonFieldType.NUMBER)
+                                        .description("구독 갯수"),
+                                fieldWithPath("name").type(JsonFieldType.STRING)
+                                        .description("회원 이름"),
+                                fieldWithPath("images[].id").type(JsonFieldType.NUMBER)
+                                        .description("이미지 ID"),
+                                fieldWithPath("images[].caption").type(JsonFieldType.STRING)
+                                        .description("이미지 소개"),
+                                fieldWithPath("images[].imageUrl").type(JsonFieldType.STRING)
+                                        .description("이미지 URL")
+
                         )
                 ));
-    }*/
+    }
+
+    private static List<ImageResponse> getImageResponses() {
+        List<ImageResponse> images = List.of(
+                    ImageResponse.builder()
+                            .id(1L)
+                            .caption("사진 소개1")
+                            .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                            .build(),
+                    ImageResponse.builder()
+                            .id(2L)
+                            .caption("사진 소개2")
+                            .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                            .build()
+        );
+        return images;
+    }
 }
 
 

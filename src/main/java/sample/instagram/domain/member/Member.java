@@ -40,6 +40,10 @@ public class Member extends BaseEntity {
     @JsonBackReference // 역방향 참조를 무시
     private List<Image> images = new ArrayList<>(); // 양방향 매핑
 
+    @OneToMany(mappedBy = "toMember")
+    @JsonBackReference // 역방향 참조를 무시
+    private List<Subscribe> subscribes = new ArrayList<>(); // 양방향 매핑
+
     @Builder
     public Member(Long id, String username, String password, String email, String name, Role role) {
         this.id = id;

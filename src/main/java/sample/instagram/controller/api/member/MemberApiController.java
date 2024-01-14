@@ -3,21 +3,27 @@ package sample.instagram.controller.api.member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sample.instagram.dto.member.response.MemberProfileResponse;
+import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.service.subscribe.SubscribeService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 public class MemberApiController {
 
     private final MemberService memberService;
+
+    private final SubscribeService subscribeService;
 
     /**
      * @Method: checkUsername
@@ -68,5 +74,13 @@ public class MemberApiController {
     public ResponseEntity<?> getMemberProfile(@PathVariable("pageMemberId") Long pageMemberId, @PathVariable("id") Long id) {
         MemberProfileResponse response = memberService.getMemberProfile(pageMemberId, id);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회 성공", response), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/v1/members/{pageMemberId}/subscribe/{id}")
+    public ResponseEntity<?> getSubscribes(@PathVariable("pageMemberId") Long pageMemberId, @PathVariable("id") Long id) {
+
+        List<SubscribeMemberResponse> subscribes = subscribeService.getSubscribes(pageMemberId, id);
+
+        return new ResponseEntity<>(new ResponseDto<>(1, "구독자 정보 리스트 조회 성공", subscribes), HttpStatus.OK);
     }
 }

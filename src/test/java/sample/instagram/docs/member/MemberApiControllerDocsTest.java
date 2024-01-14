@@ -12,6 +12,7 @@ import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.service.subscribe.SubscribeService;
 
 import java.util.List;
 
@@ -32,10 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MemberApiControllerDocsTest extends RestDocsSupport {
 
     private final MemberService memberService = mock(MemberService.class);
+    private final SubscribeService subscribeService = mock(SubscribeService.class);
 
     @Override
     protected Object initController() {
-        return new MemberApiController(memberService);
+        return new MemberApiController(memberService, subscribeService);
     }
 
     @Test
@@ -251,7 +253,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         long pageMemberId = 1L;
         long memberId = 1L;
 
-        List<ImageResponse> images = getImageResponses();
+        List<ImageResponse> images = getImagesResponse();
 
         given(memberService.getMemberProfile(any(Long.class), any(Long.class)))
                 .willReturn(MemberProfileResponse.builder()
@@ -306,7 +308,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 ));
     }
 
-    private static List<ImageResponse> getImageResponses() {
+    private static List<ImageResponse> getImagesResponse() {
         List<ImageResponse> images = List.of(
                     ImageResponse.builder()
                             .id(1L)

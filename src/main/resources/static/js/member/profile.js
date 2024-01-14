@@ -13,7 +13,6 @@
 
 $(document).ready(function(){
     getMemberProfile();
-
 });
 
 // (9) 유저 프로필 페이지 조회
@@ -36,7 +35,7 @@ function getMemberProfile() {
 }
 
 function memberProfileInfo(data) {
-    $("#profileName").text(data.member.name);
+    $("#profileName").text(data.name);
     $("#imageCount").text(data.imageCount);
     $("#subscribeCount").text(data.subscribeCount);
 
@@ -53,9 +52,9 @@ function memberProfileInfo(data) {
 
 function addImageItem(data) {
     let item = '';
-    for (let i = 0; i < data.member.images.length; i++) {
+    for (let i = 0; i < data.images.length; i++) {
         item += '<div class="img-box">';
-        item += '<a href=""> <img src="'+data.member.images[i].imageUrl+'"/></a>';
+        item += '<a href=""> <img src="'+data.images[i].imageUrl+'"/></a>';
         item += '<div class="comment">';
         item += '<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span></a>';
         item += '</div>';

@@ -52,7 +52,6 @@ public class SubscribeQueryRepositoryTest {
         em.persist(member2);
         em.persist(member3);
 
-
         Subscribe subscribe1 = Subscribe.create(member1, member2);
         Subscribe subscribe2 = Subscribe.create(member1, member3);
         Subscribe subscribe3 = Subscribe.create(member2, member1);
@@ -62,10 +61,8 @@ public class SubscribeQueryRepositoryTest {
         em.persist(subscribe3);
         em.persist(subscribe4);
 
-
         em.flush();
         em.clear();
-
 
         List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
 
@@ -76,10 +73,7 @@ public class SubscribeQueryRepositoryTest {
         List<Subscribe> subscribes = em.createQuery("select s from Subscribe s", Subscribe.class).getResultList();
 
         for (Subscribe subscribe : subscribes) {
-            System.out.println("subscribe.getId() = " + subscribe.getId());
-            System.out.println("subscribe.getFromMember().getId() = " + subscribe.getFromMember().getId());
-            System.out.println("subscribe.getToMember().getId() = " + subscribe.getToMember().getId());
-            System.out.println("==========");
+            System.out.println("subscribe = " + subscribe);
         }
     }
 
@@ -103,7 +97,7 @@ public class SubscribeQueryRepositoryTest {
         Long toMemberId = 2L;
 
         List<SubscribeMemberResponse> result = queryFactory
-                .select(new QSubscribeMemberResponse(member.id, member.username, subscribe.fromMember.id, subscribe.toMember.id,
+                .select(new QSubscribeMemberResponse(member.id, member.username,
                         Expressions.cases()
                                 .when(JPAExpressions.selectOne()
                                         .from(subscribe)

@@ -24,7 +24,7 @@ public class SubscribeQueryRepository {
 
     public List<SubscribeMemberResponse> findSubscribes(Long fromMemberId, Long toMemberId) {
         return queryFactory
-                .select(new QSubscribeMemberResponse(member.id, member.username, subscribe.fromMember.id, subscribe.toMember.id,
+                .select(new QSubscribeMemberResponse(member.id, member.username,
                         Expressions.cases()
                                 .when(JPAExpressions.selectOne()
                                         .from(subscribe)

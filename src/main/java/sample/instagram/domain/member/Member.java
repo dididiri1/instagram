@@ -54,13 +54,5 @@ public class Member extends BaseEntity {
         this.role = role;
     }
 
-    public void addImage(Image image) {
-        images.add(image);
-        image.setMember(this);
-    }
 
-    public void removeImage(Image image) {
-        images.remove(image);
-        image.setMember(null);
-    }
 }

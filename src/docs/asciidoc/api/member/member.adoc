@@ -52,6 +52,18 @@ include::{snippets}/member-get-profile/path-parameters.adoc[]
 include::{snippets}/member-get-profile/http-response.adoc[]
 include::{snippets}/member-get-profile/response-fields.adoc[]
 
+[[member-subscribe]]
+=== 회원 구독 정보 조회
+==== HTTP Request
+include::{snippets}/member-subscribe/http-request.adoc[]
+include::{snippets}/member-subscribe/path-parameters.adoc[]
+
+
+==== HTTP Response
+include::{snippets}/member-subscribe/http-response.adoc[]
+include::{snippets}/member-subscribe/response-fields.adoc[]
+
+
 
 
 

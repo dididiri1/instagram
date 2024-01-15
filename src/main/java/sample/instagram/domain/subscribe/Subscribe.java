@@ -41,7 +41,7 @@ public class Subscribe extends BaseEntity {
     private Member toMember;
 
     @Builder
-    public Subscribe(Member fromMember, Member toMember) {
+    private Subscribe(Member fromMember, Member toMember) {
         this.fromMember = fromMember;
         this.toMember = toMember;
     }
@@ -51,5 +51,10 @@ public class Subscribe extends BaseEntity {
                 .fromMember(fromMember)
                 .toMember(toMember)
                 .build();
+    }
+
+    private void changeMember(Member member) {
+        this.fromMember = member;
+        fromMember.getSubscribes().add(this);
     }
 }

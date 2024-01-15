@@ -7,6 +7,7 @@ import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.domain.member.Member;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
+import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
@@ -306,6 +307,71 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
 
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("회원 구독 정보를 조회 한다.")
+    void getSubscribes() throws Exception {
+
+        // given
+        long pageMemberId = 1L;
+        long memberId = 1L;
+
+        List<SubscribeMemberResponse> subscribes = getSubscribeMemberResponse();
+
+        given(subscribeService.getSubscribes(any(Long.class), any(Long.class)))
+                .willReturn(subscribes);
+
+        // expected
+        this.mockMvc.perform(get("/api/v1/members/{pageMemberId}/subscribe/{memberId}", pageMemberId, memberId)
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("member-subscribe",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("pageMemberId").description("페이지 회원 ID"),
+                                parameterWithName("memberId").description("회원 ID")
+                        ),
+
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.ARRAY)
+                                        .description("데이터")
+                        ).andWithPrefix("data",
+                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER)
+                                        .description("회원 ID"),
+                                fieldWithPath("[].username").type(JsonFieldType.STRING)
+                                        .description("회원 이름"),
+                                fieldWithPath("[].subscribeState").type(JsonFieldType.NUMBER)
+                                        .description("구독 상태"),
+                                fieldWithPath("[].equalMemberState").type(JsonFieldType.NUMBER)
+                                        .description("구독 여부 상태")
+
+                        )
+                ));
+    }
+
+    private static List<SubscribeMemberResponse> getSubscribeMemberResponse() {
+        return List.of(
+                SubscribeMemberResponse.builder()
+                        .memberId(1L)
+                        .username("testUser1")
+                        .subscribeState(0)
+                        .equalMemberState(1)
+                        .build(),
+                SubscribeMemberResponse.builder()
+                        .memberId(2L)
+                        .username("testUser2")
+                        .subscribeState(1)
+                        .equalMemberState(0)
+                        .build()
+        );
     }
 
     private static List<ImageResponse> getImagesResponse() {

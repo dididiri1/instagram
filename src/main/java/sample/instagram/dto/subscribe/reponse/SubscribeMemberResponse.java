@@ -2,9 +2,9 @@ package sample.instagram.dto.subscribe.reponse;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class SubscribeMemberResponse {
 
     private Long memberId;
@@ -13,6 +13,7 @@ public class SubscribeMemberResponse {
     private Integer equalMemberState;
 
     @QueryProjection
+    @Builder
     public SubscribeMemberResponse(Long memberId, String username, Integer subscribeState, Integer equalMemberState) {
         this.memberId = memberId;
         this.username = username;

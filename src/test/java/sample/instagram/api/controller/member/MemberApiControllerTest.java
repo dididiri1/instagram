@@ -174,4 +174,23 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data").isEmpty());
     }
+
+    @DisplayName("회원 구독 정보를 조회 한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void getSubscribes() throws Exception {
+        //given
+        long pageMemberId = 1L;
+        long memberId = 1L;
+
+        //when //then
+        mockMvc.perform(get("/api/v1/members/{pageMemberId}/subscribe/{memberId}", pageMemberId, memberId)
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
 }

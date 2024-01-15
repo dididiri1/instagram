@@ -36,7 +36,7 @@ public class SubscribeQueryRepository {
                                 .otherwise(0).as("equalMemberState")
                 ))
                 .from(member)
-                .innerJoin(member.subscribes, subscribe)
+                .join(member.subscribes, subscribe)
                 .where(subscribe.fromMember.id.eq(toMemberId))
                 .fetch();
     }

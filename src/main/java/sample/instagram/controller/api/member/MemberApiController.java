@@ -81,6 +81,6 @@ public class MemberApiController {
 
         List<SubscribeMemberResponse> subscribes = subscribeService.getSubscribes(pageMemberId, id);
 
-        return new ResponseEntity<>(new ResponseDto<>(1, "구독자 정보 리스트 조회 성공", subscribes), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "구독자 정보 리스트 조회 성공", subscribes), HttpStatus.OK);
     }
 }

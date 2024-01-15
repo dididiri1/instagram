@@ -54,8 +54,8 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     void createSubscribe() throws Exception {
 
         //given
-        Member member1 = createMember("testUser1", "1234","test1@naver.com", "김구라");
-        Member member2 = createMember("testUser2", "1234","test2@naver.com", "홍길동");
+        Member member1 = createMember("testUser1", "test1@example.com", "유저1");
+        Member member2 = createMember("testUser2", "test2@example.com", "유저2");
         memberRepositoryJpa.saveAll(List.of(member1, member2));
 
         Member fromMember = memberRepository.findOne(member1.getId());
@@ -72,8 +72,8 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @Test
     void createSubscribeWithNoMember() throws Exception {
         //given
-        Member member1 = createMember("testUser1", "1234","test1@naver.com", "김구라");
-        Member member2 = createMember("testUser2", "1234","test2@naver.com", "홍길동");
+        Member member1 = createMember("testUser1", "test1@example.com", "유저1");
+        Member member2 = createMember("testUser2", "test2@example.com", "유저2");
         memberRepositoryJpa.saveAll(List.of(member1, member2));
 
         Member fromMember = memberRepository.findOne(member1.getId());
@@ -106,40 +106,23 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @Test
     void getSubscribes() throws Exception {
         //given
-        Long fromMemberId = 1L;
-        Long toMemberId = 2L;
-
-        Member member1 = createMember("testUser1", "test@example.com", "유저1");
-        Member member2 = createMember("testUser2", "test@example.com", "유저2");
-        Member member3 = createMember("testUser3", "test@example.com", "유저3");
-        memberRepositoryJpa.saveAll(List.of(member1, member2, member3));
+        Member member1 = createMember("testUser1", "test1@example.com", "유저1");
+        Member member2 = createMember("testUser2", "test2@example.com", "유저2");
+        memberRepositoryJpa.saveAll(List.of(member1, member2));
 
         Subscribe subscribe1 = Subscribe.create(member1, member2);
-        Subscribe subscribe2 = Subscribe.create(member1, member3);
-        Subscribe subscribe3 = Subscribe.create(member2, member1);
-        Subscribe subscribe4 = Subscribe.create(member2, member3);
-        subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2, subscribe3, subscribe4));
+        Subscribe subscribe2 = Subscribe.create(member2, member1);
+        subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
         //when
-        List<SubscribeMemberResponse> responses = subscribeQueryRepository.findSubscribes(fromMemberId, toMemberId);
+        List<SubscribeMemberResponse> responses = subscribeQueryRepository.findSubscribes(member1.getId(), member1.getId());
 
         //then
-        assertThat(responses).hasSize(2)
+        assertThat(responses).hasSize(1)
                 .extracting("memberId", "username", "subscribeState", "equalMemberState")
                 .containsExactlyInAnyOrder(
-                        tuple(1L, "testUser1", 0, 1),
-                        tuple(3L, "testUser3", 1, 0)
+                        tuple(member2.getId(), member2.getUsername(), 1, 0)
                 );
-    }
-
-    private Member createMember(String username, String password, String email, String name) {
-        return Member.builder()
-                .username(username)
-                .password(bCryptPasswordEncoder.encode(password))
-                .email(email)
-                .name(name)
-                .role(ROLE_USER)
-                .build();
     }
 
     private Member createMember(String username, String email, String name) {

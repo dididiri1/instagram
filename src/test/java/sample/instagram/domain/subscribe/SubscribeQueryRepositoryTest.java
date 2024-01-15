@@ -1,6 +1,5 @@
 package sample.instagram.domain.subscribe;
 
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,13 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.domain.member.Member;
 import sample.instagram.dto.subscribe.reponse.QSubscribeMemberResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
-import sample.instagram.dto.subscribe.reponse.SubscribeQueryResponse;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.querydsl.core.types.ExpressionUtils.count;
 import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.member.QMember.member;
 import static sample.instagram.domain.member.Role.ROLE_USER;
@@ -91,7 +87,7 @@ public class SubscribeQueryRepositoryTest {
     @DisplayName("구독 정보 리스트를 조회 한다.")
     @Test
     public void getSubscribes() throws Exception {
-        QSubscribe subscribeSub = new QSubscribe("subscribeSub");
+        //QSubscribe subscribeSub = new QSubscribe("subscribeSub");
 
         Long pageMemberId = 1L;
         Long memberId = 2L;

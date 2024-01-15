@@ -1,7 +1,10 @@
 package sample.instagram.service.image;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import sample.instagram.domain.image.ImageQueryRepository;
 import sample.instagram.service.aws.S3UploaderService;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
@@ -15,6 +18,8 @@ import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 public class ImageService {
 
     private final ImageRepositoryJpa imageRepositoryJpa;
+
+    private final ImageQueryRepository imageQueryRepository;
 
     private final MemberRepository memberRepository;
 
@@ -33,5 +38,9 @@ public class ImageService {
 
     private String getImageUrl(ImageCreateRequest imageCreateRequest) {
         return s3UploaderService.uploadFileS3(imageCreateRequest.getFile(), FOLDER_NAME);
+    }
+
+    public Page<ImageResponse> getStoryImages(Long memberId, Pageable pageable) {
+        return imageQueryRepository.getStoryImages(memberId, pageable);
     }
 }

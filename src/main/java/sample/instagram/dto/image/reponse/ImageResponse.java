@@ -1,5 +1,6 @@
 package sample.instagram.dto.image.reponse;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import sample.instagram.domain.image.Image;
@@ -13,6 +14,7 @@ public class ImageResponse {
 
     private String imageUrl;
 
+    @QueryProjection
     @Builder
     public ImageResponse(Long id, String caption, String imageUrl) {
         this.id = id;

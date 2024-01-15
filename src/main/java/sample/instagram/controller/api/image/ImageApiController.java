@@ -1,12 +1,13 @@
 package sample.instagram.controller.api.image;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.image.reponse.ImageResponse;
@@ -29,5 +30,11 @@ public class ImageApiController {
         }
         ImageResponse imageResponse = imageService.createImage(imageCreateRequest);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "이미지 등록 성공", imageResponse), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/api/v1/images/{id}")
+    public ResponseEntity<?> getStoryImages(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {
+        Page<ImageResponse> responses = imageService.getStoryImages(memberId, pageable);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "스토리 조회 성공", responses), HttpStatus.CREATED);
     }
 }

@@ -22,22 +22,22 @@ public class SubscribeQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<SubscribeMemberResponse> findSubscribes(Long fromMemberId, Long toMemberId) {
+    public List<SubscribeMemberResponse> findSubscribes(Long pageMemberId, Long memberId) {
         return queryFactory
                 .select(new QSubscribeMemberResponse(member.id, member.username,
                         Expressions.cases()
                                 .when(JPAExpressions.selectOne()
                                         .from(subscribe)
-                                        .where(subscribe.fromMember.id.eq(fromMemberId).and(subscribe.toMember.id.eq(member.id))).exists())
+                                        .where(subscribe.fromMember.id.eq(memberId).and(subscribe.toMember.id.eq(member.id))).exists())
                                 .then(1)
                                 .otherwise(0).as("subscribeState"),
                         Expressions.cases()
-                                .when(member.id.eq(fromMemberId)).then(1)
+                                .when(member.id.eq(memberId)).then(1)
                                 .otherwise(0).as("equalMemberState")
                 ))
                 .from(member)
                 .join(member.subscribes, subscribe)
-                .where(subscribe.fromMember.id.eq(toMemberId))
+                .where(subscribe.fromMember.id.eq(pageMemberId))
                 .fetch();
     }
 }

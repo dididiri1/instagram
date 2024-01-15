@@ -93,24 +93,24 @@ public class SubscribeQueryRepositoryTest {
     public void getSubscribes() throws Exception {
         QSubscribe subscribeSub = new QSubscribe("subscribeSub");
 
-        Long fromMemberId = 1L;
-        Long toMemberId = 2L;
+        Long pageMemberId = 1L;
+        Long memberId = 2L;
 
         List<SubscribeMemberResponse> result = queryFactory
                 .select(new QSubscribeMemberResponse(member.id, member.username,
                         Expressions.cases()
                                 .when(JPAExpressions.selectOne()
                                         .from(subscribe)
-                                        .where(subscribe.fromMember.id.eq(fromMemberId).and(subscribe.toMember.id.eq(member.id))).exists())
+                                        .where(subscribe.fromMember.id.eq(memberId).and(subscribe.toMember.id.eq(member.id))).exists())
                                 .then(1)
                                 .otherwise(0).as("subscribeState"),
                         Expressions.cases()
-                                .when(member.id.eq(fromMemberId)).then(1)
+                                .when(member.id.eq(memberId)).then(1)
                                 .otherwise(0).as("equalMemberState")
                 ))
                 .from(member)
                 .innerJoin(member.subscribes, subscribe)
-                .where(subscribe.fromMember.id.eq(toMemberId))
+                .where(subscribe.fromMember.id.eq(pageMemberId))
                 .fetch();
 
         for (SubscribeMemberResponse response : result) {

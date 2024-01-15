@@ -351,7 +351,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("[].subscribeState").type(JsonFieldType.NUMBER)
                                         .description("구독 상태"),
                                 fieldWithPath("[].equalMemberState").type(JsonFieldType.NUMBER)
-                                        .description("구독 여부 상태")
+                                        .description("동일 유저 상태")
 
                         )
                 ));

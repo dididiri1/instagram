@@ -103,16 +103,20 @@ function toggleSubscribe(toUserId, obj) {
 function subscribeInfoModalOpen(pageUserId) {
     $(".modal-subscribe").css("display", "flex");
 
+    console.log("pageUserId:"+pageUserId);
+    console.log("memberId:"+memberId);
+    console.log("============================")
+
     $.ajax({
         type:"get",
-        url:"/api/v1/member/"+pageUserId+"/subscribe",
+        url:"/api/v1/members/"+pageUserId+"/subscribe/"+memberId,
         dataType:"json",
     }).done(res=>{
         console.log(res);
 
-        res.data.forEach((u)=>{
-            console.log(u.userid)
-            let item = getSubscribeModalItem(u);
+        res.data.forEach((m)=>{
+            console.log(m.username)
+            let item = getSubscribeModalItem(m);
             $(".subscribe-list").append(item);
         });
     }).fail(error=>{
@@ -126,26 +130,27 @@ function subscribeInfoModalOpen(pageUserId) {
 }
 
 /**
- * @param u.id
- * @param u.userid
- * @param u.profileImageUrl
- * @param u.subscribeState
- * @param u.equalUserState
+ * @param m.memberId
+ * @param m.username
+ * @param m.profileImageUrl
+ * @param m.subscribeState
+ * @param m.equalUserState
  */
-function getSubscribeModalItem(u) {
-    let item = '<div class="subscribe__item" id="subscribeModalItem-'+u.id+'">' +
+function getSubscribeModalItem(m) {
+    let item = '<div class="subscribe__item" id="subscribeModalItem-'+m.memberId+'">' +
         '<div class="subscribe__img">' +
-        '<img src="/upload/'+u.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'"/>' +
+        //'<img src="/upload/'+u.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'"/>' +
+        '<img src="/upload/" onerror="this.src=\'/images/person.jpeg\'"/>' +
         '</div>' +
         '<div class="subscribe__text">' +
-        '<h2>'+u.userid+'</h2>' +
+        '<h2>'+m.username+'</h2>' +
         '</div>' +
         '<div class="subscribe__btn">';
-    if(!u.equalUserState) { // 동일 유저가 아닐 떄 버튼이 만들어져야함.
-        if(u.subscribeState) { // 구독한 상태
-            item += '<button class="cta blue" onclick="toggleSubscribe(\''+u.id+'\', this)">구독취소</button>';
+    if(!m.equalMemberState) { // 동일 유저가 아닐 떄 버튼이 만들어져야함.
+        if(m.subscribeState) { // 구독한 상태
+            item += '<button class="cta blue" onclick="toggleSubscribe(\''+m.memberId+'\', this)">구독취소</button>';
         }	else{ // 구동안한 상태
-            item += '<button class="cta" onclick="toggleSubscribe(\''+u.id+'\', this)">구독하기</button>';
+            item += '<button class="cta" onclick="toggleSubscribe(\''+m.memberId+'\', this)">구독하기</button>';
         }
     }
     item += '</div>' +

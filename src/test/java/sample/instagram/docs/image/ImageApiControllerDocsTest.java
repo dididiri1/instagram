@@ -12,6 +12,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.controller.api.image.ImageApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
 
@@ -104,7 +105,7 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
         int page = 0;
         int size = 3;
 
-        List<ImageResponse> result = getImages();
+        List<ImageStoryResponse> result = getImages();
 
         given(imageService.getStoryImages(any(Long.class), any(Pageable.class)))
                 .willReturn(result);
@@ -139,24 +140,28 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("caption").type(JsonFieldType.STRING)
                                         .description("이미지 설명"),
                                 fieldWithPath("imageUrl").type(JsonFieldType.STRING)
-                                        .description("이미지 주소")
+                                        .description("이미지 주소"),
+                                fieldWithPath("username").type(JsonFieldType.STRING)
+                                        .description("회원 이름")
                         )
                 ));
 
 
     }
 
-    private static List<ImageResponse> getImages() {
+    private static List<ImageStoryResponse> getImages() {
         return List.of(
-                ImageResponse.builder()
+                ImageStoryResponse.builder()
                         .id(1L)
                         .caption("이미지 소개1")
                         .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .username("testUser1")
                         .build(),
-                ImageResponse.builder()
+                ImageStoryResponse.builder()
                         .id(2L)
                         .caption("이미지 소개2")
                         .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .username("testUser2")
                         .build()
         );
     }

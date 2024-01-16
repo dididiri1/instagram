@@ -18,6 +18,7 @@ import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.aws.S3UploaderService;
 
@@ -100,15 +101,15 @@ public class ImageServiceTest extends IntegrationTestSupport {
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
         //when
-        List<ImageResponse> images = imageService.getStoryImages(memberId, pageRequest);
+        List<ImageStoryResponse> images = imageService.getStoryImages(memberId, pageRequest);
 
         //then
         assertThat(images).hasSize(3)
-                .extracting("caption", "imageUrl")
+                .extracting("caption", "imageUrl", "username")
                 .containsExactlyInAnyOrder(
-                        tuple("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        tuple("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
+                        tuple("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
+                        tuple("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
                 );
     }
 
@@ -133,13 +134,13 @@ public class ImageServiceTest extends IntegrationTestSupport {
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
         //when
-        List<ImageResponse> images = imageService.getStoryImages(member1.getId(), pageRequest);
+        List<ImageStoryResponse> images = imageService.getStoryImages(member1.getId(), pageRequest);
 
         //then
         assertThat(images).hasSize(1)
-                .extracting("caption", "imageUrl")
+                .extracting("caption", "imageUrl", "username")
                 .containsExactlyInAnyOrder(
-                        tuple("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        tuple("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
                 );
     }
 

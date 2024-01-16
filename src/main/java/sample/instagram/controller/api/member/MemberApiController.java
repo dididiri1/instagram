@@ -40,7 +40,7 @@ public class MemberApiController {
      * @Method: createMember
      * @Description: 회원 등록
      */
-    @PostMapping("/api/v1/members")
+    @PostMapping("/api/v1/members/new")
     public ResponseEntity<?> createMember(@RequestBody @Valid MemberCreateRequest request) {
         MemberResponse memberResponse = memberService.createMember(request);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "회원 등록 성공", memberResponse), HttpStatus.CREATED);

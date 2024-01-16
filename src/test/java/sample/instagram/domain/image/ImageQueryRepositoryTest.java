@@ -1,17 +1,20 @@
 package sample.instagram.domain.image;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.subscribe.Subscribe;
-import sample.instagram.dto.image.reponse.ImageResponse;
-import sample.instagram.dto.image.reponse.QImageResponse;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
+import sample.instagram.dto.image.reponse.QImageStoryResponse;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static sample.instagram.domain.image.QImage.image;
+import static sample.instagram.domain.member.QMember.member;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 import static sample.instagram.domain.subscribe.QSubscribe.subscribe;
 
@@ -61,25 +65,20 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
         List<Long> ids = getSubscribeMemberId(memberId);
 
         //when
-        List<ImageResponse> imageResponses = queryFactory
-                .select(new QImageResponse(image.id, image.caption, image.imageUrl))
+        List<ImageStoryResponse> result = queryFactory
+                .select(new QImageStoryResponse(image.id, image.caption, image.imageUrl, member.username))
                 .from(image)
+                .join(image.member, member)
                 .where(image.member.id.in(ids))
                 .fetch();
 
-        for (ImageResponse images : imageResponses) {
-            System.out.println("images.getId() = " + images.getId());
-            System.out.println("images.getImageUrl() = " + images.getImageUrl());
-            System.out.println("images.getCaption() = " + images.getCaption());
-        }
-
         //then
-        assertThat(imageResponses).hasSize(2)
-                .extracting("caption", "imageUrl")
+        assertThat(result).hasSize(2)
+                .extracting("caption", "imageUrl", "username")
                 .containsExactlyInAnyOrder(
-                        tuple("이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple("이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
-                );
+                        tuple("이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
+                        tuple("이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
+        );
     }
 
     private List<Long> getSubscribeMemberId(Long memberId) {

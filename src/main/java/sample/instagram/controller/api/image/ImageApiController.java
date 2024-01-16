@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.dto.image.reqeust.ImageSearch;
 import sample.instagram.service.image.ImageService;
@@ -37,7 +38,7 @@ public class ImageApiController {
 
     @GetMapping("/api/v1/images/{id}")
     public ResponseEntity<?> getStoryImages(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {
-        List<ImageResponse> imageResponses = imageService.getStoryImages(memberId, pageable);
+        List<ImageStoryResponse> imageResponses = imageService.getStoryImages(memberId, pageable);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "스토리 조회 성공", imageResponses), HttpStatus.OK);
     }
 }

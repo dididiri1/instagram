@@ -77,7 +77,7 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
         Member fromMember = memberRepository.findOne(member1.getId());
         Member toMember = memberRepository.findOne(member2.getId());
 
-        Subscribe subscribe = Subscribe.create(fromMember, toMember);
+        Subscribe subscribe = createSubscribe(fromMember, toMember);
         subscribeRepositoryJpa.save(subscribe);
 
         //when  //then
@@ -108,8 +108,8 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
         Member member2 = createMember("testUser2", "test2@example.com", "유저2");
         memberRepositoryJpa.saveAll(List.of(member1, member2));
 
-        Subscribe subscribe1 = Subscribe.create(member1, member2);
-        Subscribe subscribe2 = Subscribe.create(member2, member1);
+        Subscribe subscribe1 = createSubscribe(member1, member2);
+        Subscribe subscribe2 = createSubscribe(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
         //when
@@ -130,6 +130,13 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
                 .email(email)
                 .name(name)
                 .role(ROLE_USER)
+                .build();
+    }
+
+    private Subscribe createSubscribe(Member fromMember, Member toMember) {
+        return Subscribe.builder()
+                .fromMember(fromMember)
+                .toMember(toMember)
                 .build();
     }
 }

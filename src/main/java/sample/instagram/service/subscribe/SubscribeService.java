@@ -12,6 +12,7 @@ import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
+import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 
 import java.util.List;
@@ -30,23 +31,20 @@ public class SubscribeService {
 
     @Transactional
     public SubscribeResponse createSubscribe(Long fromMemberId, Long toMemberId) {
-        Subscribe subscribeEntity = null;
-        try {
-            subscribeEntity = saveSubscribeAndResponseReturn(fromMemberId, toMemberId);
-        } catch (Exception e) {
-            throw new CustomApiException("이미 구독을 하였습니다.");
-        }
-        return SubscribeResponse.of(subscribeEntity);
-    }
-
-    private Subscribe saveSubscribeAndResponseReturn(Long fromMemberId, Long toMemberId) {
-        Subscribe subscribeEntity;
         Member fromMember = memberRepository.findOne(fromMemberId);
         Member toMember = memberRepository.findOne(toMemberId);
         Subscribe subscribe = Subscribe.create(fromMember, toMember);
-        subscribeEntity = subscribeRepositoryJpa.save(subscribe);
+        Subscribe saveSubscribe = validateDuplicateCreateSubscribeAndToEntity(subscribe);
 
-        return subscribeEntity;
+        return SubscribeResponse.of(saveSubscribe);
+    }
+
+    private Subscribe validateDuplicateCreateSubscribeAndToEntity(Subscribe subscribe) {
+        try {
+            return subscribeRepositoryJpa.save(subscribe);
+        } catch (Exception e) {
+            throw new CustomApiException("이미 구독을 하였습니다.");
+        }
     }
 
     @Transactional

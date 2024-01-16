@@ -61,7 +61,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .build());
 
         // expected
-        this.mockMvc.perform(post("/api/v1/members")
+        this.mockMvc.perform(post("/api/v1/members/new")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                 )

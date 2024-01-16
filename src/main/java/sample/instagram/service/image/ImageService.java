@@ -9,6 +9,7 @@ import sample.instagram.domain.image.ImageRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.aws.S3UploaderService;
 
@@ -40,7 +41,7 @@ public class ImageService {
         return s3UploaderService.uploadFileS3(imageCreateRequest.getFile(), FOLDER_NAME);
     }
 
-    public List<ImageResponse> getStoryImages(Long memberId, Pageable pageable) {
+    public List<ImageStoryResponse> getStoryImages(Long memberId, Pageable pageable) {
         return imageQueryRepository.getStoryImages(memberId, pageable);
     }
 }

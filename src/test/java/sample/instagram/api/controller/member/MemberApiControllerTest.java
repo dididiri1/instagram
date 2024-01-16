@@ -30,7 +30,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/v1/members")
+        mockMvc.perform(post("/api/v1/members/new")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                         .with(csrf())
@@ -52,7 +52,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/v1/members")
+        mockMvc.perform(post("/api/v1/members/new")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -76,7 +76,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/v1/members")
+        mockMvc.perform(post("/api/v1/members/new")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -100,7 +100,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/v1/members")
+        mockMvc.perform(post("/api/v1/members/new")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())

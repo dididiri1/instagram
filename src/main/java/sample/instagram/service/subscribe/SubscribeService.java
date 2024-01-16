@@ -31,19 +31,22 @@ public class SubscribeService {
     @Transactional
     public SubscribeResponse createSubscribe(Long fromMemberId, Long toMemberId) {
         Subscribe subscribeEntity = null;
-
         try {
-            Member fromMember = memberRepository.findOne(fromMemberId);
-            Member toMember = memberRepository.findOne(toMemberId);
-
-            Subscribe subscribe = Subscribe.create(fromMember, toMember);
-            subscribeEntity = subscribeRepositoryJpa.save(subscribe);
-
+            subscribeEntity = saveSubscribeAndResponseReturn(fromMemberId, toMemberId);
         } catch (Exception e) {
             throw new CustomApiException("이미 구독을 하였습니다.");
         }
-
         return SubscribeResponse.of(subscribeEntity);
+    }
+
+    private Subscribe saveSubscribeAndResponseReturn(Long fromMemberId, Long toMemberId) {
+        Subscribe subscribeEntity;
+        Member fromMember = memberRepository.findOne(fromMemberId);
+        Member toMember = memberRepository.findOne(toMemberId);
+        Subscribe subscribe = Subscribe.create(fromMember, toMember);
+        subscribeEntity = subscribeRepositoryJpa.save(subscribe);
+
+        return subscribeEntity;
     }
 
     @Transactional

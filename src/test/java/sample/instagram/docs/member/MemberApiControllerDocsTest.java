@@ -2,17 +2,17 @@ package sample.instagram.docs.member;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import sample.instagram.controller.api.member.MemberApiController;
-import sample.instagram.domain.member.Member;
-import sample.instagram.dto.image.reponse.ImageResponse;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
-import sample.instagram.service.member.MemberService;
 import sample.instagram.docs.RestDocsSupport;
+import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
+import sample.instagram.service.member.MemberService;
 import sample.instagram.service.subscribe.SubscribeService;
 
 import java.util.List;
@@ -20,7 +20,6 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -328,14 +327,13 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("member-subscribe",
+                .andDo(MockMvcRestDocumentation.document("member-subscribe",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("pageMemberId").description("페이지 회원 ID"),
                                 parameterWithName("memberId").description("회원 ID")
                         ),
-
                         responseFields (
                                 fieldWithPath("status").type(JsonFieldType.NUMBER)
                                         .description("상태 코드"),

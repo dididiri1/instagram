@@ -24,7 +24,7 @@ public class ImageQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public Page<ImageResponse> getStoryImages(Long memberId, Pageable pageable) {
+    public List<ImageResponse> getStoryImages(Long memberId, Pageable pageable) {
         List<Long> ids = getSubscribeMemberIds(memberId);
 
         QueryResults<ImageResponse> result = queryFactory
@@ -35,10 +35,11 @@ public class ImageQueryRepository {
                 .limit(pageable.getPageSize())
                 .fetchResults();
 
-        List<ImageResponse> content = result.getResults();
+        /*List<ImageResponse> content = result.getResults();
         long total = result.getTotal();
+        return new PageImpl<>(content, pageable, total);*/
 
-        return new PageImpl<>(content, pageable, result.getTotal());
+        return result.getResults();
     }
 
     private List<Long> getSubscribeMemberIds(Long memberId) {

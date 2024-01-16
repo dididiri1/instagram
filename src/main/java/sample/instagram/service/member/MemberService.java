@@ -54,7 +54,6 @@ public class MemberService {
     @Transactional
     public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
         Member memberEntity = getMemberEntity(id);
-
         memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         memberEntity.setName(request.getName());
         memberEntity.setEmail(request.getEmail());

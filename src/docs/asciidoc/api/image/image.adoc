@@ -8,3 +8,13 @@ include::{snippets}/image-create/request-parts.adoc[]
 ==== HTTP Response
 include::{snippets}/image-create/http-response.adoc[]
 include::{snippets}/image-create/response-fields.adoc[]
+
+[[image-get-story]]
+=== 이미지 스토리 조회
+==== HTTP Request
+include::{snippets}/image-get-story/http-request.adoc[]
+include::{snippets}/image-get-story/request-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/image-get-story/http-response.adoc[]
+include::{snippets}/image-get-story/response-fields.adoc[]

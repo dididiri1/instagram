@@ -76,11 +76,13 @@ public class MemberApiController {
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회 성공", response), HttpStatus.OK);
     }
 
+    /**
+     * @Method: getMemberProfile
+     * @Description: 회원 구독 정보 조회
+     */
     @GetMapping("/api/v1/members/{pageMemberId}/subscribe/{id}")
     public ResponseEntity<?> getSubscribes(@PathVariable("pageMemberId") Long pageMemberId, @PathVariable("id") Long id) {
-
         List<SubscribeMemberResponse> subscribes = subscribeService.getSubscribes(pageMemberId, id);
-
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "구독자 정보 리스트 조회 성공", subscribes), HttpStatus.OK);
     }
 }

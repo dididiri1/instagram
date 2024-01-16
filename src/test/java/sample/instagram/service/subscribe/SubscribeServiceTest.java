@@ -40,8 +40,6 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @Autowired
     private SubscribeQueryRepository subscribeQueryRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @AfterEach
     void tearDown() {
@@ -128,7 +126,7 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     private Member createMember(String username, String email, String name) {
         return Member.builder()
                 .username(username)
-                .password(bCryptPasswordEncoder.encode("1234"))
+                .password(new BCryptPasswordEncoder().encode("1234"))
                 .email(email)
                 .name(name)
                 .role(ROLE_USER)

@@ -1,5 +1,6 @@
 package sample.instagram.service.image;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.image.Image;
-import sample.instagram.domain.image.ImageQueryRepository;
 import sample.instagram.domain.image.ImageRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
@@ -41,13 +41,17 @@ public class ImageServiceTest extends IntegrationTestSupport {
     private SubscribeRepositoryJpa subscribeRepositoryJpa;
 
     @Autowired
-    private ImageQueryRepository imageQueryRepository;
-
-    @Autowired
     private ImageRepositoryJpa imageRepositoryJpa;
 
     @MockBean
     private S3UploaderService s3UploaderService;
+
+    @AfterEach
+    void tearDown() {
+        imageRepositoryJpa.deleteAllInBatch();
+        subscribeRepositoryJpa.deleteAllInBatch();
+        memberRepositoryJpa.deleteAllInBatch();
+    }
 
     @DisplayName("이미지를 업로드 한다.")
     @Test
@@ -96,15 +100,15 @@ public class ImageServiceTest extends IntegrationTestSupport {
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
         //when
-        Page<ImageResponse> images = imageService.getStoryImages(memberId, pageRequest);
+        List<ImageResponse> images = imageService.getStoryImages(memberId, pageRequest);
 
         //then
         assertThat(images).hasSize(3)
-                .extracting("id", "caption", "imageUrl")
+                .extracting("caption", "imageUrl")
                 .containsExactlyInAnyOrder(
-                        tuple(1L, "사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple(2L, "사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple(3L, "사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        tuple("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
+                        tuple("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
+                        tuple("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                 );
     }
 
@@ -112,7 +116,6 @@ public class ImageServiceTest extends IntegrationTestSupport {
     @Test
     void getStoryImagesWithPage1() throws Exception {
         //given
-        Long memberId = 1L;
         PageRequest pageRequest = PageRequest.of(1, 3);
 
         Member member1 = createMember("testUser1", "유저1");
@@ -130,13 +133,13 @@ public class ImageServiceTest extends IntegrationTestSupport {
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
         //when
-        Page<ImageResponse> images = imageService.getStoryImages(memberId, pageRequest);
+        List<ImageResponse> images = imageService.getStoryImages(member1.getId(), pageRequest);
 
         //then
         assertThat(images).hasSize(1)
-                .extracting("id", "caption", "imageUrl")
+                .extracting("caption", "imageUrl")
                 .containsExactlyInAnyOrder(
-                        tuple(4L, "사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        tuple("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                 );
     }
 

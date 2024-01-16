@@ -2,15 +2,19 @@ package sample.instagram.api.controller.image;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 
 import java.io.IOException;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,6 +46,28 @@ public class ImageApiControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data").isEmpty());
+
+    }
+
+    @DisplayName("스토리 이미지 조회한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void getStoryImages() throws Exception {
+        // given
+        Long memberId = 1L;
+        int page = 0;
+        int size = 3;
+
+        // when // then
+        mockMvc.perform(get("/api/v1/images/{id}", memberId)
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isArray());
 
     }
 

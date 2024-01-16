@@ -28,7 +28,7 @@ public class MemberCreateRequest {
     private String name;
 
     @Builder
-    public MemberCreateRequest(String username, String password, String email, String name) {
+    private MemberCreateRequest(String username, String password, String email, String name) {
         this.username = username;
         this.password = password;
         this.email = email;

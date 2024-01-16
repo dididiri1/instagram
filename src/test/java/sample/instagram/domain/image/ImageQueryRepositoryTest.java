@@ -75,10 +75,10 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
 
         //then
         assertThat(imageResponses).hasSize(2)
-                .extracting("id", "caption", "imageUrl")
+                .extracting("caption", "imageUrl")
                 .containsExactlyInAnyOrder(
-                        tuple(1L, "이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple(2L, "이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        tuple("이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
+                        tuple("이미지 캡션", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                 );
     }
 

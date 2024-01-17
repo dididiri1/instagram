@@ -8,14 +8,17 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
+import sample.instagram.dto.DataResponse;
+import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.service.like.LikeService;
 
 import java.io.IOException;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,6 +72,47 @@ public class ImageApiControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data").isArray());
 
+    }
+
+    @DisplayName("좋아요를 등록한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void createLike() throws Exception {
+        // given
+        Long imageId = 1L;
+        Long memberId = 1L;
+
+        // when // then
+        mockMvc.perform(post("/api/v1/images/{imageId}/likes/{memberId}", imageId, memberId)
+                        .contentType(APPLICATION_JSON)
+                        .with(csrf())
+
+                )
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isEmpty());;
+
+    }
+
+    @DisplayName("좋아요를 취소한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void deleteSubscribe() throws Exception {
+        //given
+        Long imageId = 1L;
+        Long memberId = 1L;
+
+        // when // then
+        mockMvc.perform(delete("/api/v1/images/{imageId}/likes/{memberId}", imageId, memberId)
+                        .contentType(APPLICATION_JSON)
+                        .with(csrf())
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists());
     }
 
     private MockMultipartFile createMockMultipartFile(String fileName) throws IOException {

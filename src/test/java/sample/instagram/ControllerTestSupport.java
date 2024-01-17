@@ -9,6 +9,7 @@ import sample.instagram.controller.api.image.ImageApiController;
 import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.controller.api.subscribe.SubscribeApiController;
 import sample.instagram.service.image.ImageService;
+import sample.instagram.service.like.LikeService;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.service.subscribe.SubscribeService;
 
@@ -33,5 +34,8 @@ public abstract class ControllerTestSupport {
 
     @MockBean
     protected ImageService imageService;
+
+    @MockBean
+    protected LikeService likeService;
 
 }

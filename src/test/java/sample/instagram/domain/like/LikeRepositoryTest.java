@@ -10,9 +10,8 @@ import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
-import sample.instagram.domain.subscribe.Subscribe;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.member.Role.ROLE_USER;
@@ -46,6 +45,21 @@ public class LikeRepositoryTest extends IntegrationTestSupport {
 
         //then
         assertThat(saveLike).isNotNull();
+    }
+
+    @DisplayName("좋아요를 취소한다.")
+    @Test
+    void deleteLike() throws Exception {
+        //given
+        Long imageId = 1L;
+        Long memberId = 1L;
+
+        //when
+        likeRepositoryJpa.deleteByImageIdAndMemberId(imageId, memberId);
+
+        //then
+        Like findLike = likeRepositoryJpa.findByImageIdAndMemberId(imageId, memberId);
+        assertThat(findLike).isNull();
     }
 
     private Member createMember(String username, String email, String name) {

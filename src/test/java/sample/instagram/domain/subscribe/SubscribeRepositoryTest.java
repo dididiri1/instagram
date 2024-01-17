@@ -63,7 +63,7 @@ public class SubscribeRepositoryTest extends IntegrationTestSupport {
 
         //then
         Optional<Subscribe> deletedSubscribe = subscribeRepositoryJpa.findByFromMemberIdAndToMemberId(fromMemberId, toMemberId);
-        assertFalse(deletedSubscribe.isPresent());
+        assertThat(deletedSubscribe.isPresent()).isFalse();
     }
 
     @DisplayName("두 유저가 구독일 경우 구독 상태는 TRUE 이다.")

@@ -2,6 +2,7 @@ package sample.instagram.service.like;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepository;
 import sample.instagram.domain.like.Like;
@@ -11,6 +12,7 @@ import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class LikeService {
@@ -21,6 +23,7 @@ public class LikeService {
 
     private final ImageRepository imageRepository;
 
+    @Transactional
     public Like createLike(Long imageId, Long memberId) {
         Image image = imageRepository.findOne(imageId);
         Member member = memberRepository.findOne(memberId);
@@ -30,6 +33,7 @@ public class LikeService {
         return saveLike;
     }
 
+    @Transactional
     public DataResponse deleteLike(Long imageId, Long memberId) {
         likeRepositoryJpa.deleteByImageIdAndMemberId(imageId, memberId);
         return DataResponse.of(ResultStatus.SUCCESS);

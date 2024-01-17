@@ -48,7 +48,7 @@ public class ImageApiController {
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "좋아요 성공", null), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/v1/image/{imageId}/likes/{memberId}")
+    @DeleteMapping("/api/v1/images/{imageId}/likes/{memberId}")
     public ResponseEntity<?> unlikes(@PathVariable Long imageId, @PathVariable Long memberId) {
         likeService.deleteLike(imageId, memberId);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "좋아요 취소 성공", null), HttpStatus.OK);

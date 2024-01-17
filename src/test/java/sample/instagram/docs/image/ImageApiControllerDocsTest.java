@@ -11,9 +11,12 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.controller.api.image.ImageApiController;
 import sample.instagram.docs.RestDocsSupport;
+import sample.instagram.dto.DataResponse;
+import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.like.LikeService;
 
@@ -23,9 +26,11 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -152,7 +157,71 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
 
     }
 
-    private static List<ImageStoryResponse> getImages() {
+    @Test
+    @DisplayName("좋아요 등록")
+    void createSubscribe() throws Exception {
+
+        // given
+        Long imageId = 1L;
+        Long memberId = 2L;
+
+        // expected
+        this.mockMvc.perform(post("/api/v1/images/{imageId}/likes/{memberId}", imageId, memberId)
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andDo(document("image-like-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("imageId").description("이미지 ID"),
+                                parameterWithName("memberId").description("회원 ID")
+                        ),
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL)
+                                        .description("데이터")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("좋아요 취소")
+    void deleteSubscribe() throws Exception {
+
+        // given
+        Long imageId = 1L;
+        Long memberId = 1L;
+
+        // expected
+        this.mockMvc.perform(delete("/api/v1/images/{imageId}/likes/{memberId}", imageId, memberId)
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("image-like-delete",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("imageId").description("이미지 ID"),
+                                parameterWithName("memberId").description("회원 ID")
+                        ),
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL)
+                                        .description("데이터")
+                        )
+                ));
+    }
+
+    private List<ImageStoryResponse> getImages() {
         return List.of(
                 ImageStoryResponse.builder()
                         .id(1L)

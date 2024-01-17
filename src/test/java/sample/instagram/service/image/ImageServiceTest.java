@@ -107,9 +107,9 @@ public class ImageServiceTest extends IntegrationTestSupport {
         assertThat(images).hasSize(3)
                 .extracting("caption", "imageUrl", "username")
                 .containsExactlyInAnyOrder(
-                        tuple("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
-                        tuple("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
-                        tuple("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
+                        tuple("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
+                        tuple("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
+                        tuple("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
                 );
     }
 
@@ -140,7 +140,7 @@ public class ImageServiceTest extends IntegrationTestSupport {
         assertThat(images).hasSize(1)
                 .extracting("caption", "imageUrl", "username")
                 .containsExactlyInAnyOrder(
-                        tuple("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
+                        tuple("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
                 );
     }
 

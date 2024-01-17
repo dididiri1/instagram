@@ -18,3 +18,24 @@ include::{snippets}/image-get-story/request-parameters.adoc[]
 ==== HTTP Response
 include::{snippets}/image-get-story/http-response.adoc[]
 include::{snippets}/image-get-story/response-fields.adoc[]
+
+[[image-like-create]]
+=== 좋아요 등록
+==== HTTP Request
+include::{snippets}/image-like-create/http-request.adoc[]
+include::{snippets}/image-like-create/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/image-like-create/http-response.adoc[]
+include::{snippets}/image-like-create/response-fields.adoc[]
+
+[[image-like-delete]]
+=== 좋아요 취소
+==== HTTP Request
+include::{snippets}/image-like-delete/http-request.adoc[]
+include::{snippets}/image-like-delete/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/image-like-delete/http-response.adoc[]
+include::{snippets}/image-like-delete/response-fields.adoc[]
+

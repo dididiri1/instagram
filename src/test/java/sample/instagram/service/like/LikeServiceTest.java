@@ -12,7 +12,6 @@ import sample.instagram.domain.like.Like;
 import sample.instagram.domain.like.LikeRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
-import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
 

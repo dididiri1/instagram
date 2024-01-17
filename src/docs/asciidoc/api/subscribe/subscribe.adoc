@@ -1,5 +1,5 @@
 [[subscribe]]
-=== 구독 등륵
+=== 구독 등록
 ==== HTTP Request
 include::{snippets}/subscribe-create/http-request.adoc[]
 include::{snippets}/subscribe-create/path-parameters.adoc[]

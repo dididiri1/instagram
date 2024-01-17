@@ -36,7 +36,7 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("구독 등록 문서")
+    @DisplayName("구독 등록")
     void createSubscribe() throws Exception {
 
         // given

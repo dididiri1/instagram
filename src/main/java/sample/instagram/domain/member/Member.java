@@ -36,7 +36,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member")
     @JsonBackReference // 역방향 참조를 무시
     private List<Image> images = new ArrayList<>(); // 양방향 매핑
 

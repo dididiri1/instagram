@@ -15,6 +15,7 @@ import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
+import sample.instagram.service.like.LikeService;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,9 +37,11 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
 
     private final ImageService imageService = mock(ImageService.class);
 
+    private final LikeService likeService = mock(LikeService.class);
+
     @Override
     protected Object initController() {
-        return new ImageApiController(imageService);
+        return new ImageApiController(imageService, likeService);
     }
 
     @Test

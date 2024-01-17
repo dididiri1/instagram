@@ -25,8 +25,8 @@ public class Image extends BaseEntity {
 
     private String imageUrl;
 
-    @JoinColumn(name = "memberId")
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
     @JsonManagedReference // 정방향 참조를 무시
     private Member member;
 

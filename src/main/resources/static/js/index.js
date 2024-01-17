@@ -75,13 +75,18 @@ function getStoryItem(image) {
 
 // (2) 스토리 스크롤 페이징하기
 $(window).scroll(() => {
-
+    let checkNum = $(window).scrollTop() - ($(document).height() - $(window).height());
+    if(checkNum < 1 && checkNum > -1){
+        page ++;
+        storyLoad();
+    }
 });
 
 
+
 // (3) 좋아요, 안좋아요
-function toggleLike() {
-    let likeIcon = $("#storyLikeIcon-1");
+function toggleLike(imageId) {
+    let likeIcon = $("#storyLikeIcon-"+imageId);
     if (likeIcon.hasClass("far")) {
         likeIcon.addClass("fas");
         likeIcon.addClass("active");

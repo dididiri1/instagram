@@ -154,7 +154,7 @@ public class ImageServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    public Image createImage(String caption, String imageUrl,Member member) {
+    private Image createImage(String caption, String imageUrl,Member member) {
         return Image.builder()
                 .caption(caption)
                 .imageUrl(imageUrl)

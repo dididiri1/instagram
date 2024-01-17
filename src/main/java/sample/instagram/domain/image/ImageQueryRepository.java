@@ -35,6 +35,7 @@ public class ImageQueryRepository {
                 .from(image)
                 .join(image.member, member)
                 .where(image.member.id.in(ids))
+                .orderBy(image.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

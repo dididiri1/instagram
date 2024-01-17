@@ -100,7 +100,7 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
                 .build();
     }
 
-    public Image createImage(String imageUrl, Member member) {
+    private Image createImage(String imageUrl, Member member) {
         return Image.builder()
                 .caption("이미지 캡션")
                 .imageUrl(imageUrl)

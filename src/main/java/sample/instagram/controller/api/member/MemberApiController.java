@@ -1,12 +1,16 @@
 package sample.instagram.controller.api.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
+import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.member.request.MemberCreateRequest;
@@ -24,6 +28,8 @@ public class MemberApiController {
     private final MemberService memberService;
 
     private final SubscribeService subscribeService;
+
+    private final ImageService imageService;
 
     /**
      * @Method: checkUsername
@@ -84,5 +90,15 @@ public class MemberApiController {
     public ResponseEntity<?> getSubscribes(@PathVariable("pageMemberId") Long pageMemberId, @PathVariable("id") Long id) {
         List<SubscribeMemberResponse> subscribes = subscribeService.getSubscribes(pageMemberId, id);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "구독자 정보 리스트 조회 성공", subscribes), HttpStatus.OK);
+    }
+
+    /**
+     * @Method: getStory
+     * @Description: 회원 스토리 정보 조회
+     */
+    @GetMapping("/api/v1/members/{id}/story")
+    public ResponseEntity<?> getStory(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {
+        List<ImageStoryResponse> imageResponses = imageService.getStory(memberId, pageable);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "스토리 조회 성공", imageResponses), HttpStatus.OK);
     }
 }

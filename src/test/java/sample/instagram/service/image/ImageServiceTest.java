@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
+import sample.instagram.domain.like.Like;
+import sample.instagram.domain.like.LikeRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
@@ -44,11 +46,15 @@ public class ImageServiceTest extends IntegrationTestSupport {
     @Autowired
     private ImageRepositoryJpa imageRepositoryJpa;
 
+    @Autowired
+    private LikeRepositoryJpa likeRepositoryJpa;
+
     @MockBean
     private S3UploaderService s3UploaderService;
 
     @AfterEach
     void tearDown() {
+        likeRepositoryJpa.deleteAllInBatch();
         imageRepositoryJpa.deleteAllInBatch();
         subscribeRepositoryJpa.deleteAllInBatch();
         memberRepositoryJpa.deleteAllInBatch();
@@ -81,35 +87,40 @@ public class ImageServiceTest extends IntegrationTestSupport {
 
     @DisplayName("구독자들의 스토리 이미지 첫번째 페이지 리스트를 조회 한다. (page=0, size=3)")
     @Test
-    void getStoryImagesWithPage0() throws Exception {
+    void getStoryWithPage0() throws Exception {
         //given
         Long memberId = 1L;
         PageRequest pageRequest = PageRequest.of(0, 3);
 
-        Member member1 = createMember("testUser1", "유저1");
-        Member member2 = createMember("testUser2", "유저2");
+        Member member1 = createMember("member1", "name1");
+        Member member2 = createMember("member2", "name2");
         memberRepositoryJpa.saveAll(List.of(member1, member2));
 
         Subscribe subscribe1 = Subscribe.create(member1, member2);
         Subscribe subscribe2 = Subscribe.create(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
-        Image image1 = createImage("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image2 = createImage("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image3 = createImage("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image4 = createImage("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image1 = createImage("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image2 = createImage("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image3 = createImage("caption3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image4 = createImage("caption4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
+        Like like1 = createLike(image3, member1);
+        Like like2 = createLike(image4, member1);
+
+        likeRepositoryJpa.saveAll(List.of(like1, like2));
+
         //when
-        List<ImageStoryResponse> images = imageService.getStoryImages(memberId, pageRequest);
+        List<ImageStoryResponse> images = imageService.getStory(memberId, pageRequest);
 
         //then
         assertThat(images).hasSize(3)
-                .extracting("caption", "imageUrl", "username")
+                .extracting("caption", "imageUrl", "username", "likeCount")
                 .containsExactlyInAnyOrder(
-                        tuple("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
-                        tuple("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2"),
-                        tuple("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
+                        tuple("caption4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2", 1),
+                        tuple("caption3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2", 1),
+                        tuple("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2", 0)
                 );
     }
 
@@ -117,30 +128,36 @@ public class ImageServiceTest extends IntegrationTestSupport {
     @Test
     void getStoryImagesWithPage1() throws Exception {
         //given
-        PageRequest pageRequest = PageRequest.of(1, 3);
+        Long memberId = 1L;
+        PageRequest pageRequest = PageRequest.of(0, 3);
 
-        Member member1 = createMember("testUser1", "유저1");
-        Member member2 = createMember("testUser2", "유저2");
+        Member member1 = createMember("member1", "name1");
+        Member member2 = createMember("member2", "name2");
         memberRepositoryJpa.saveAll(List.of(member1, member2));
 
         Subscribe subscribe1 = Subscribe.create(member1, member2);
         Subscribe subscribe2 = Subscribe.create(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
-        Image image1 = createImage("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image2 = createImage("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image3 = createImage("사진 소개3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image4 = createImage("사진 소개4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image1 = createImage("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image2 = createImage("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image3 = createImage("caption3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image4 = createImage("caption4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
+        Like like1 = createLike(image3, member1);
+        Like like2 = createLike(image4, member1);
+
+        likeRepositoryJpa.saveAll(List.of(like1, like2));
+
         //when
-        List<ImageStoryResponse> images = imageService.getStoryImages(member1.getId(), pageRequest);
+        List<ImageStoryResponse> images = imageService.getStory(memberId, pageRequest);
 
         //then
         assertThat(images).hasSize(1)
-                .extracting("caption", "imageUrl", "username")
+                .extracting("caption", "imageUrl", "username", "likeCount")
                 .containsExactlyInAnyOrder(
-                        tuple("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "testUser2")
+                        tuple("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2", 0)
                 );
     }
 
@@ -154,10 +171,17 @@ public class ImageServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private Image createImage(String caption, String imageUrl,Member member) {
+    private Image createImage(String caption, String imageUrl, Member member) {
         return Image.builder()
                 .caption(caption)
                 .imageUrl(imageUrl)
+                .member(member)
+                .build();
+    }
+
+    private Like createLike(Image image, Member member) {
+        return Like.builder()
+                .image(image)
                 .member(member)
                 .build();
     }

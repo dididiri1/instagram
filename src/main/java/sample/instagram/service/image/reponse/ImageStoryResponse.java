@@ -1,4 +1,4 @@
-package sample.instagram.dto.image.reponse;
+package sample.instagram.service.image.reponse;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class ImageStoryResponse {
 
     private String username;
 
-    //private boolean likeState;
+    private boolean likeState;
 
     private int likeCount;
 

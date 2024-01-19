@@ -2,16 +2,20 @@ package sample.instagram.docs.member;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
+import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.service.subscribe.SubscribeService;
 
@@ -25,19 +29,21 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class MemberApiControllerDocsTest extends RestDocsSupport {
 
     private final MemberService memberService = mock(MemberService.class);
+
     private final SubscribeService subscribeService = mock(SubscribeService.class);
+
+    private final ImageService imageService = mock(ImageService.class);
 
     @Override
     protected Object initController() {
-        return new MemberApiController(memberService, subscribeService);
+        return new MemberApiController(memberService, subscribeService, imageService);
     }
 
     @Test
@@ -253,7 +259,18 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         long pageMemberId = 1L;
         long memberId = 1L;
 
-        List<ImageResponse> images = getImagesResponse();
+        List<ImageResponse> images = List.of(
+                ImageResponse.builder()
+                        .id(1L)
+                        .caption("이미지 소개1")
+                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .build(),
+                ImageResponse.builder()
+                        .id(2L)
+                        .caption("이미지 소개2")
+                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .build()
+        );
 
         given(memberService.getMemberProfile(any(Long.class), any(Long.class)))
                 .willReturn(MemberProfileResponse.builder()
@@ -316,10 +333,23 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         long pageMemberId = 1L;
         long memberId = 1L;
 
-        List<SubscribeMemberResponse> subscribes = getSubscribeMemberResponse();
+        List<SubscribeMemberResponse> result = List.of(
+                SubscribeMemberResponse.builder()
+                        .memberId(1L)
+                        .username("member1")
+                        .subscribeState(0)
+                        .equalMemberState(1)
+                        .build(),
+                SubscribeMemberResponse.builder()
+                        .memberId(2L)
+                        .username("member2")
+                        .subscribeState(1)
+                        .equalMemberState(0)
+                        .build()
+        );
 
         given(subscribeService.getSubscribes(any(Long.class), any(Long.class)))
-                .willReturn(subscribes);
+                .willReturn(result);
 
         // expected
         this.mockMvc.perform(get("/api/v1/members/{pageMemberId}/subscribe/{memberId}", pageMemberId, memberId)
@@ -355,38 +385,72 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 ));
     }
 
-    private static List<SubscribeMemberResponse> getSubscribeMemberResponse() {
-        return List.of(
-                SubscribeMemberResponse.builder()
-                        .memberId(1L)
-                        .username("testUser1")
-                        .subscribeState(0)
-                        .equalMemberState(1)
+    @DisplayName("스토리 정보를 조회한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void getStory() throws Exception {
+        // given
+        Long memberId = 1L;
+        int page = 0;
+        int size = 3;
+
+        List<ImageStoryResponse> result = List.of(
+                ImageStoryResponse.builder()
+                        .id(1L)
+                        .caption("이미지 소개1")
+                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .username("member1")
                         .build(),
-                SubscribeMemberResponse.builder()
-                        .memberId(2L)
-                        .username("testUser2")
-                        .subscribeState(1)
-                        .equalMemberState(0)
+                ImageStoryResponse.builder()
+                        .id(2L)
+                        .caption("이미지 소개2")
+                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .username("member2")
                         .build()
         );
+
+        given(imageService.getStory(any(Long.class), any(Pageable.class)))
+                .willReturn(result);
+
+        // when // then
+        this.mockMvc.perform(get("/api/v1/members/{id}/story", memberId)
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("image-get-story",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("회원 ID")
+                        ),
+                        requestParameters (
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("size").description("페이지 사이즈")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.ARRAY)
+                                        .description("데이터")
+                        ).andWithPrefix("data[].",
+                                fieldWithPath("id").type(JsonFieldType.NUMBER)
+                                        .description("이미지 ID"),
+                                fieldWithPath("caption").type(JsonFieldType.STRING)
+                                        .description("이미지 설명"),
+                                fieldWithPath("imageUrl").type(JsonFieldType.STRING)
+                                        .description("이미지 주소"),
+                                fieldWithPath("username").type(JsonFieldType.STRING)
+                                        .description("회원 이름"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER)
+                                        .description("좋아요 갯수")
+                        )
+                ));
     }
 
-    private static List<ImageResponse> getImagesResponse() {
-        List<ImageResponse> images = List.of(
-                    ImageResponse.builder()
-                            .id(1L)
-                            .caption("사진 소개1")
-                            .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
-                            .build(),
-                    ImageResponse.builder()
-                            .id(2L)
-                            .caption("사진 소개2")
-                            .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
-                            .build()
-        );
-        return images;
-    }
 }
 
 

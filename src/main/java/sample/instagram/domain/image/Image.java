@@ -5,9 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import sample.instagram.domain.BaseEntity;
+import sample.instagram.domain.like.Like;
 import sample.instagram.domain.member.Member;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
@@ -29,6 +33,9 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "member_id")
     @JsonManagedReference // 정방향 참조를 무시
     private Member member;
+
+    @OneToMany(mappedBy = "image")
+    private List<Like> likes = new ArrayList<>();
 
     @Builder
     public Image(Long id, String caption, String imageUrl, Member member) {

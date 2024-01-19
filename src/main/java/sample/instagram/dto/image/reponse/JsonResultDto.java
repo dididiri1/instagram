@@ -1,11 +1,15 @@
 package sample.instagram.dto.image.reponse;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 import sample.instagram.domain.image.Image;
+import sample.instagram.domain.like.Like;
+
+import java.util.List;
 
 @Getter
-public class ImageStoryResponse {
+public class JsonResultDto {
 
     private Long id;
 
@@ -15,12 +19,10 @@ public class ImageStoryResponse {
 
     private String username;
 
-    //private boolean likeState;
-
     private int likeCount;
 
     @Builder
-    private ImageStoryResponse(Long id, String caption, String imageUrl, String username, int likeCount) {
+    public JsonResultDto(Long id, String caption, String imageUrl, String username, int likeCount) {
         this.id = id;
         this.caption = caption;
         this.imageUrl = imageUrl;
@@ -28,11 +30,11 @@ public class ImageStoryResponse {
         this.likeCount = likeCount;
     }
 
-    public static ImageStoryResponse of(Image image) {
-        return ImageStoryResponse.builder()
+    public static JsonResultDto of(Image image) {
+        return JsonResultDto.builder()
                 .id(image.getId())
-                .caption(image.getCaption())
                 .imageUrl(image.getImageUrl())
+                .caption(image.getCaption())
                 .username(image.getMember().getUsername())
                 .likeCount(image.getLikes().size())
                 .build();

@@ -67,6 +67,7 @@ public class MemberRepositoryTest extends IntegrationTestSupport {
         assertThat(findMember.getName()).isEqualTo("김구라");
     }
 
+
     private Member createMember(String username, String password, String email, String name) {
         return Member.builder()
                 .username(username)

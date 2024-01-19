@@ -2,35 +2,24 @@ package sample.instagram.docs.image;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.controller.api.image.ImageApiController;
 import sample.instagram.docs.RestDocsSupport;
-import sample.instagram.dto.DataResponse;
-import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.image.reponse.ImageResponse;
-import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
-import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.like.LikeService;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -104,59 +93,6 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
                 ));
     }
 
-    @DisplayName("스토리 이미지 조회한다.")
-    @Test
-    @WithMockUser(authorities = "ROLE_USER")
-    void getStoryImages() throws Exception {
-        // given
-        Long memberId = 1L;
-        int page = 0;
-        int size = 3;
-
-        List<ImageStoryResponse> result = getImages();
-
-        given(imageService.getStoryImages(any(Long.class), any(Pageable.class)))
-                .willReturn(result);
-
-        // when // then
-        this.mockMvc.perform(get("/api/v1/images/{id}", memberId)
-                        .param("page", String.valueOf(page))
-                        .param("size", String.valueOf(size))
-                )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andDo(document("image-get-story",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("id").description("회원 ID")
-                        ),
-                        requestParameters (
-                                parameterWithName("page").description("페이지 번호"),
-                                parameterWithName("size").description("페이지 사이즈")
-                        ),
-                        responseFields(
-                                fieldWithPath("status").type(JsonFieldType.NUMBER)
-                                        .description("상태 코드"),
-                                fieldWithPath("message").type(JsonFieldType.STRING)
-                                        .description("응답 메시지"),
-                                fieldWithPath("data").type(JsonFieldType.ARRAY)
-                                        .description("데이터")
-                        ).andWithPrefix("data[].",
-                                fieldWithPath("id").type(JsonFieldType.NUMBER)
-                                        .description("이미지 ID"),
-                                fieldWithPath("caption").type(JsonFieldType.STRING)
-                                        .description("이미지 설명"),
-                                fieldWithPath("imageUrl").type(JsonFieldType.STRING)
-                                        .description("이미지 주소"),
-                                fieldWithPath("username").type(JsonFieldType.STRING)
-                                        .description("회원 이름")
-                        )
-                ));
-
-
-    }
-
     @Test
     @DisplayName("좋아요 등록")
     void createSubscribe() throws Exception {
@@ -219,23 +155,6 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
                                         .description("데이터")
                         )
                 ));
-    }
-
-    private List<ImageStoryResponse> getImages() {
-        return List.of(
-                ImageStoryResponse.builder()
-                        .id(1L)
-                        .caption("이미지 소개1")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
-                        .username("testUser1")
-                        .build(),
-                ImageStoryResponse.builder()
-                        .id(2L)
-                        .caption("이미지 소개2")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
-                        .username("testUser2")
-                        .build()
-        );
     }
 
     private MockMultipartFile createMockMultipartFile(String fileName) throws IOException {

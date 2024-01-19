@@ -52,28 +52,6 @@ public class ImageApiControllerTest extends ControllerTestSupport {
 
     }
 
-    @DisplayName("스토리 이미지 조회한다.")
-    @Test
-    @WithMockUser(authorities = "ROLE_USER")
-    void getStoryImages() throws Exception {
-        // given
-        Long memberId = 1L;
-        int page = 0;
-        int size = 3;
-
-        // when // then
-        mockMvc.perform(get("/api/v1/images/{id}", memberId)
-                        .param("page", String.valueOf(page))
-                        .param("size", String.valueOf(size))
-                )
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").exists())
-                .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.data").isArray());
-
-    }
-
     @DisplayName("좋아요를 등록한다.")
     @Test
     @WithMockUser(authorities = "ROLE_USER")

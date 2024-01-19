@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
@@ -193,4 +194,27 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data").isEmpty());
     }
+
+    @DisplayName("스토리 정보를 조회한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void getStories() throws Exception {
+        // given
+        Long memberId = 1L;
+        int page = 0;
+        int size = 3;
+
+        // when // then
+        mockMvc.perform(get("/api/v1/members/{id}/story", memberId)
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isArray());
+
+    }
+
 }

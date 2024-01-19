@@ -14,7 +14,7 @@ let page = 0;
 function storyLoad() {
     $.ajax({
         type: "get",
-        url:"/api/v1/images/"+memberId+"?page="+page,
+        url:"/api/v1/members/"+memberId+"/story?page="+page,
         dataType:"json"
     }).done(res=>{
         console.log(res);
@@ -45,15 +45,14 @@ function getStoryItem(image) {
     item += '<div class="sl__item__contents">';
     item += '<div class="sl__item__contents__icon">';
     item += '<button>';
-    // if (image.likeState) {
-    //     item +='<i class="fas fa-heart active" id="storyLikeIcon-'+data.id+'" onclick="toggleLike(\''+data.id+'\')"></i>';
-    // } else {
-    //     item +='<i class="far fa-heart" id="storyLikeIcon-'+data.id+'" onclick="toggleLike(\''+data.id+'\')"></i>';
-    // }
-    item +='<i class="fas fa-heart active" id="storyLikeIcon-'+image.id+'" onclick="toggleLike(\''+image.id+'\')"></i>';
+    if (image.likeState) {
+        item +='<i class="fas fa-heart active" id="storyLikeIcon-'+image.id+'" onclick="toggleLike(\''+image.id+'\')"></i>';
+    } else {
+        item +='<i class="far fa-heart" id="storyLikeIcon-'+image.id+'" onclick="toggleLike(\''+image.id+'\')"></i>';
+    }
     item += '</button>';
     item += '</div>';
-    item += '<span class="like"><b id="storyLikeCount-'+image.id+'">0 </b>likes</span>';
+    item += '<span class="like"><b id="storyLikeCount-'+image.id+'">'+image.likeCount+' </b>likes</span>';
     item += '<div class="sl__item__contents__content">';
     item += '<p>'+image.caption+'</p>';
     item += '</div>';
@@ -88,13 +87,42 @@ $(window).scroll(() => {
 function toggleLike(imageId) {
     let likeIcon = $("#storyLikeIcon-"+imageId);
     if (likeIcon.hasClass("far")) {
-        likeIcon.addClass("fas");
-        likeIcon.addClass("active");
-        likeIcon.removeClass("far");
+
+        $.ajax({
+            type:"post",
+            url:"/api/v1/images/"+imageId+"/likes/"+memberId,
+            dataType:"json"
+        }).done(res=>{
+            let storyLikeCount = $("#storyLikeCount-"+imageId);
+            let likeCountStr = storyLikeCount.text();
+            let likeCount = Number(likeCountStr) + 1;
+            storyLikeCount.text(likeCount);
+
+            likeIcon.addClass("fas");
+            likeIcon.addClass("active");
+            likeIcon.removeClass("far");
+        }).fail(error=>{
+            console.log("오류",error);
+        });
+
     } else {
-        likeIcon.removeClass("fas");
-        likeIcon.removeClass("active");
-        likeIcon.addClass("far");
+
+        $.ajax({
+            type:"delete",
+            url:"/api/v1/images/"+imageId+"/likes/"+memberId,
+            dataType:"json"
+        }).done(res=>{
+            let storyLikeCount = $("#storyLikeCount-"+imageId);
+            let likeCountStr = storyLikeCount.text();
+            let likeCount = Number(likeCountStr) - 1;
+            storyLikeCount.text(likeCount);
+
+            likeIcon.removeClass("fas");
+            likeIcon.removeClass("active");
+            likeIcon.addClass("far");
+        }).fail(error=>{
+            console.log("오류",error);
+        });
     }
 }
 

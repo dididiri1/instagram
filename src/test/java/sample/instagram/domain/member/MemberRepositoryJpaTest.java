@@ -43,14 +43,6 @@ public class MemberRepositoryJpaTest extends IntegrationTestSupport {
         em.clear();
     }
 
-    @DisplayName("회원 조회 이미지 양방향 쿼리 테스트")
-    @Test
-    void getMemberProfileImagesQueryTest() throws Exception {
-        Member memberEntity = memberRepositoryJpa.findById(1L).orElseThrow();
-        int size = memberEntity.getImages().size();
-        System.out.println("size = " + size);
-    }
-
     private Member createMember(String username, String email, String name) {
         return Member.builder()
                 .username(username)

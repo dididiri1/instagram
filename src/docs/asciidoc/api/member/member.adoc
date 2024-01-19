@@ -63,6 +63,18 @@ include::{snippets}/member-subscribe/path-parameters.adoc[]
 include::{snippets}/member-subscribe/http-response.adoc[]
 include::{snippets}/member-subscribe/response-fields.adoc[]
 
+[[member-all-story]]
+=== 회원 스토리 정보 조회
+==== HTTP Request
+include::{snippets}/member-all-story/http-request.adoc[]
+include::{snippets}/member-all-story/path-parameters.adoc[]
+include::{snippets}/member-all-story/request-parameters.adoc[]
+
+
+==== HTTP Response
+include::{snippets}/member-all-story/http-response.adoc[]
+include::{snippets}/member-all-story/response-fields.adoc[]
+
 
 
 

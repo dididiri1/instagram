@@ -27,6 +27,8 @@ public class ImageQueryRepository {
                 .where(subscribe.fromMember.id.eq(memberId))
                 .fetch();
 
+        System.out.println("ids = " + ids);
+
         List<Image> images = queryFactory
                 .select(image)
                 .from(image)

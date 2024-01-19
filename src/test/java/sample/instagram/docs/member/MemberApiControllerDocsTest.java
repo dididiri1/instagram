@@ -400,12 +400,16 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .caption("이미지 소개1")
                         .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                         .username("member1")
+                        .likeState(true)
+                        .likeCount(1)
                         .build(),
                 ImageStoryResponse.builder()
                         .id(2L)
                         .caption("이미지 소개2")
                         .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                         .username("member2")
+                        .likeState(false)
+                        .likeCount(0)
                         .build()
         );
 
@@ -419,7 +423,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document("image-get-story",
+                .andDo(document("member-all-story",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
@@ -445,6 +449,8 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("이미지 주소"),
                                 fieldWithPath("username").type(JsonFieldType.STRING)
                                         .description("회원 이름"),
+                                fieldWithPath("likeState").type(JsonFieldType.BOOLEAN)
+                                        .description("좋아요 상태"),
                                 fieldWithPath("likeCount").type(JsonFieldType.NUMBER)
                                         .description("좋아요 갯수")
                         )

@@ -49,7 +49,7 @@ public class ImageService {
         List<Image> images = imageQueryRepository.findStoryWithImageMember(memberId, pageable);
 
         return images.stream()
-                .map(image -> ImageStoryResponse.of(image))
+                .map(image -> ImageStoryResponse.of(image, memberId))
                 .collect(Collectors.toList());
     }
 

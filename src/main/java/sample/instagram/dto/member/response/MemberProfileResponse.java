@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import sample.instagram.domain.member.Member;
+import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.dto.image.reponse.ImageResponse;
 
 import java.util.List;
@@ -30,12 +31,14 @@ public class MemberProfileResponse {
         this.images = images;
     }
 
-    public static MemberProfileResponse of(Member member, boolean pageOwnerState, boolean subscribeState, int subscribeCount) {
+    public static MemberProfileResponse of(Member member, Long memberId) {
         return MemberProfileResponse.builder()
-                .pageOwnerState(pageOwnerState)
+                .pageOwnerState(isPageOwnerState(member.getId(), memberId))
                 .imageCount(member.getImages().size())
-                .subscribeState(subscribeState)
-                .subscribeCount(subscribeCount)
+                .subscribeState(member.getSubscribes().stream()
+                        .allMatch(subscribe -> isSubscribeState(subscribe, memberId, member.getId()))
+                )
+                .subscribeCount(member.getSubscribes().size())
                 .name(member.getName())
                 .images(member.getImages().stream()
                         .map(image -> ImageResponse.of(image))
@@ -43,4 +46,13 @@ public class MemberProfileResponse {
                 )
                 .build();
     }
+
+    private static boolean isSubscribeState(Subscribe subscribe, Long fromMemberId, Long toMemberId) {
+        return subscribe.getFromMember().getId().equals(fromMemberId) && subscribe.getToMember().getId().equals(toMemberId);
+    }
+
+    private static boolean isPageOwnerState(Long fromMemberId, Long toMemberId) {
+        return (fromMemberId == toMemberId);
+    }
+
 }

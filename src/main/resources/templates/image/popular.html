@@ -6,7 +6,12 @@
     <!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
 
     <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+    <script th:inline="javascript">
+        let pageMemberId = [[${pageMemberId}]];
+        let memberId = [[${memberId}]];
 
+    </script>
+    <script th:src="@{/js/image/popular.js}"></script>
 </head>
 <main layout:fragment="content" class="popular">
     <div class="exploreContainer">

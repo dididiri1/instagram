@@ -1,5 +1,7 @@
 package sample.instagram.domain.image;
 
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,19 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.like.Like;
 import sample.instagram.domain.like.QLike;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.subscribe.Subscribe;
-import sample.instagram.dto.image.reponse.ImageStoryResponse;
+import sample.instagram.service.image.reponse.ImagePopularResponse;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.querydsl.core.types.ExpressionUtils.count;
 import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.image.QImage.image;
 import static sample.instagram.domain.member.QMember.member;
@@ -66,21 +68,40 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
         em.persist(image1);
         em.persist(image2);
 
-        Like like1 = createLike(image1, member2);
-        Like like2 = createLike(image1, member3);
-        Like like3 = createLike(image1, member4);
-        Like like4 = createLike(image2, member2);
-        Like like5 = createLike(image2, member3);
-        Like like6 = createLike(image2, member4);
+        Like like1 = createLike(image2, member2);
+        Like like2 = createLike(image2, member3);
+        Like like3 = createLike(image2, member4);
+
         em.persist(like1);
         em.persist(like2);
         em.persist(like3);
-        em.persist(like4);
-        em.persist(like5);
-
 
         em.flush();
         em.clear();
+    }
+
+    @DisplayName("스토리 정보를 조회한다. 서브쿼리")
+    @Test
+    void findStoryWithImageMemberSubQuery() throws Exception {
+        QLike likeSub = new QLike("likeSub");
+
+        List<Long> ids = queryFactory
+                .select(subscribe.toMember.id)
+                .from(subscribe)
+                .where(subscribe.fromMember.id.eq(2L))
+                .fetch();
+
+        queryFactory
+                .select(image.id, image.caption, image.imageUrl, member.username,
+                        ExpressionUtils.as(
+                                JPAExpressions.select(count(likeSub.id))
+                                        .from(likeSub)
+                                        .where(likeSub.image.id.eq(image.id)), "likeCount")
+                )
+                .from(image)
+                .join(image.member, member)
+                .where(image.member.id.in(ids))
+                .fetch();
     }
 
     @DisplayName("스토리 정보를 조회한다.")
@@ -108,6 +129,35 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
 
         //then
         assertThat(images.size()).isEqualTo(2);
+    }
+
+    @DisplayName("인기 게시물 리스트를 조회한다.")
+    @Test
+    void getPoplar() throws Exception {
+        QLike likeSub = new QLike("likeSub");
+
+        //given
+        List<Image> images = queryFactory
+                .select(image)
+                .from(image)
+                .fetch();
+
+        //when
+        List<ImagePopularResponse> result = images.stream()
+                .map(image -> ImagePopularResponse.of(image))
+                .sorted(Comparator.comparing(ImagePopularResponse::getLikeCount).reversed())
+                .collect(Collectors.toList());
+
+
+        //then
+        for (ImagePopularResponse imagePopularResponse : result) {
+            System.out.println("imagePopularResponse.getId() = " + imagePopularResponse.getId());
+            System.out.println("imagePopularResponse.getImageUrl() = " + imagePopularResponse.getImageUrl());
+            System.out.println("imagePopularResponse.getCaption() = " + imagePopularResponse.getCaption());
+            System.out.println("imagePopularResponse.getLikeCount() = " + imagePopularResponse.getLikeCount());
+            System.out.println("====================");
+        }
+
     }
 
     private Member createMember(String username, String name) {

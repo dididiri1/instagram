@@ -31,7 +31,6 @@ public class Image extends BaseEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
-    @JsonManagedReference // 정방향 참조를 무시
     private Member member;
 
     @OneToMany(mappedBy = "image")

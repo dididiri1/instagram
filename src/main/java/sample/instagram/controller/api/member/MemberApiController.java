@@ -83,7 +83,7 @@ public class MemberApiController {
     }
 
     /**
-     * @Method: getMemberProfile
+     * @Method: getSubscribes
      * @Description: 회원 구독 정보 조회
      */
     @GetMapping("/api/v1/members/{pageMemberId}/subscribe/{id}")

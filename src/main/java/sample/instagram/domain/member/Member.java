@@ -22,7 +22,7 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String username;
 
     @JsonIgnore
@@ -37,12 +37,10 @@ public class Member extends BaseEntity {
     private Role role;
 
     @OneToMany(mappedBy = "member")
-    @JsonBackReference // 역방향 참조를 무시
-    private List<Image> images = new ArrayList<>(); // 양방향 매핑
+    private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "toMember")
-    @JsonBackReference
-    private List<Subscribe> subscribes = new ArrayList<>(); // 양방향 매핑
+    private List<Subscribe> subscribes = new ArrayList<>();
 
     @Builder
     private Member(Long id, String username, String password, String email, String name, Role role) {

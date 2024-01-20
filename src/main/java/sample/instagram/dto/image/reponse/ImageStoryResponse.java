@@ -45,6 +45,6 @@ public class ImageStoryResponse {
 
     private static boolean isLikeState(List<Like> likes, Long memberId) {
         return likes.stream()
-                .anyMatch(like -> like.getMember().getId() == memberId);
+                .anyMatch(like -> like.getMember().getId().equals(memberId));
     }
 }

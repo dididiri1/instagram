@@ -68,18 +68,18 @@ public class MemberService {
 
     public MemberProfileResponse getMemberProfile(Long pageMemberId, Long memberId) {
         Member member = validateDuplicateMember(pageMemberId);
-        boolean subscribeState = isSubscribeState(pageMemberId, memberId);
-        int subscribeCount = getSubscribeCount(pageMemberId);
-        boolean pageOwnerState = isPageOwnerState(pageMemberId, memberId);
+        //boolean subscribeState = isSubscribeState(pageMemberId, memberId);
+        //int subscribeCount = getSubscribeCount(pageMemberId);
+        //boolean pageOwnerState = isPageOwnerState(pageMemberId, memberId);
 
-        return MemberProfileResponse.of(member, pageOwnerState, subscribeState, subscribeCount);
+        return MemberProfileResponse.of(member, memberId);
     }
 
     private Member validateDuplicateMember(Long memberId) {
-        Member memberEntity = memberRepositoryJpa.findById(memberId).orElseThrow(() -> {
+        Member findMember = memberRepositoryJpa.findById(memberId).orElseThrow(() -> {
             throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
         });
-        return memberEntity;
+        return findMember;
     }
 
     private int getSubscribeCount(Long pageMemberId) {
@@ -90,8 +90,5 @@ public class MemberService {
         return subscribeRepositoryJpa.existsByFromMemberIdAndToMemberId(pageMemberId, memberId);
     }
 
-    private boolean isPageOwnerState(Long pageMemberId, Long toMemberId) {
-        return (pageMemberId == toMemberId);
-    }
 
 }

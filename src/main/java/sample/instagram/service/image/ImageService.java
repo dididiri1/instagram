@@ -13,6 +13,7 @@ import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.aws.S3UploaderService;
+import sample.instagram.service.image.reponse.ImagePopularResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +52,11 @@ public class ImageService {
         return images.stream()
                 .map(image -> ImageStoryResponse.of(image, memberId))
                 .collect(Collectors.toList());
+    }
+
+    public List<ImagePopularResponse> getPopular() {
+
+        return null;
     }
 
 }

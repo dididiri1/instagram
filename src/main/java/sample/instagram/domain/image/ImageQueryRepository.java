@@ -27,8 +27,6 @@ public class ImageQueryRepository {
                 .where(subscribe.fromMember.id.eq(memberId))
                 .fetch();
 
-        System.out.println("ids = " + ids);
-
         List<Image> images = queryFactory
                 .select(image)
                 .from(image)
@@ -36,6 +34,16 @@ public class ImageQueryRepository {
                 .where(image.member.id.in(ids))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(image.id.desc())
+                .fetch();
+
+        return images;
+    }
+
+    public List<Image> findImageAllWithOrderBy() {
+        List<Image> images = queryFactory
+                .select(image)
+                .from(image)
                 .orderBy(image.id.desc())
                 .fetch();
 

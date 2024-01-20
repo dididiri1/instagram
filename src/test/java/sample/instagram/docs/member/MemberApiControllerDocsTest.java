@@ -47,7 +47,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("신규 회원 등록")
+    @DisplayName("신규 유저를 등록하는 API")
     void createMember() throws Exception {
 
         // given
@@ -111,7 +111,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("유저명 중복 체크")
+    @DisplayName("사용자명을 중복 체크하는 API")
     void checkUsername() throws Exception {
 
         // given
@@ -141,7 +141,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("회원 단건 조회")
+    @DisplayName("유저 단건 조회 API")
     void getMember() throws Exception {
 
         // given
@@ -188,7 +188,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("회원 수정")
+    @DisplayName("유저 정보를 수정하는 API")
     void updateMember() throws Exception {
 
         // given
@@ -252,7 +252,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("회원 프로필 정보를 조회 한다.")
+    @DisplayName("유저 프로필 정보를 조회 API")
     void getMemberProfile() throws Exception {
 
         // given
@@ -326,7 +326,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("회원 구독 정보를 조회 한다.")
+    @DisplayName("구독을 조회 API")
     void getSubscribes() throws Exception {
 
         // given
@@ -385,7 +385,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 ));
     }
 
-    @DisplayName("스토리 정보를 조회한다.")
+    @DisplayName("스토리를 조회 API")
     @Test
     @WithMockUser(authorities = "ROLE_USER")
     void getStory() throws Exception {

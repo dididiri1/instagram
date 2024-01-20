@@ -9,10 +9,12 @@ import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
+import sample.instagram.service.image.reponse.ImagePopularResponse;
 import sample.instagram.service.like.LikeService;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -42,5 +44,15 @@ public class ImageApiController {
     public ResponseEntity<?> unlikes(@PathVariable Long imageId, @PathVariable Long memberId) {
         likeService.deleteLike(imageId, memberId);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "좋아요 취소 성공", null), HttpStatus.OK);
+    }
+
+    /**
+     * @Method: getPopularImages
+     * @Description: 인기 이미지 정보 조회
+     */
+    @GetMapping("/api/v1/images/popular")
+    public ResponseEntity<?> getPopularImages() {
+        List<ImagePopularResponse> imagePopularResponses = imageService.getPopularImages();
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "인기 이미지 정보 조회", imagePopularResponses), HttpStatus.OK);
     }
 }

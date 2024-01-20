@@ -39,3 +39,12 @@ include::{snippets}/image-like-delete/path-parameters.adoc[]
 include::{snippets}/image-like-delete/http-response.adoc[]
 include::{snippets}/image-like-delete/response-fields.adoc[]
 
+[[image-all-popular]]
+=== 인기 이미지 조회
+==== HTTP Request
+include::{snippets}/image-all-popular/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/image-all-popular/http-response.adoc[]
+include::{snippets}/image-all-popular/response-fields.adoc[]
+

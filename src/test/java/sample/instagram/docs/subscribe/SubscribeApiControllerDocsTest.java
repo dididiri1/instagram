@@ -4,23 +4,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import sample.instagram.controller.api.subscribe.SubscribeApiController;
-import sample.instagram.service.subscribe.SubscribeService;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
+import sample.instagram.service.subscribe.SubscribeService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +36,7 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("구독 등록")
+    @DisplayName("구독을 등록하는 API")
     void createSubscribe() throws Exception {
 
         // given
@@ -82,9 +82,8 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("구독 취소")
+    @DisplayName("구독을 취소하는 API")
     void deleteSubscribe() throws Exception {
-
         // given
         Long fromMemberId = 1L;
         Long toMemberId = 2L;

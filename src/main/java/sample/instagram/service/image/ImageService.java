@@ -15,6 +15,7 @@ import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.aws.S3UploaderService;
 import sample.instagram.service.image.reponse.ImagePopularResponse;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,9 +55,13 @@ public class ImageService {
                 .collect(Collectors.toList());
     }
 
-    public List<ImagePopularResponse> getPopular() {
+    public List<ImagePopularResponse> getPopularImages() {
+        List<Image> images = imageRepositoryJpa.findAllByOrderByIdDesc();
 
-        return null;
+        return images.stream()
+                .map(image -> ImagePopularResponse.of(image))
+                .sorted(Comparator.comparing(ImagePopularResponse::getLikeCount).reversed())
+                .collect(Collectors.toList());
     }
 
 }

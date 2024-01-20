@@ -10,9 +10,11 @@ import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
+import sample.instagram.service.image.reponse.ImagePopularResponse;
 import sample.instagram.service.like.LikeService;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -39,7 +41,7 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("이미지 등록")
+    @DisplayName("이미지를 등록하는 API")
     void createImage() throws Exception {
 
         // given
@@ -52,7 +54,7 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
         given(imageService.createImage(any(ImageCreateRequest.class)))
                 .willReturn(ImageResponse.builder()
                         .id(1L)
-                        .caption("사진설명")
+                        .caption("이미지 소개")
                         .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                         .build());
 
@@ -94,7 +96,7 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("좋아요 등록")
+    @DisplayName("좋아요를 등록하는 API")
     void createSubscribe() throws Exception {
 
         // given
@@ -126,7 +128,7 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("좋아요 취소")
+    @DisplayName("좋아요를 취소하는 API")
     void deleteSubscribe() throws Exception {
 
         // given
@@ -153,6 +155,55 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
                                         .description("응답 메시지"),
                                 fieldWithPath("data").type(JsonFieldType.NULL)
                                         .description("데이터")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("인기 이미지들을 조회하는 API")
+    void getPopularImages() throws Exception {
+        // given
+        given(imageService.getPopularImages())
+                .willReturn(List.of(
+                        ImagePopularResponse.builder()
+                                .id(1L)
+                                .caption("이미지 소개1")
+                                .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                                .likeCount(3)
+                                .build(),
+                        ImagePopularResponse.builder()
+                                .id(2L)
+                                .caption("이미지 소개2")
+                                .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                                .likeCount(0)
+                                .build()
+                ));
+
+        // expected
+        this.mockMvc.perform(get("/api/v1/images/popular")
+                        .contentType(APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("image-all-popular",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields (
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.ARRAY)
+                                        .description("데이터")
+                        ).andWithPrefix("data[].",
+                                fieldWithPath("id").type(JsonFieldType.NUMBER)
+                                        .description("이미지 ID"),
+                                fieldWithPath("caption").type(JsonFieldType.STRING)
+                                        .description("이미지 설명"),
+                                fieldWithPath("imageUrl").type(JsonFieldType.STRING)
+                                        .description("이미지 주소"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER)
+                                        .description("좋아요 갯수")
                         )
                 ));
     }

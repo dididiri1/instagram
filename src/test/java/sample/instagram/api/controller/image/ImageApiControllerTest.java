@@ -11,9 +11,11 @@ import sample.instagram.ControllerTestSupport;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.service.image.reponse.ImagePopularResponse;
 import sample.instagram.service.like.LikeService;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -49,7 +51,6 @@ public class ImageApiControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data").isEmpty());
-
     }
 
     @DisplayName("좋아요를 등록한다.")
@@ -64,14 +65,12 @@ public class ImageApiControllerTest extends ControllerTestSupport {
         mockMvc.perform(post("/api/v1/images/{imageId}/likes/{memberId}", imageId, memberId)
                         .contentType(APPLICATION_JSON)
                         .with(csrf())
-
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data").isEmpty());;
-
     }
 
     @DisplayName("좋아요를 취소한다.")
@@ -91,6 +90,27 @@ public class ImageApiControllerTest extends ControllerTestSupport {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").exists())
                 .andExpect(jsonPath("$.message").exists());
+    }
+
+
+    @DisplayName("인기 이미지를 조회 한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void getPopularImages() throws Exception {
+        // given
+        List<ImagePopularResponse> result = List.of();
+        when(imageService.getPopularImages()).thenReturn(result);
+
+        // when // then
+        mockMvc.perform(get("/api/v1/images/popular")
+                        .contentType(APPLICATION_JSON)
+                        .with(csrf())
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isArray());;
     }
 
     private MockMultipartFile createMockMultipartFile(String fileName) throws IOException {

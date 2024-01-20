@@ -131,35 +131,6 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
         assertThat(images.size()).isEqualTo(2);
     }
 
-    @DisplayName("인기 게시물 리스트를 조회한다.")
-    @Test
-    void getPoplar() throws Exception {
-        QLike likeSub = new QLike("likeSub");
-
-        //given
-        List<Image> images = queryFactory
-                .select(image)
-                .from(image)
-                .fetch();
-
-        //when
-        List<ImagePopularResponse> result = images.stream()
-                .map(image -> ImagePopularResponse.of(image))
-                .sorted(Comparator.comparing(ImagePopularResponse::getLikeCount).reversed())
-                .collect(Collectors.toList());
-
-
-        //then
-        for (ImagePopularResponse imagePopularResponse : result) {
-            System.out.println("imagePopularResponse.getId() = " + imagePopularResponse.getId());
-            System.out.println("imagePopularResponse.getImageUrl() = " + imagePopularResponse.getImageUrl());
-            System.out.println("imagePopularResponse.getCaption() = " + imagePopularResponse.getCaption());
-            System.out.println("imagePopularResponse.getLikeCount() = " + imagePopularResponse.getLikeCount());
-            System.out.println("====================");
-        }
-
-    }
-
     private Member createMember(String username, String name) {
         return Member.builder()
                 .username(username)

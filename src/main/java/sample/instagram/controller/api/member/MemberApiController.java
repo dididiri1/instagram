@@ -11,6 +11,7 @@ import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
 import sample.instagram.service.image.ImageService;
+import sample.instagram.service.image.reponse.ImagePopularResponse;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.dto.ResponseDto;
 import sample.instagram.dto.member.request.MemberCreateRequest;
@@ -101,4 +102,5 @@ public class MemberApiController {
         List<ImageStoryResponse> imageResponses = imageService.getStory(memberId, pageable);
         return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "스토리 조회 성공", imageResponses), HttpStatus.OK);
     }
+
 }

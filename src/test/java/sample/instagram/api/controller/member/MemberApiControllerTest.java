@@ -8,7 +8,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.response.MemberProfileResponse;
+import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
+import sample.instagram.service.image.reponse.ImagePopularResponse;
 
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,7 +45,6 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated());
-
     }
 
     @DisplayName("신규 회원을 등록시 유저명은 필수값이다.")
@@ -162,8 +168,8 @@ class MemberApiControllerTest extends ControllerTestSupport {
     @WithMockUser(authorities = "ROLE_USER")
     void getMemberProfile() throws Exception {
         //given
-        long pageMemberId = 1L;
-        long memberId = 1L;
+        Long pageMemberId = 1L;
+        Long memberId = 1L;
 
         //when //then
         mockMvc.perform(get("/api/v1/members/{pageMemberId}/profile/{memberId}", pageMemberId, memberId)
@@ -176,16 +182,16 @@ class MemberApiControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
-    @DisplayName("회원 구독 정보를 조회 한다.")
+    @DisplayName("구독을 조회 한다.")
     @Test
     @WithMockUser(authorities = "ROLE_USER")
     void getSubscribes() throws Exception {
         //given
-        long pageMemberId = 1L;
-        long memberId = 1L;
+        List<SubscribeMemberResponse> result = List.of();
+        when(subscribeService.getSubscribes(any(Long.class), any(Long.class))).thenReturn(result);
 
         //when //then
-        mockMvc.perform(get("/api/v1/members/{pageMemberId}/subscribe/{memberId}", pageMemberId, memberId)
+        mockMvc.perform(get("/api/v1/members/{pageMemberId}/subscribe/{memberId}", 1L, 1L)
                         .contentType(APPLICATION_JSON)
                 )
                 .andDo(print())

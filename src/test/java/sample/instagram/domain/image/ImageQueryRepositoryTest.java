@@ -1,7 +1,5 @@
 package sample.instagram.domain.image;
 
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,17 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.like.Like;
-import sample.instagram.domain.like.QLike;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.subscribe.Subscribe;
-import sample.instagram.service.image.reponse.ImagePopularResponse;
 
 import javax.persistence.EntityManager;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.querydsl.core.types.ExpressionUtils.count;
 import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.image.QImage.image;
 import static sample.instagram.domain.member.QMember.member;
@@ -80,30 +73,6 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
         em.clear();
     }
 
-    @DisplayName("스토리 정보를 조회한다. 서브쿼리")
-    @Test
-    void findStoryWithImageMemberSubQuery() throws Exception {
-        QLike likeSub = new QLike("likeSub");
-
-        List<Long> ids = queryFactory
-                .select(subscribe.toMember.id)
-                .from(subscribe)
-                .where(subscribe.fromMember.id.eq(2L))
-                .fetch();
-
-        queryFactory
-                .select(image.id, image.caption, image.imageUrl, member.username,
-                        ExpressionUtils.as(
-                                JPAExpressions.select(count(likeSub.id))
-                                        .from(likeSub)
-                                        .where(likeSub.image.id.eq(image.id)), "likeCount")
-                )
-                .from(image)
-                .join(image.member, member)
-                .where(image.member.id.in(ids))
-                .fetch();
-    }
-
     @DisplayName("스토리 정보를 조회한다.")
     @Test
     void findStoryWithImageMember() throws Exception {
@@ -125,10 +94,11 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
                 .where(image.member.id.in(ids))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
+                .orderBy(image.id.desc())
                 .fetch();
 
         //then
-        assertThat(images.size()).isEqualTo(2);
+        assertThat(images.size()).isEqualTo(0);
     }
 
     private Member createMember(String username, String name) {

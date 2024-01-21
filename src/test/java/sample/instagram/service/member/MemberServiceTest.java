@@ -8,9 +8,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
+import sample.instagram.domain.like.LikeRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
+import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberProfileResponse;
@@ -25,16 +27,16 @@ import static sample.instagram.domain.member.Role.ROLE_USER;
 public class MemberServiceTest extends IntegrationTestSupport {
 
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
 
     @Autowired
-    MemberRepositoryJpa memberRepositoryJpa;
+    private MemberRepositoryJpa memberRepositoryJpa;
 
     @Autowired
-    MemberRepository memberRepository;
+    private ImageRepositoryJpa imageRepositoryJpa;
 
     @Autowired
-    ImageRepositoryJpa imageRepositoryJpa;
+    private SubscribeRepositoryJpa subscribeRepositoryJpa;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -42,6 +44,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
     @AfterEach
     void tearDown() {
         imageRepositoryJpa.deleteAllInBatch();
+        subscribeRepositoryJpa.deleteAllInBatch();
         memberRepositoryJpa.deleteAllInBatch();
     }
 
@@ -109,31 +112,29 @@ public class MemberServiceTest extends IntegrationTestSupport {
     @Test
     void getMemberProfile() throws Exception {
         //given
-        Member member = createMember("testUser1","test@example.com", "유저1");
+        Member member = createMember("member1","test@example.com", "홍길동");
         Member saveMember = memberRepositoryJpa.save(member);
 
-        Image image1 = createImage("사진 소개1", saveMember);
-        Image image2 = createImage("사진 소개2", saveMember);
+        Image image1 = createImage("caption1", saveMember);
+        Image image2 = createImage("caption2", saveMember);
         imageRepositoryJpa.saveAll(List.of(image1, image2));
 
-        Long pageMemberId = saveMember.getId();
-        Long memberId = saveMember.getId();
-
         //when
-        MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(pageMemberId, memberId);
+        MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(member.getId(), member.getId());
+
+        System.out.println("subscribeState= "+memberProfileResponse.isSubscribeState());
 
         //then
         assertThat(memberProfileResponse).isNotNull();
-        assertThat(memberProfileResponse.isPageOwnerState()).isTrue();
-        assertThat(memberProfileResponse.isSubscribeState()).isFalse();
-        assertThat(memberProfileResponse.getImageCount()).isEqualTo(2);
-        assertThat(memberProfileResponse.getSubscribeCount()).isEqualTo(0);
-        assertThat(memberProfileResponse.getName()).isEqualTo(saveMember.getName());
+        assertThat(memberProfileResponse)
+                .extracting("pageOwnerState", "imageCount", "subscribeState", "subscribeCount" , "name")
+                .contains(true, 2, false, 0, "홍길동");
+
         assertThat(memberProfileResponse.getImages()).hasSize(2)
                 .extracting("caption", "imageUrl")
                 .containsExactlyInAnyOrder(
-                        tuple("사진 소개1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple("사진 소개2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        tuple("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
+                        tuple("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                 );
     }
 

@@ -79,6 +79,7 @@ public class MemberService {
         Member findMember = memberRepositoryJpa.findById(memberId).orElseThrow(() -> {
             throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
         });
+
         return findMember;
     }
 

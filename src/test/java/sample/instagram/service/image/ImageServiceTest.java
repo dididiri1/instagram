@@ -52,9 +52,6 @@ public class ImageServiceTest extends IntegrationTestSupport {
     @Autowired
     private LikeRepositoryJpa likeRepositoryJpa;
 
-    @MockBean
-    private S3UploaderService s3UploaderService;
-
     @AfterEach
     void tearDown() {
         likeRepositoryJpa.deleteAllInBatch();

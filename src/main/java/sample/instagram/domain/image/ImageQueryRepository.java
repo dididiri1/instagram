@@ -39,14 +39,4 @@ public class ImageQueryRepository {
 
         return images;
     }
-
-    public List<Image> findImageAllWithOrderBy() {
-        List<Image> images = queryFactory
-                .select(image)
-                .from(image)
-                .orderBy(image.id.desc())
-                .fetch();
-
-        return images;
-    }
 }

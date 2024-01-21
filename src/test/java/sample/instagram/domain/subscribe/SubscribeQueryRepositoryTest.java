@@ -87,8 +87,6 @@ public class SubscribeQueryRepositoryTest {
     @DisplayName("구독 정보 리스트를 조회 한다.")
     @Test
     public void getSubscribes() throws Exception {
-        //QSubscribe subscribeSub = new QSubscribe("subscribeSub");
-
         Long pageMemberId = 1L;
         Long memberId = 2L;
 

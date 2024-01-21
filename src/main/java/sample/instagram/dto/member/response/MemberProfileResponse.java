@@ -35,9 +35,7 @@ public class MemberProfileResponse {
         return MemberProfileResponse.builder()
                 .pageOwnerState(isPageOwnerState(member.getId(), memberId))
                 .imageCount(member.getImages().size())
-                .subscribeState(member.getSubscribes().stream()
-                        .allMatch(subscribe -> isSubscribeState(subscribe, memberId, member.getId()))
-                )
+                .subscribeState(isSubscribeState(member, member.getId(), memberId))
                 .subscribeCount(member.getSubscribes().size())
                 .name(member.getName())
                 .images(member.getImages().stream()
@@ -47,7 +45,12 @@ public class MemberProfileResponse {
                 .build();
     }
 
-    private static boolean isSubscribeState(Subscribe subscribe, Long fromMemberId, Long toMemberId) {
+    private static boolean isSubscribeState(Member member, Long fromMemberId , Long toMemberId) {
+        return member.getSubscribes().stream()
+                .anyMatch(s -> isSubscriptionMatch(s, fromMemberId, toMemberId));
+    }
+
+    private static boolean isSubscriptionMatch(Subscribe subscribe, Long fromMemberId, Long toMemberId) {
         return subscribe.getFromMember().getId().equals(fromMemberId) && subscribe.getToMember().getId().equals(toMemberId);
     }
 

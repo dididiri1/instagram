@@ -1,7 +1,5 @@
 package sample.instagram.domain.image;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +18,13 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sample.instagram.domain.image.QImage.image;
-import static sample.instagram.domain.member.QMember.member;
 import static sample.instagram.domain.member.Role.ROLE_USER;
-import static sample.instagram.domain.subscribe.QSubscribe.subscribe;
 
 @Transactional
 public class ImageQueryRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     EntityManager em;
-
-    JPAQueryFactory queryFactory;
 
     @Autowired
     private MemberRepositoryJpa memberRepositoryJpa;
@@ -43,16 +36,14 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
     private ImageRepositoryJpa imageRepositoryJpa;
 
     @Autowired
-    private LikeRepositoryJpa likeRepositoryJpa;
+    private ImageQueryRepository imageQueryRepository;
 
-    @BeforeEach
-    public void before() throws Exception {
-        queryFactory = new JPAQueryFactory(em);
-    }
+    @Autowired
+    private LikeRepositoryJpa likeRepositoryJpa;
 
     @DisplayName("스토리 정보를 조회한다.")
     @Test
-    void findStoryWithImageMember() throws Exception {
+    void findAllWithMemberByIdQueryDsl() throws Exception {
         //given
         Member member1 = createMember("member1", "name1");
         Member member2 = createMember("member2", "name2");
@@ -72,22 +63,11 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
         Long memberId = member2.getId();
         PageRequest pageRequest = PageRequest.of(0, 3);
 
-        //when
-        List<Long> ids = queryFactory
-                .select(subscribe.toMember.id)
-                .from(subscribe)
-                .where(subscribe.fromMember.id.eq(memberId))
-                .fetch();
+        em.flush();
+        em.clear();
 
-        List<Image> images = queryFactory
-                .select(image)
-                .from(image)
-                .join(image.member, member).fetchJoin()
-                .where(image.member.id.in(ids))
-                .offset(pageRequest.getOffset())
-                .limit(3)
-                .orderBy(image.id.desc())
-                .fetch();
+        //when
+        List<Image> images = imageQueryRepository.findAllWithMemberById(memberId, pageRequest);
 
         //then
         assertThat(images.size()).isEqualTo(2);

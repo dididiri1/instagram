@@ -20,7 +20,7 @@ public class ImageQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<Image> findStoryWithImageMember(Long memberId, Pageable pageable) {
+    public List<Image> findAllWithMemberById(Long memberId, Pageable pageable) {
         List<Long> ids = queryFactory
                 .select(subscribe.toMember.id)
                 .from(subscribe)

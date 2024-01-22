@@ -32,12 +32,12 @@ public class Subscribe extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "from_member_id")
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "from_member_id")
     private Member fromMember;
 
-    @JoinColumn(name = "to_member_id")
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "to_member_id")
     private Member toMember;
 
     @Builder

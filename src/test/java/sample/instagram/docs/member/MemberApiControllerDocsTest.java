@@ -14,10 +14,9 @@ import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
-import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
-import sample.instagram.service.subscribe.SubscribeService;
+import sample.instagram.service.member.MemberSubscribeResponse;
 
 import java.util.List;
 
@@ -36,14 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MemberApiControllerDocsTest extends RestDocsSupport {
 
     private final MemberService memberService = mock(MemberService.class);
-
-    private final SubscribeService subscribeService = mock(SubscribeService.class);
-
     private final ImageService imageService = mock(ImageService.class);
 
     @Override
     protected Object initController() {
-        return new MemberApiController(memberService, subscribeService, imageService);
+        return new MemberApiController(memberService, imageService);
     }
 
     @Test
@@ -326,29 +322,29 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     }
 
     @Test
-    @DisplayName("구독을 조회 API")
+    @DisplayName("유저의 구독을 조회 API")
     void getSubscribes() throws Exception {
 
         // given
         long pageMemberId = 1L;
         long memberId = 1L;
 
-        List<SubscribeMemberResponse> result = List.of(
-                SubscribeMemberResponse.builder()
-                        .memberId(1L)
-                        .username("member1")
-                        .subscribeState(0)
-                        .equalMemberState(1)
-                        .build(),
-                SubscribeMemberResponse.builder()
+        List<MemberSubscribeResponse> result = List.of(
+                MemberSubscribeResponse.builder()
                         .memberId(2L)
                         .username("member2")
+                        .subscribeState(1)
+                        .equalMemberState(0)
+                        .build(),
+                MemberSubscribeResponse.builder()
+                        .memberId(3L)
+                        .username("member3")
                         .subscribeState(1)
                         .equalMemberState(0)
                         .build()
         );
 
-        given(subscribeService.getSubscribes(any(Long.class), any(Long.class)))
+        given(memberService.getMemberSubscribes(any(Long.class), any(Long.class)))
                 .willReturn(result);
 
         // expected

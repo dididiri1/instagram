@@ -48,7 +48,7 @@ public class ImageService {
     }
 
     public List<ImageStoryResponse> getStory(Long memberId, Pageable pageable) {
-        List<Image> images = imageQueryRepository.findStoryWithImageMember(memberId, pageable);
+        List<Image> images = imageQueryRepository.findAllWithMemberById(memberId, pageable);
 
         return images.stream()
                 .map(image -> ImageStoryResponse.of(image, memberId))

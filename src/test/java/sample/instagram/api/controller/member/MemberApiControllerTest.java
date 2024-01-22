@@ -8,9 +8,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
-import sample.instagram.service.image.reponse.ImagePopularResponse;
+import sample.instagram.service.member.MemberSubscribeResponse;
 
 import java.util.List;
 
@@ -187,8 +185,8 @@ class MemberApiControllerTest extends ControllerTestSupport {
     @WithMockUser(authorities = "ROLE_USER")
     void getSubscribes() throws Exception {
         //given
-        List<SubscribeMemberResponse> result = List.of();
-        when(subscribeService.getSubscribes(any(Long.class), any(Long.class))).thenReturn(result);
+        List<MemberSubscribeResponse> result = List.of();
+        when(memberService.getMemberSubscribes(any(Long.class), any(Long.class))).thenReturn(result);
 
         //when //then
         mockMvc.perform(get("/api/v1/members/{pageMemberId}/subscribe/{memberId}", 1L, 1L)

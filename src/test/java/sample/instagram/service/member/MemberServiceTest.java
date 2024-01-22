@@ -8,10 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
-import sample.instagram.domain.like.LikeRepositoryJpa;
 import sample.instagram.domain.member.Member;
-import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
+import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
@@ -122,8 +121,6 @@ public class MemberServiceTest extends IntegrationTestSupport {
         //when
         MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(member.getId(), member.getId());
 
-        System.out.println("subscribeState= "+memberProfileResponse.isSubscribeState());
-
         //then
         assertThat(memberProfileResponse).isNotNull();
         assertThat(memberProfileResponse)
@@ -135,6 +132,34 @@ public class MemberServiceTest extends IntegrationTestSupport {
                 .containsExactlyInAnyOrder(
                         tuple("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
                         tuple("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                );
+    }
+
+    @DisplayName("유저의 구독자 리스트를 조회한다.")
+    @Test
+    void getMemberSubscribes() throws Exception {
+        //given
+        Member member1 = createMember("member1", "test@example.com", "name1");
+        Member member2 = createMember("member2", "test@example.com", "name2");
+        Member member3 = createMember("member3", "test@example.com", "name3");
+        memberRepositoryJpa.saveAll(List.of(member1, member2, member3));
+
+        Subscribe subscribe1 = createSubscribe(member1, member2);
+        Subscribe subscribe2 = createSubscribe(member2, member1);
+        Subscribe subscribe3 = createSubscribe(member1, member3);
+        Subscribe subscribe4 = createSubscribe(member3, member1);
+        subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2, subscribe3, subscribe4));
+
+        //when
+        List<MemberSubscribeResponse> memberSubscribeResponses = memberService.getMemberSubscribes(member1.getId(), member1.getId());
+
+        //then
+        assertThat(memberSubscribeResponses).isNotNull();
+        assertThat(memberSubscribeResponses).hasSize(2)
+                .extracting("username", "subscribeState", "equalMemberState")
+                .containsExactlyInAnyOrder(
+                        tuple("member2", 1, 0),
+                        tuple("member3", 1, 0)
                 );
     }
 
@@ -153,6 +178,13 @@ public class MemberServiceTest extends IntegrationTestSupport {
                 .caption(caption)
                 .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                 .member(member)
+                .build();
+    }
+
+    private Subscribe createSubscribe(Member fromMember, Member toMember) {
+        return Subscribe.builder()
+                .fromMember(fromMember)
+                .toMember(toMember)
                 .build();
     }
 

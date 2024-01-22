@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.domain.member.Member;
+import sample.instagram.domain.member.MemberQueryRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
@@ -15,12 +16,17 @@ import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 import sample.instagram.handler.ex.CustomException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class MemberService {
 
     private final MemberRepositoryJpa memberRepositoryJpa;
+
+    private final MemberQueryRepository memberQueryRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -91,5 +97,10 @@ public class MemberService {
         return subscribeRepositoryJpa.existsByFromMemberIdAndToMemberId(pageMemberId, memberId);
     }
 
-
+    public List<MemberSubscribeResponse> getMemberSubscribes(Long pageMemberId, Long memberId) {
+        List<Member> members = memberQueryRepository.findAllWithSubscribe(pageMemberId);
+        return members.stream()
+                .map(member -> MemberSubscribeResponse.of(member, memberId))
+                .collect(Collectors.toList());
+    }
 }

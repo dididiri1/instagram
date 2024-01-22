@@ -10,17 +10,16 @@ import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
-import sample.instagram.domain.subscribe.SubscribeQueryRepository;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
-import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 public class SubscribeServiceTest extends IntegrationTestSupport {
@@ -36,10 +35,6 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private SubscribeQueryRepository subscribeQueryRepository;
-
 
     @AfterEach
     void tearDown() {
@@ -98,29 +93,6 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
 
         //then
         assertThat(dataResponse.getResult()).isEqualTo(ResultStatus.SUCCESS);
-    }
-
-    @DisplayName("구독한 구독자들의 리스트를 조회한다.")
-    @Test
-    void getSubscribes() throws Exception {
-        //given
-        Member member1 = createMember("testUser1", "test1@example.com", "유저1");
-        Member member2 = createMember("testUser2", "test2@example.com", "유저2");
-        memberRepositoryJpa.saveAll(List.of(member1, member2));
-
-        Subscribe subscribe1 = createSubscribe(member1, member2);
-        Subscribe subscribe2 = createSubscribe(member2, member1);
-        subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
-
-        //when
-        List<SubscribeMemberResponse> responses = subscribeQueryRepository.findSubscribes(member1.getId(), member1.getId());
-
-        //then
-        assertThat(responses).hasSize(1)
-                .extracting("memberId", "username", "subscribeState", "equalMemberState")
-                .containsExactlyInAnyOrder(
-                        tuple(member2.getId(), member2.getUsername(), 1, 0)
-                );
     }
 
     private Member createMember(String username, String email, String name) {

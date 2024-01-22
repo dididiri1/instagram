@@ -5,19 +5,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import sample.instagram.dto.image.reponse.ImageStoryResponse;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.subscribe.reponse.SubscribeMemberResponse;
-import sample.instagram.service.image.ImageService;
-import sample.instagram.service.image.reponse.ImagePopularResponse;
-import sample.instagram.service.member.MemberService;
 import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
-import sample.instagram.service.subscribe.SubscribeService;
+import sample.instagram.service.image.ImageService;
+import sample.instagram.service.member.MemberService;
+import sample.instagram.service.member.MemberSubscribeResponse;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,8 +24,6 @@ import java.util.List;
 public class MemberApiController {
 
     private final MemberService memberService;
-
-    private final SubscribeService subscribeService;
 
     private final ImageService imageService;
 
@@ -89,8 +84,8 @@ public class MemberApiController {
      */
     @GetMapping("/api/v1/members/{pageMemberId}/subscribe/{id}")
     public ResponseEntity<?> getSubscribes(@PathVariable("pageMemberId") Long pageMemberId, @PathVariable("id") Long id) {
-        List<SubscribeMemberResponse> subscribes = subscribeService.getSubscribes(pageMemberId, id);
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "구독자 정보 리스트 조회 성공", subscribes), HttpStatus.OK);
+        List<MemberSubscribeResponse> subscribes = memberService.getMemberSubscribes(pageMemberId, id);
+        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "구독자 조회 성공", subscribes), HttpStatus.OK);
     }
 
     /**

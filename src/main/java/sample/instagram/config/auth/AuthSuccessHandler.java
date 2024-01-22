@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.ApiResponse;
 import sample.instagram.dto.auth.AuthResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(new ResponseDto<>(HttpStatus.OK.value(), "OK", new AuthResponse(returnUrl)));
+        String jsonResponse = objectMapper.writeValueAsString(new ApiResponse<>(HttpStatus.OK.value(), "OK", new AuthResponse(returnUrl)));
 
         request.getSession(false).setMaxInactiveInterval(120*60);
         response.setStatus(HttpServletResponse.SC_OK);

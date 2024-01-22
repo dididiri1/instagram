@@ -30,6 +30,8 @@ public class Member extends BaseEntity {
 
     private String name;
 
+    private String profileImageUrl;
+
     @JsonIgnore
     @Enumerated(EnumType.STRING)
     private Role role;

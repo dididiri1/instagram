@@ -10,10 +10,10 @@ import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.member.request.MemberUpdateRequest;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.service.member.request.MemberCreateRequest;
+import sample.instagram.service.member.request.MemberUpdateRequest;
+import sample.instagram.service.member.reponse.MemberProfileResponse;
+import sample.instagram.service.member.reponse.MemberResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.service.member.MemberSubscribeResponse;
@@ -275,6 +275,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .subscribeState(false)
                         .subscribeCount(0)
                         .name("홍길동")
+                        .profileImageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                         .images(images)
                         .build());
 
@@ -310,6 +311,8 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("구독 갯수"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
                                         .description("회원 이름"),
+                                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                                        .description("회원 프로필사진"),
                                 fieldWithPath("images[].id").type(JsonFieldType.NUMBER)
                                         .description("이미지 ID"),
                                 fieldWithPath("images[].caption").type(JsonFieldType.STRING)

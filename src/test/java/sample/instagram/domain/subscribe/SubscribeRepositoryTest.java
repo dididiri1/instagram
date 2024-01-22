@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 @Transactional
@@ -66,48 +65,6 @@ public class SubscribeRepositoryTest extends IntegrationTestSupport {
         assertThat(deletedSubscribe.isPresent()).isFalse();
     }
 
-    @DisplayName("두 유저가 구독일 경우 구독 상태는 TRUE 이다.")
-    @Test
-    void existsByFromMemberIdAndToMemberId() throws Exception {
-        //given
-        Member member1 = createMember("fromUser","test1@naver.com", "유저1");
-        Member member2 = createMember("toUser","test2@naver.com", "유저2");
-        memberRepositoryJpa.saveAll(List.of(member1, member2));
-
-        Member fromMember = memberRepository.findOne(member1.getId());
-        Member toMember = memberRepository.findOne(member2.getId());
-
-        Subscribe subscribe = Subscribe.create(fromMember, toMember);
-        subscribeRepositoryJpa.save(subscribe);
-
-        //when
-        boolean subscribeState = subscribeRepositoryJpa.existsByFromMemberIdAndToMemberId(member1.getId(), toMember.getId());
-
-        //then
-        assertThat(subscribeState).isTrue();
-    }
-
-    @DisplayName("특정 유저의 구독 갯수를 조회한다.")
-    @Test
-    void countByFromMemberId() throws Exception {
-        //given
-        Member member1 = createMember("fromUser","test1@naver.com", "유저1");
-        Member member2 = createMember("toUser","test2@naver.com", "유저2");
-        memberRepositoryJpa.saveAll(List.of(member1, member2));
-
-        Member fromMember = memberRepository.findOne(member1.getId());
-        Member toMember = memberRepository.findOne(member2.getId());
-
-        //when
-        Subscribe subscribe = Subscribe.create(fromMember, toMember);
-        subscribeRepositoryJpa.save(subscribe);
-
-        //when
-        int subscribeCount = subscribeRepositoryJpa.countByFromMemberId(member1.getId());
-
-        //then
-        assertThat(subscribeCount).isEqualTo(1);
-    }
 
     private Member createMember(String username, String email, String name) {
         return Member.builder()

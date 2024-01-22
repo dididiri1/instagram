@@ -1,20 +1,12 @@
 package sample.instagram.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 import sample.instagram.config.auth.PrincipalDetails;
-import sample.instagram.dto.ResponseDto;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-
-import java.net.URI;
-import java.util.Collections;
 
 @RequiredArgsConstructor
 @Controller

@@ -17,20 +17,20 @@ public class ImageCreateRequest {
     @NotNull(message = "회원 ID는 필수입니다.")
     private Long memberId;
 
-    @NotNull(message = "이미지 첨부는 필수입니다.")
+    //@NotNull(message = "이미지 첨부는 필수입니다.")
     private MultipartFile file;
 
     @NotBlank(message = "사진 설명은 필수입니다.")
     private String caption;
 
     @Builder
-    public ImageCreateRequest(Long memberId, MultipartFile file, String caption) {
+    private ImageCreateRequest(Long memberId, MultipartFile file, String caption) {
         this.memberId = memberId;
         this.file = file;
         this.caption = caption;
     }
 
-    public Image create(String imageUrl, Member member) {
+    public Image toEntity(String imageUrl, Member member) {
         return Image.builder()
                 .caption(caption)
                 .imageUrl(imageUrl)

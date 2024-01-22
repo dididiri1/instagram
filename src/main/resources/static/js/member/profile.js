@@ -35,6 +35,9 @@ function getMemberProfile() {
 }
 
 function memberProfileInfo(data) {
+    if (data.profileImageUrl != null) {
+        $("#userProfileImage").attr("src", data.profileImageUrl);
+    }
     $("#profileName").text(data.name);
     $("#imageCount").text(data.imageCount);
     $("#subscribeCount").text(data.subscribeCount);
@@ -66,9 +69,6 @@ function addImageItem(data) {
 
 // (1) 유저 프로필 페이지 구독하기, 구독취소
 function toggleSubscribe(toUserId, obj) {
-    console.log(toUserId);
-    console.log(obj);
-
     if ($(obj).text() === "구독취소") {
         $.ajax({
             type:"delete",
@@ -172,9 +172,8 @@ function toggleSubscribeModal(obj) {
 }
 
 // (4) 유저 프로필 사진 변경
-function profileImageUpload(pageUserId, principalId) {
-
-    if(pageUserId != principalId){
+function profileImageUpload(pageMemberId, memberId) {
+    if(pageMemberId != memberId){
         alert("프로필 사진을 수정할 수 없는 유저입니다.");
         return;
     }
@@ -189,26 +188,22 @@ function profileImageUpload(pageUserId, principalId) {
             return;
         }
 
-        // 서버에 이미지를 전송
         let profileImageForm = $("#userProfileImageForm")[0];
-
-        // FormData 객체를 이용하면 form 태그의 필드와 그 값을 나타내는 일련의 key/value 쌍을 담을 수 있다.
         let formData = new FormData(profileImageForm);
 
         $.ajax({
             type:"put",
-            url:"/api/v1/user/"+principalId+"/profileImageUrl",
+            url:"/api/v1/members/"+memberId+"/profileImage",
             data:formData,
-            contentType: false, // 필수 : x-www-form-urlencoded로 파싱되는 것을 방지
-            processData: false, // 필수 : contentType을 false로 줬을 때 QuertString 자동 설정됨. 해제됨
+            contentType: false,
+            processData: false,
             enctype: "multipart/form=data",
         }).done(res=>{
-            // 사진 전송 성공시 이미지 변경
             let reader = new FileReader();
             reader.onload = (e) => {
                 $("#userProfileImage").attr("src", e.target.result);
             }
-            reader.readAsDataURL(f); // 이 코드 실행시 reader.onload 실행됨.
+            reader.readAsDataURL(f);
         }).fail(error=>{
             console.log("오류",error);
             if(error.responseJSON.data == null){
@@ -223,7 +218,6 @@ function profileImageUpload(pageUserId, principalId) {
 
 // (5) 사용자 정보 메뉴 열기 닫기
 function popup(obj) {
-    console.log("클릭: "+obj)
     $(obj).css("display", "flex");
 }
 

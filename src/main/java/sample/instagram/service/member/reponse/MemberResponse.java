@@ -1,4 +1,4 @@
-package sample.instagram.dto.member.response;
+package sample.instagram.service.member.reponse;
 
 import lombok.Builder;
 import lombok.Getter;

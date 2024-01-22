@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sample.instagram.service.subscribe.SubscribeService;
 import sample.instagram.dto.DataResponse;
-import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.ApiResponse;
 import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
 
 @RequiredArgsConstructor
@@ -22,13 +22,13 @@ public class SubscribeApiController {
     public ResponseEntity<?> subscribe(@PathVariable Long fromMemberId, @PathVariable Long toMemberId) {
         SubscribeResponse subscribeResponse = subscribeService.createSubscribe(fromMemberId, toMemberId);
 
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CREATED.value(), "구독 성공", subscribeResponse), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "구독 성공", subscribeResponse), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/v1/subscribe/{fromMemberId}/{toMemberId}")
     public ResponseEntity<?> unSubscribe(@PathVariable Long fromMemberId, @PathVariable Long toMemberId) {
         DataResponse dataResponse = subscribeService.deleteSubscribe(fromMemberId, toMemberId);
 
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.OK.value(), "구독 취소 성공", dataResponse), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "구독 취소 성공", dataResponse), HttpStatus.OK);
     }
 }

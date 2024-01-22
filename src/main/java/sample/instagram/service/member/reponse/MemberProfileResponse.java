@@ -1,4 +1,4 @@
-package sample.instagram.dto.member.response;
+package sample.instagram.service.member.reponse;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -19,15 +19,17 @@ public class MemberProfileResponse {
     private boolean subscribeState;
     private int subscribeCount;
     private String name;
+    private String profileImageUrl;
     private List<ImageResponse> images;
 
     @Builder
-    public MemberProfileResponse(boolean pageOwnerState, int imageCount, boolean subscribeState, int subscribeCount, String name, List<ImageResponse> images) {
+    public MemberProfileResponse(boolean pageOwnerState, int imageCount, boolean subscribeState, int subscribeCount, String name, String profileImageUrl, List<ImageResponse> images) {
         this.pageOwnerState = pageOwnerState;
         this.imageCount = imageCount;
         this.subscribeState = subscribeState;
         this.subscribeCount = subscribeCount;
         this.name = name;
+        this.profileImageUrl = profileImageUrl;
         this.images = images;
     }
 
@@ -35,9 +37,10 @@ public class MemberProfileResponse {
         return MemberProfileResponse.builder()
                 .pageOwnerState(isPageOwnerState(member.getId(), memberId))
                 .imageCount(member.getImages().size())
-                .subscribeState(isSubscribeState(member.getSubscribes(), member.getId(), memberId))
+                .subscribeState(isSubscribeState(member.getSubscribes(), memberId, member.getId()))
                 .subscribeCount(member.getSubscribes().size())
                 .name(member.getName())
+                .profileImageUrl(member.getProfileImageUrl())
                 .images(member.getImages().stream()
                         .map(image -> ImageResponse.of(image))
                         .collect(Collectors.toList())

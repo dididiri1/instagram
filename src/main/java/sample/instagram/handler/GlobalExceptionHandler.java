@@ -7,7 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.ApiResponse;
 import sample.instagram.handler.ex.*;
 import sample.instagram.util.Script;
 
@@ -44,21 +44,21 @@ public class GlobalExceptionHandler {
             errorMap.put(error.getField(),error.getDefaultMessage());
         }
 
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.", errorMap), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.", errorMap), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomApiException.class)
-    public ResponseEntity<ResponseDto<?>> apiException(CustomApiException e) {
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiResponse<?>> apiException(CustomApiException e) {
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomApiDuplicateKey.class)
-    public ResponseEntity<ResponseDto<?>> apiDuplicateKeyException(CustomApiDuplicateKey e) {
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.CONFLICT.value(), e.getMessage(), null), HttpStatus.CONFLICT);
+    public ResponseEntity<ApiResponse<?>> apiDuplicateKeyException(CustomApiDuplicateKey e) {
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CONFLICT.value(), e.getMessage(), null), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(CustomValidationApiException.class)
-    public ResponseEntity<ResponseDto<?>> validationApiException(CustomValidationApiException e) {
-        return new ResponseEntity<>(new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), e.getErrorMap()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiResponse<?>> validationApiException(CustomValidationApiException e) {
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), e.getErrorMap()), HttpStatus.BAD_REQUEST);
     }
 }

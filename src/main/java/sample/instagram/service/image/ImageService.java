@@ -37,7 +37,7 @@ public class ImageService {
     public ImageResponse createImage(ImageCreateRequest imageCreateRequest) {
         Member member = memberRepository.findOne(imageCreateRequest.getMemberId());
         String imageUrl = getImageUrl(imageCreateRequest);
-        Image image = imageCreateRequest.create(imageUrl, member);
+        Image image = imageCreateRequest.toEntity(imageUrl, member);
         Image imageEntity = imageRepositoryJpa.save(image);
 
         return ImageResponse.of(imageEntity);

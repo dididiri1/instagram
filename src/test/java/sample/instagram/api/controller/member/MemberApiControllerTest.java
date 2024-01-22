@@ -3,13 +3,17 @@ package sample.instagram.api.controller.member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.service.member.request.MemberCreateRequest;
+import sample.instagram.service.member.request.MemberUpdateRequest;
 import sample.instagram.service.member.MemberSubscribeResponse;
+import sample.instagram.service.member.request.ProfileImageUpdateRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -221,4 +225,29 @@ class MemberApiControllerTest extends ControllerTestSupport {
 
     }
 
+    @DisplayName("회원 프로필 사진을 수정 한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void updateProfileImage() throws Exception {
+        //given
+        ProfileImageUpdateRequest request = ProfileImageUpdateRequest.builder()
+                .memberId(1L)
+                .file(createMockMultipartFile("test.jpg"))
+                .build();
+
+        //when //then
+        mockMvc.perform(multipart("/api/v1/members/profileImage")
+                        .file("file", request.getFile().getBytes())
+                        .param("memberId", request.getMemberId().toString())
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .with(csrf())
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+    }
+
+    private MockMultipartFile createMockMultipartFile(String fileName) throws IOException {
+        return new MockMultipartFile("file", fileName, MediaType.IMAGE_JPEG_VALUE, "test".getBytes());
+    }
 }

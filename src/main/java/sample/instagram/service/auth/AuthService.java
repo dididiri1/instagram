@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
-import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.service.member.request.MemberCreateRequest;
 
 @RequiredArgsConstructor
 @Service

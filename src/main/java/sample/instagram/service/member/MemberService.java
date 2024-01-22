@@ -4,17 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberQueryRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
-import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.member.request.MemberUpdateRequest;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.service.member.request.MemberCreateRequest;
+import sample.instagram.service.member.request.MemberUpdateRequest;
+import sample.instagram.service.member.reponse.MemberProfileResponse;
+import sample.instagram.service.member.reponse.MemberResponse;
 import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 import sample.instagram.handler.ex.CustomException;
+import sample.instagram.service.aws.S3UploaderService;
+import sample.instagram.service.member.request.ProfileImageUpdateRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +32,7 @@ public class MemberService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final SubscribeRepositoryJpa subscribeRepositoryJpa;
+    private final S3UploaderService s3UploaderService;
 
     public void checkUsername(String username) {
         validateDuplicateUsername(username);
@@ -53,13 +55,13 @@ public class MemberService {
     }
 
     public MemberResponse getMember(Long id) {
-        Member memberEntity = getMemberEntity(id);
+        Member memberEntity = findByMemberEntity(id);
         return MemberResponse.of(memberEntity);
     }
 
     @Transactional
     public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
-        Member memberEntity = getMemberEntity(id);
+        Member memberEntity = findByMemberEntity(id);
         memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         memberEntity.setName(request.getName());
         memberEntity.setEmail(request.getEmail());
@@ -67,17 +69,13 @@ public class MemberService {
         return MemberResponse.of(memberEntity);
     }
 
-    private Member getMemberEntity(Long id) {
+    private Member findByMemberEntity(Long id) {
         return memberRepositoryJpa.findById(id)
                 .orElseThrow(() -> new CustomApiException("해당 ID에 해당하는 회원을 찾을 수 없습니다."));
     }
 
     public MemberProfileResponse getMemberProfile(Long pageMemberId, Long memberId) {
         Member member = validateDuplicateMember(pageMemberId);
-        //boolean subscribeState = isSubscribeState(pageMemberId, memberId);
-        //int subscribeCount = getSubscribeCount(pageMemberId);
-        //boolean pageOwnerState = isPageOwnerState(pageMemberId, memberId);
-
         return MemberProfileResponse.of(member, memberId);
     }
 
@@ -88,19 +86,19 @@ public class MemberService {
 
         return findMember;
     }
-
-    private int getSubscribeCount(Long pageMemberId) {
-        return subscribeRepositoryJpa.countByFromMemberId(pageMemberId);
-    }
-
-    private boolean isSubscribeState(Long pageMemberId, Long memberId) {
-        return subscribeRepositoryJpa.existsByFromMemberIdAndToMemberId(pageMemberId, memberId);
-    }
-
     public List<MemberSubscribeResponse> getMemberSubscribes(Long pageMemberId, Long memberId) {
         List<Member> members = memberQueryRepository.findAllWithSubscribe(pageMemberId);
         return members.stream()
                 .map(member -> MemberSubscribeResponse.of(member, memberId))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Member updateProfileImage(ProfileImageUpdateRequest request) {
+        Member findMember = findByMemberEntity(request.getMemberId());
+        String profileImageUrl = s3UploaderService.uploadFileS3(request.getFile(), "profile");
+        findMember.setProfileImageUrl(profileImageUrl);
+
+        return findMember;
     }
 }

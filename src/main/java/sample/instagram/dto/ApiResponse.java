@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ResponseDto<T> {
+public class ApiResponse<T> {
 
     private int status;
     private String message;
     private T data;
 
-    public ResponseDto(int status){
+    public ApiResponse(int status){
         super();
         this.status = status;
     }

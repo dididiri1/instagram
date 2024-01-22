@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import sample.instagram.dto.ResponseDto;
+import sample.instagram.dto.ApiResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class BindingAspect {
                     for(FieldError error:bindingResult.getFieldErrors()){
                         errorMap.put(error.getField(),error.getDefaultMessage());
                     }
-                    return new ResponseEntity<>(new ResponseDto<>(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.", errorMap), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.", errorMap), HttpStatus.BAD_REQUEST);
                 }
             }
         }

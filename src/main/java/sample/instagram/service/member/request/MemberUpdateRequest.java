@@ -1,4 +1,4 @@
-package sample.instagram.dto.member.request;
+package sample.instagram.service.member.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,12 +13,8 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter
 @NoArgsConstructor
-public class MemberCreateRequest {
+public class MemberUpdateRequest {
 
-    @NotBlank(message = "유저명 타입은 필수입니다.")
-    private String username;
-
-    @NotBlank(message = "패스워드 타입은 필수입니다.")
     private String password;
 
     @NotBlank(message = "이메일 타입은 필수입니다.")
@@ -28,8 +24,7 @@ public class MemberCreateRequest {
     private String name;
 
     @Builder
-    private MemberCreateRequest(String username, String password, String email, String name) {
-        this.username = username;
+    public MemberUpdateRequest(String password, String email, String name) {
         this.password = password;
         this.email = email;
         this.name = name;
@@ -37,11 +32,9 @@ public class MemberCreateRequest {
 
     public Member toEntity(String password) {
         return Member.builder()
-                .username(username)
                 .password(password)
                 .email(email)
                 .name(name)
-                .role(Role.ROLE_USER)
                 .build();
     }
 }

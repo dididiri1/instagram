@@ -3,8 +3,10 @@ package sample.instagram.service.member;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
@@ -12,15 +14,18 @@ import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
-import sample.instagram.dto.member.request.MemberCreateRequest;
-import sample.instagram.dto.member.request.MemberUpdateRequest;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.service.member.request.MemberCreateRequest;
+import sample.instagram.service.member.request.MemberUpdateRequest;
+import sample.instagram.service.member.reponse.MemberProfileResponse;
+import sample.instagram.service.member.reponse.MemberResponse;
+import sample.instagram.service.member.request.ProfileImageUpdateRequest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 public class MemberServiceTest extends IntegrationTestSupport {
@@ -135,7 +140,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
                 );
     }
 
-    @DisplayName("유저의 구독자 리스트를 조회한다.")
+    @DisplayName("회원의 구독자 리스트를 조회한다.")
     @Test
     void getMemberSubscribes() throws Exception {
         //given
@@ -161,6 +166,31 @@ public class MemberServiceTest extends IntegrationTestSupport {
                         tuple("member2", 1, 0),
                         tuple("member3", 1, 0)
                 );
+    }
+
+    @DisplayName("회원 프로필 사진을 변경한다.")
+    @Test
+    void updateProfileImage() throws Exception {
+        //given
+        Member member1 = createMember("member1", "test@example.com", "name1");
+        memberRepositoryJpa.save(member1);
+
+        String profileImageUrl = "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/profile/default.png";
+        ProfileImageUpdateRequest request = ProfileImageUpdateRequest.builder()
+                .memberId(member1.getId())
+                .file(mock(MultipartFile.class))
+                .build();
+
+        // stubbing
+        Mockito.when(s3UploaderService.uploadFileS3(any(), any(String.class)))
+                .thenReturn(profileImageUrl);
+
+        //when
+        Member memberEntity = memberService.updateProfileImage(request);
+
+        //then
+        assertThat(memberEntity).isNotNull();
+        assertThat(memberEntity.getProfileImageUrl()).isEqualTo(profileImageUrl);
     }
 
     private Member createMember(String username, String email, String name) {

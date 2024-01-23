@@ -10,7 +10,7 @@ import sample.instagram.ControllerTestSupport;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.response.MemberSubscribeResponse;
-import sample.instagram.dto.member.request.ProfileImageUpdateRequest;
+import sample.instagram.dto.member.request.ProfileImageRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -229,7 +229,7 @@ class MemberApiControllerTest extends ControllerTestSupport {
     @WithMockUser(authorities = "ROLE_USER")
     void updateProfileImage() throws Exception {
         //given
-        ProfileImageUpdateRequest request = ProfileImageUpdateRequest.builder()
+        ProfileImageRequest request = ProfileImageRequest.builder()
                 .memberId(1L)
                 .file(createMockMultipartFile("test.jpg"))
                 .build();

@@ -9,6 +9,7 @@ import sample.instagram.domain.member.MemberQueryRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.request.ProfileImageResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.dto.member.response.MemberSubscribeResponse;
@@ -16,7 +17,7 @@ import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 import sample.instagram.handler.ex.CustomException;
 import sample.instagram.service.aws.S3UploaderService;
-import sample.instagram.dto.member.request.ProfileImageUpdateRequest;
+import sample.instagram.dto.member.request.ProfileImageRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,11 +95,11 @@ public class MemberService {
     }
 
     @Transactional
-    public Member updateProfileImage(ProfileImageUpdateRequest request) {
+    public ProfileImageResponse updateProfileImage(ProfileImageRequest request) {
         Member findMember = findByMemberEntity(request.getMemberId());
         String profileImageUrl = s3UploaderService.uploadFileS3(request.getFile(), "profile");
         findMember.setProfileImageUrl(profileImageUrl);
 
-        return findMember;
+        return ProfileImageResponse.of(profileImageUrl);
     }
 }

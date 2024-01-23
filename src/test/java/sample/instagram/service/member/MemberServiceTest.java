@@ -16,9 +16,10 @@ import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.request.ProfileImageResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
-import sample.instagram.dto.member.request.ProfileImageUpdateRequest;
+import sample.instagram.dto.member.request.ProfileImageRequest;
 import sample.instagram.dto.member.response.MemberSubscribeResponse;
 
 import java.util.List;
@@ -177,7 +178,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
         memberRepositoryJpa.save(member1);
 
         String profileImageUrl = "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/profile/default.png";
-        ProfileImageUpdateRequest request = ProfileImageUpdateRequest.builder()
+        ProfileImageRequest request = ProfileImageRequest.builder()
                 .memberId(member1.getId())
                 .file(mock(MultipartFile.class))
                 .build();
@@ -187,11 +188,10 @@ public class MemberServiceTest extends IntegrationTestSupport {
                 .thenReturn(profileImageUrl);
 
         //when
-        Member memberEntity = memberService.updateProfileImage(request);
+        ProfileImageResponse profileImageResponse = memberService.updateProfileImage(request);
 
         //then
-        assertThat(memberEntity).isNotNull();
-        assertThat(memberEntity.getProfileImageUrl()).isEqualTo(profileImageUrl);
+        assertThat(profileImageResponse.getProfileImageUrl()).isEqualTo(profileImageUrl);
     }
 
     private Member createMember(String username, String email, String name) {

@@ -75,6 +75,16 @@ include::{snippets}/member-all-story/request-parameters.adoc[]
 include::{snippets}/member-all-story/http-response.adoc[]
 include::{snippets}/member-all-story/response-fields.adoc[]
 
+[[member-profileImage-change]]
+=== 프로필 이미지 변경
+==== HTTP Request
+include::{snippets}/member-profileImage-change/http-request.adoc[]
+include::{snippets}/member-profileImage-change/request-parameters.adoc[]
+include::{snippets}/member-profileImage-change/request-parts.adoc[]
+
+==== HTTP Response
+include::{snippets}/member-profileImage-change/http-response.adoc[]
+include::{snippets}/member-profileImage-change/response-fields.adoc[]
 
 
 

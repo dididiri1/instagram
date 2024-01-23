@@ -57,3 +57,8 @@ include::api/subscribe/subscribe.adoc[]
 == Image API
 
 include::api/image/image.adoc[]
+
+[[Comment-API]]
+== Comment API
+
+include::api/comment/comment.adoc[]

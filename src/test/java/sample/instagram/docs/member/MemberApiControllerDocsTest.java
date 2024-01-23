@@ -3,6 +3,8 @@ package sample.instagram.docs.member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -10,14 +12,18 @@ import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
+import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.request.ProfileImageRequest;
+import sample.instagram.dto.member.request.ProfileImageResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
 import sample.instagram.dto.member.response.MemberSubscribeResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -29,6 +35,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -454,6 +461,56 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("좋아요 갯수")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("회원 프로필 사진을 변경 API")
+    void updateProfileImage() throws Exception {
+
+        // given
+        ProfileImageRequest request = ProfileImageRequest.builder()
+                .memberId(1L)
+                .file(createMockMultipartFile("test.jpg"))
+                .build();
+
+        given(memberService.updateProfileImage(any(ProfileImageRequest.class)))
+                .willReturn(ProfileImageResponse.builder()
+                        .profileImageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .build());
+
+        // expected
+        this.mockMvc.perform(multipart("/api/v1/members/profileImage")
+                        .file("file", request.getFile().getBytes())
+                        .param("memberId", request.getMemberId().toString())
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("member-profileImage-change",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestParts (
+                                partWithName("file").description("업로드할 이미지")
+                        ),
+                        requestParameters (
+                                parameterWithName("memberId").description("회원 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("status").type(JsonFieldType.NUMBER)
+                                        .description("상태 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT)
+                                        .description("데이터")
+                        ).andWithPrefix("data.",
+                                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                                        .description("프로필 이미지 주소")
+                        )
+                ));
+    }
+
+    private MockMultipartFile createMockMultipartFile(String fileName) throws IOException {
+        return new MockMultipartFile("file", fileName, MediaType.IMAGE_JPEG_VALUE, "test".getBytes());
     }
 
 }

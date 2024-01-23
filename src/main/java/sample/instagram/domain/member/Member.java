@@ -3,6 +3,7 @@ package sample.instagram.domain.member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import sample.instagram.domain.BaseEntity;
+import sample.instagram.domain.comment.Comment;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.subscribe.Subscribe;
 
@@ -36,11 +37,14 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member")
     private List<Image> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "toMember", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "toMember")
     private List<Subscribe> subscribes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     private Member(Long id, String username, String password, String email, String name, Role role) {

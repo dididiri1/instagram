@@ -10,13 +10,13 @@ import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
-import sample.instagram.service.member.request.MemberCreateRequest;
-import sample.instagram.service.member.request.MemberUpdateRequest;
-import sample.instagram.service.member.reponse.MemberProfileResponse;
-import sample.instagram.service.member.reponse.MemberResponse;
+import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.response.MemberProfileResponse;
+import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
-import sample.instagram.service.member.MemberSubscribeResponse;
+import sample.instagram.dto.member.response.MemberSubscribeResponse;
 
 import java.util.List;
 

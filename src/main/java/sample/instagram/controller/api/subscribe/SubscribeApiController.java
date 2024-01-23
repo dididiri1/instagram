@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sample.instagram.service.subscribe.SubscribeService;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ApiResponse;
-import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
+import sample.instagram.dto.subscribe.response.SubscribeResponse;
 
 @RequiredArgsConstructor
 @RestController

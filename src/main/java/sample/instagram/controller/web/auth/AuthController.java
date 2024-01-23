@@ -1,4 +1,4 @@
-package sample.instagram.controller;
+package sample.instagram.controller.web.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import sample.instagram.service.auth.AuthService;
 import sample.instagram.domain.member.Member;
-import sample.instagram.service.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberCreateRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

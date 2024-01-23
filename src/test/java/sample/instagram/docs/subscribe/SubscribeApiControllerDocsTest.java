@@ -7,7 +7,7 @@ import sample.instagram.controller.api.subscribe.SubscribeApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
-import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
+import sample.instagram.dto.subscribe.response.SubscribeResponse;
 import sample.instagram.service.subscribe.SubscribeService;
 
 import static org.mockito.ArgumentMatchers.any;

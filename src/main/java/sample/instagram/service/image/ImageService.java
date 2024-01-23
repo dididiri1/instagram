@@ -13,7 +13,7 @@ import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.aws.S3UploaderService;
-import sample.instagram.service.image.reponse.ImagePopularResponse;
+import sample.instagram.dto.image.reponse.ImagePopularResponse;
 
 import java.util.Comparator;
 import java.util.List;

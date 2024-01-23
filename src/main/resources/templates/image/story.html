@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
+
+    <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
+    <script th:inline="javascript">
+        let memberId = [[${#authentication.principal.member.id}]];
+    </script>
+    <script th:src="@{/js/image/story.js}"></script>
+</head>
+
+<main layout:fragment="content" class="main">
+    <section class="container">
+        <article class="story-list" id="storyList">
+
+        </article>
+    </section>
+</main>
+</html>

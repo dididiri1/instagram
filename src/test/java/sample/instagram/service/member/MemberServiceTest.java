@@ -14,11 +14,12 @@ import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
-import sample.instagram.service.member.request.MemberCreateRequest;
-import sample.instagram.service.member.request.MemberUpdateRequest;
-import sample.instagram.service.member.reponse.MemberProfileResponse;
-import sample.instagram.service.member.reponse.MemberResponse;
-import sample.instagram.service.member.request.ProfileImageUpdateRequest;
+import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.response.MemberProfileResponse;
+import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.dto.member.request.ProfileImageUpdateRequest;
+import sample.instagram.dto.member.response.MemberSubscribeResponse;
 
 import java.util.List;
 

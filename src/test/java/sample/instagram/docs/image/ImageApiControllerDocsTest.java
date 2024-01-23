@@ -10,7 +10,7 @@ import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
-import sample.instagram.service.image.reponse.ImagePopularResponse;
+import sample.instagram.dto.image.reponse.ImagePopularResponse;
 import sample.instagram.service.like.LikeService;
 
 import java.io.IOException;

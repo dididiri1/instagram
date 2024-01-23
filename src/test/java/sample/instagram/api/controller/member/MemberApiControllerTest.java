@@ -5,13 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
-import sample.instagram.service.member.request.MemberCreateRequest;
-import sample.instagram.service.member.request.MemberUpdateRequest;
-import sample.instagram.service.member.MemberSubscribeResponse;
-import sample.instagram.service.member.request.ProfileImageUpdateRequest;
+import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.response.MemberSubscribeResponse;
+import sample.instagram.dto.member.request.ProfileImageUpdateRequest;
 
 import java.io.IOException;
 import java.util.List;

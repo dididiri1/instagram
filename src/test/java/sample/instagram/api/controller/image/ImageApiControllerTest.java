@@ -2,18 +2,12 @@ package sample.instagram.api.controller.image;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import sample.instagram.ControllerTestSupport;
-import sample.instagram.dto.DataResponse;
-import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
-import sample.instagram.service.image.reponse.ImagePopularResponse;
-import sample.instagram.service.like.LikeService;
+import sample.instagram.dto.image.reponse.ImagePopularResponse;
 
 import java.io.IOException;
 import java.util.List;

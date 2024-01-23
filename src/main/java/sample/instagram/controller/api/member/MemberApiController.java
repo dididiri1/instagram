@@ -5,23 +5,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import sample.instagram.config.auth.PrincipalDetails;
-import sample.instagram.domain.member.Member;
 import sample.instagram.dto.ApiResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
-import sample.instagram.dto.image.reqeust.ImageCreateRequest;
-import sample.instagram.service.member.request.MemberCreateRequest;
-import sample.instagram.service.member.request.MemberUpdateRequest;
-import sample.instagram.service.member.reponse.MemberProfileResponse;
-import sample.instagram.service.member.reponse.MemberResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
-import sample.instagram.service.member.MemberSubscribeResponse;
-import sample.instagram.service.member.request.ProfileImageUpdateRequest;
+import sample.instagram.dto.member.response.MemberSubscribeResponse;
+import sample.instagram.dto.member.response.MemberProfileResponse;
+import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.dto.member.request.MemberCreateRequest;
+import sample.instagram.dto.member.request.MemberUpdateRequest;
+import sample.instagram.dto.member.request.ProfileImageUpdateRequest;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -111,13 +106,11 @@ public class MemberApiController {
      * @Description: 회원 프로필사진 변경
      */
     @PostMapping("/api/v1/members/profileImage")
-    public ResponseEntity<?> updateProfileImage(@Valid @ModelAttribute ProfileImageUpdateRequest request
-                                , BindingResult bindingResult) {
+    public ResponseEntity<?> updateProfileImage(@Valid @ModelAttribute ProfileImageUpdateRequest request, BindingResult bindingResult) {
         if(request.getFile().isEmpty()) {
             throw new ValidationException("이미지가 첨부되지 않았습니다.");
         }
-        Member member = memberService.updateProfileImage(request);
-        //principalDetails.setMember(member);
+        memberService.updateProfileImage(request);
 
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "프로필사진 변경 성공", null), HttpStatus.OK);
     }

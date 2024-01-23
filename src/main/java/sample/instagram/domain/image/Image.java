@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import sample.instagram.domain.BaseEntity;
+import sample.instagram.domain.comment.Comment;
 import sample.instagram.domain.like.Like;
 import sample.instagram.domain.member.Member;
 
@@ -35,6 +36,9 @@ public class Image extends BaseEntity {
 
     @OneToMany(mappedBy = "image")
     private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "image")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Image(Long id, String caption, String imageUrl, Member member) {

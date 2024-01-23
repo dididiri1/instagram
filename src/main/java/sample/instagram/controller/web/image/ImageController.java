@@ -1,13 +1,20 @@
-package sample.instagram.controller;
+package sample.instagram.controller.web.image;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import sample.instagram.config.auth.PrincipalDetails;
 
 @Controller
 public class ImageController {
+
+    @GetMapping({"/","/image/story"})
+    public String story() {
+
+        return "image/story";
+    }
 
     @GetMapping("/image/popular")
     public String popular(Model model) {

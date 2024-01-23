@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,18 +20,14 @@ import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
-import sample.instagram.service.aws.S3UploaderService;
-import sample.instagram.service.image.reponse.ImagePopularResponse;
+import sample.instagram.dto.image.reponse.ImagePopularResponse;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static sample.instagram.domain.image.QImage.image;
 import static sample.instagram.domain.member.Role.ROLE_USER;
 
 public class ImageServiceTest extends IntegrationTestSupport {

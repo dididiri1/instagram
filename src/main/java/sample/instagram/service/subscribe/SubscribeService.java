@@ -9,7 +9,7 @@ import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.DataResponse;
 import sample.instagram.dto.ResultStatus;
-import sample.instagram.dto.subscribe.reponse.SubscribeResponse;
+import sample.instagram.dto.subscribe.response.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
 
 @Transactional(readOnly = true)

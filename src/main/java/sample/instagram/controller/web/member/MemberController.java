@@ -1,4 +1,4 @@
-package sample.instagram.controller;
+package sample.instagram.controller.web.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

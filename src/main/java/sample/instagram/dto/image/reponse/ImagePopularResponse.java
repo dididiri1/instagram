@@ -1,11 +1,11 @@
-package sample.instagram.service.image.reponse;
+package sample.instagram.dto.image.reponse;
 
 import lombok.Builder;
 import lombok.Getter;
 import sample.instagram.domain.image.Image;
 
 @Getter
-public class ImageStoryResponse {
+public class ImagePopularResponse {
 
     private Long id;
 
@@ -13,27 +13,21 @@ public class ImageStoryResponse {
 
     private String imageUrl;
 
-    private String username;
-
-    private boolean likeState;
-
     private int likeCount;
 
     @Builder
-    private ImageStoryResponse(Long id, String caption, String imageUrl, String username, int likeCount) {
+    public ImagePopularResponse(Long id, String caption, String imageUrl, int likeCount) {
         this.id = id;
         this.caption = caption;
         this.imageUrl = imageUrl;
-        this.username = username;
         this.likeCount = likeCount;
     }
 
-    public static ImageStoryResponse of(Image image) {
-        return ImageStoryResponse.builder()
+    public static ImagePopularResponse of(Image image) {
+        return ImagePopularResponse.builder()
                 .id(image.getId())
                 .caption(image.getCaption())
                 .imageUrl(image.getImageUrl())
-                .username(image.getMember().getUsername())
                 .likeCount(image.getLikes().size())
                 .build();
 

@@ -1,7 +1,9 @@
 package sample.instagram.domain.comment;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import sample.instagram.domain.BaseEntity;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.member.Member;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 import static javax.persistence.FetchType.LAZY;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Comment extends BaseEntity {
 

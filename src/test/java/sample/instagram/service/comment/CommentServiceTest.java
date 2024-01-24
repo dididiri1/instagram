@@ -47,7 +47,7 @@ public class CommentServiceTest extends IntegrationTestSupport {
         CommentRequest request = CommentRequest.builder()
                 .memberId(member.getId())
                 .imageId(image.getId())
-                .content("댓글 내용")
+                .content("댓글 내용입니다.")
                 .build();
 
         //when
@@ -56,8 +56,8 @@ public class CommentServiceTest extends IntegrationTestSupport {
         //then
         Assertions.assertThat(commentResponse.getId()).isNotNull();
         assertThat(commentResponse)
-                .extracting("id", "content")
-                .contains(commentResponse.getId(), "댓글 내용");
+                .extracting("id", "content", "username")
+                .contains(commentResponse.getId(), "댓글 내용입니다.", "member1");
     }
 
     private Member createMember(String username, String name) {

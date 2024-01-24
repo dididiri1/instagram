@@ -458,7 +458,17 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("likeState").type(JsonFieldType.BOOLEAN)
                                         .description("좋아요 상태"),
                                 fieldWithPath("likeCount").type(JsonFieldType.NUMBER)
-                                        .description("좋아요 갯수")
+                                        .description("좋아요 갯수"),
+                                fieldWithPath("comments").type(JsonFieldType.ARRAY)
+                                        .description("댓글 리스트")
+                        ).andWithPrefix("data[].",
+                               fieldWithPath("id").type(JsonFieldType.NUMBER)
+                                        .description("댓글 ID"),
+                                fieldWithPath("content").type(JsonFieldType.NUMBER)
+                                        .description("댓글 내용"),
+                                fieldWithPath("username").type(JsonFieldType.NUMBER)
+                                        .description("사용자명")
+
                         )
                 ));
     }

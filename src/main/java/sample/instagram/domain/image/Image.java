@@ -17,8 +17,8 @@ import java.util.List;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Image extends BaseEntity {
 

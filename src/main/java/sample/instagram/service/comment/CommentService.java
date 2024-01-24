@@ -12,7 +12,7 @@ import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.dto.comment.request.CommentRequest;
 import sample.instagram.dto.comment.response.CommentResponse;
 
-@Transactional(readOnly = false)
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class CommentService {

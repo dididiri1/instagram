@@ -47,6 +47,7 @@ public class CommentApiControllerDocsTest extends RestDocsSupport {
                 .willReturn(CommentResponse.builder()
                         .id(1L)
                         .content("댓글 내용입니다.")
+                        .username("Lovely")
                         .build());
 
         // expected
@@ -81,7 +82,9 @@ public class CommentApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("id").type(JsonFieldType.NUMBER)
                                         .description("댓글 ID"),
                                 fieldWithPath("content").type(JsonFieldType.STRING)
-                                        .description("댓글 내용")
+                                        .description("댓글 내용"),
+                                fieldWithPath("username").type(JsonFieldType.STRING)
+                                        .description("사용자명")
                         )
                 ));
     }

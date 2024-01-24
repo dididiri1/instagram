@@ -3,10 +3,13 @@ package sample.instagram.domain.image;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import sample.instagram.domain.comment.Comment;
+import sample.instagram.domain.comment.QComment;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static sample.instagram.domain.comment.QComment.comment;
 import static sample.instagram.domain.image.QImage.image;
 import static sample.instagram.domain.member.QMember.member;
 import static sample.instagram.domain.subscribe.QSubscribe.subscribe;
@@ -21,6 +24,7 @@ public class ImageQueryRepository {
     }
 
     public List<Image> findAllWithMemberById(Long memberId, Pageable pageable) {
+
         List<Long> ids = queryFactory
                 .select(subscribe.toMember.id)
                 .from(subscribe)

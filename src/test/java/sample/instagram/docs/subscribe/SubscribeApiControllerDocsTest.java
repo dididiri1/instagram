@@ -88,10 +88,7 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
         Long fromMemberId = 1L;
         Long toMemberId = 2L;
 
-        // when
-        when(subscribeService.deleteSubscribe(fromMemberId, toMemberId)).thenReturn(DataResponse.of(ResultStatus.SUCCESS));
-
-        // expected
+        // when then
         this.mockMvc.perform(delete("/api/v1/subscribe/{fromMemberId}/{toMemberId}", fromMemberId, toMemberId)
                         .contentType(APPLICATION_JSON)
                 )
@@ -109,11 +106,8 @@ public class SubscribeApiControllerDocsTest extends RestDocsSupport {
                                         .description("상태 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING)
                                         .description("응답 메시지"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT)
+                                fieldWithPath("data").type(JsonFieldType.NULL)
                                         .description("데이터")
-                        ).andWithPrefix("data.",
-                                fieldWithPath("result").type(JsonFieldType.STRING)
-                                        .description("결과")
                         )
                 ));
     }

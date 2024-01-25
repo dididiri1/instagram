@@ -8,6 +8,7 @@ import sample.instagram.dto.comment.request.CommentRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -106,5 +107,24 @@ public class CommentApiControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.status").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
                 .andExpect(jsonPath("$.data").isNotEmpty());
+    }
+
+    @DisplayName("댓글을 삭제한다.")
+    @Test
+    @WithMockUser(authorities = "ROLE_USER")
+    void deleteComment() throws Exception {
+        // given
+        Long commentId = 1L;
+
+        // when // then
+        mockMvc.perform(delete("/api/v1/comment/{id}", commentId)
+                        .contentType(APPLICATION_JSON)
+                        .with(csrf())
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").exists())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 }

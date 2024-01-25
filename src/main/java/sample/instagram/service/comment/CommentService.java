@@ -9,6 +9,7 @@ import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepository;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
+import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.dto.comment.request.CommentRequest;
 import sample.instagram.dto.comment.response.CommentResponse;
 
@@ -22,6 +23,7 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     private final ImageRepository imageRepository;
+    private final MemberRepositoryJpa memberRepositoryJpa;
 
     @Transactional
     public CommentResponse createComment(CommentRequest request) {
@@ -34,4 +36,8 @@ public class CommentService {
         return CommentResponse.of(saveComment);
     }
 
+    @Transactional
+    public void deleteComment(Long id) {
+        commentRepositoryJpa.deleteById(id);
+    }
 }

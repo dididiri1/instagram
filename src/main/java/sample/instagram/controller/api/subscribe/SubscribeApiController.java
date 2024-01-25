@@ -27,8 +27,8 @@ public class SubscribeApiController {
 
     @DeleteMapping("/api/v1/subscribe/{fromMemberId}/{toMemberId}")
     public ResponseEntity<?> unSubscribe(@PathVariable Long fromMemberId, @PathVariable Long toMemberId) {
-        DataResponse dataResponse = subscribeService.deleteSubscribe(fromMemberId, toMemberId);
+        subscribeService.deleteSubscribe(fromMemberId, toMemberId);
 
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "구독 취소 성공", dataResponse), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "구독 취소 성공", null), HttpStatus.OK);
     }
 }

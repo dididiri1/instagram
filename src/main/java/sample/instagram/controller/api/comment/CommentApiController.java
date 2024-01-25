@@ -26,7 +26,8 @@ public class CommentApiController {
 
     @DeleteMapping("/api/v1/comment/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long id) {
+        commentService.deleteComment(id);
 
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "댓글 삭제 성공", null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "댓글 삭제 성공", null), HttpStatus.OK);
     }
 }

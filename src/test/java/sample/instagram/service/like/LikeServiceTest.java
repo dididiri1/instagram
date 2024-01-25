@@ -12,8 +12,8 @@ import sample.instagram.domain.like.Like;
 import sample.instagram.domain.like.LikeRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
-import sample.instagram.dto.DataResponse;
-import sample.instagram.dto.ResultStatus;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sample.instagram.domain.member.Role.ROLE_USER;
@@ -43,7 +43,7 @@ public class LikeServiceTest extends IntegrationTestSupport {
     @Test
     void createLike() throws Exception {
         //given
-        Member member = createMember("testUser","test@naver.com", "유저");
+        Member member = createMember("member1", "name1");
         Member saveMember = memberRepositoryJpa.save(member);
 
         Image image = createImage("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", saveMember);
@@ -63,27 +63,28 @@ public class LikeServiceTest extends IntegrationTestSupport {
     @Test
     void deleteLike() throws Exception {
         //given
-        Member member = createMember("testUser","test@naver.com", "유저");
-        Member saveMember = memberRepositoryJpa.save(member);
+        Member member = createMember("member1", "name1");
+        memberRepositoryJpa.save(member);
 
-        Image image = createImage("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", saveMember);
-        Image saveImage = imageRepositoryJpa.save(image);
-        Like like = createLike(saveImage, saveMember);
+        Image image = createImage("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member);
+        imageRepositoryJpa.save(image);
 
+        Like like = createLike(image, member);
         likeRepositoryJpa.save(like);
 
         //when
-        DataResponse dataResponse = likeService.deleteLike(saveImage.getId(), saveMember.getId());
+        likeService.deleteLike(image.getId(), member.getId());
 
         //then
-        assertThat(dataResponse.getResult()).isEqualTo(ResultStatus.SUCCESS);
+        Optional<Like> findLike = likeRepositoryJpa.findById(like.getId());
+        assertThat(findLike.isPresent()).isFalse();
     }
 
-    private Member createMember(String username, String email, String name) {
+    private Member createMember(String username, String name) {
         return Member.builder()
                 .username(username)
                 .password(new BCryptPasswordEncoder().encode("1234"))
-                .email(email)
+                .email("test@example.com")
                 .name(name)
                 .role(ROLE_USER)
                 .build();

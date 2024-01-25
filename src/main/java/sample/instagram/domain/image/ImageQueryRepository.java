@@ -24,7 +24,6 @@ public class ImageQueryRepository {
     }
 
     public List<Image> findAllWithMemberById(Long memberId, Pageable pageable) {
-
         List<Long> ids = queryFactory
                 .select(subscribe.toMember.id)
                 .from(subscribe)

@@ -10,6 +10,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.docs.RestDocsSupport;
+import sample.instagram.dto.comment.response.CommentResponse;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
@@ -398,24 +399,42 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         // given
         Long memberId = 1L;
         int page = 0;
-        int size = 3;
 
         List<ImageStoryResponse> result = List.of(
-                ImageStoryResponse.builder()
-                        .id(1L)
-                        .caption("이미지 소개1")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
-                        .username("member1")
-                        .likeState(true)
-                        .likeCount(1)
-                        .build(),
                 ImageStoryResponse.builder()
                         .id(2L)
                         .caption("이미지 소개2")
                         .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .username("member1")
+                        .likeState(true)
+                        .likeCount(1)
+                        .comments(List.of(
+                                CommentResponse.builder()
+                                        .id(3L)
+                                        .content("댓글 내용3")
+                                        .username("member1")
+                                        .build(),
+                                CommentResponse.builder()
+                                        .id(2L)
+                                        .content("댓글 내용2")
+                                        .username("member2")
+                                        .build()
+                        ))
+                        .build(),
+                ImageStoryResponse.builder()
+                        .id(1L)
+                        .caption("이미지 소개1")
+                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
                         .username("member2")
                         .likeState(false)
                         .likeCount(0)
+                        .comments(List.of(
+                                CommentResponse.builder()
+                                        .id(1L)
+                                        .content("댓글 내용1")
+                                        .username("member2")
+                                        .build()
+                        ))
                         .build()
         );
 
@@ -425,7 +444,6 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         // when // then
         this.mockMvc.perform(get("/api/v1/members/{id}/story", memberId)
                         .param("page", String.valueOf(page))
-                        .param("size", String.valueOf(size))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -436,8 +454,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 parameterWithName("id").description("회원 ID")
                         ),
                         requestParameters (
-                                parameterWithName("page").description("페이지 번호"),
-                                parameterWithName("size").description("페이지 사이즈")
+                                parameterWithName("page").description("페이지 번호")
                         ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.NUMBER)
@@ -459,16 +476,10 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("좋아요 상태"),
                                 fieldWithPath("likeCount").type(JsonFieldType.NUMBER)
                                         .description("좋아요 갯수"),
-                                fieldWithPath("comments").type(JsonFieldType.ARRAY)
-                                        .description("댓글 리스트")
-                        ).andWithPrefix("data[].",
-                               fieldWithPath("id").type(JsonFieldType.NUMBER)
-                                        .description("댓글 ID"),
-                                fieldWithPath("content").type(JsonFieldType.NUMBER)
-                                        .description("댓글 내용"),
-                                fieldWithPath("username").type(JsonFieldType.NUMBER)
-                                        .description("사용자명")
-
+                                fieldWithPath("comments").type(JsonFieldType.ARRAY).description("댓글 리스트"),
+                                fieldWithPath("comments[].id").type(JsonFieldType.NUMBER).description("댓글 ID"),
+                                fieldWithPath("comments[].content").type(JsonFieldType.STRING).description("댓글 내용"),
+                                fieldWithPath("comments[].username").type(JsonFieldType.STRING).description("사용자명")
                         )
                 ));
     }

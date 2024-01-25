@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sample.instagram.IntegrationTestSupport;
 import sample.instagram.domain.member.Member;
-import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
-import sample.instagram.dto.DataResponse;
-import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.response.SubscribeResponse;
 import sample.instagram.handler.ex.CustomApiException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,9 +31,6 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @Autowired
     private MemberRepositoryJpa memberRepositoryJpa;
 
-    @Autowired
-    private MemberRepository memberRepository;
-
     @AfterEach
     void tearDown() {
         subscribeRepositoryJpa.deleteAllInBatch();
@@ -45,14 +40,10 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @DisplayName("구독을 등록 한다.")
     @Test
     void createSubscribe() throws Exception {
-
         //given
-        Member member1 = createMember("testUser1", "test1@example.com", "유저1");
-        Member member2 = createMember("testUser2", "test2@example.com", "유저2");
-        memberRepositoryJpa.saveAll(List.of(member1, member2));
-
-        Member fromMember = memberRepository.findOne(member1.getId());
-        Member toMember = memberRepository.findOne(member2.getId());
+        Member fromMember = createMember("member1", "test1@example.com", "name1");
+        Member toMember = createMember("member2", "test2@example.com", "name2");
+        memberRepositoryJpa.saveAll(List.of(fromMember, toMember));
 
         //when
         SubscribeResponse subscribeResponse = subscribeService.createSubscribe(fromMember.getId(), toMember.getId());
@@ -65,12 +56,9 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @Test
     void createSubscribeWithNoMember() throws Exception {
         //given
-        Member member1 = createMember("testUser1", "test1@example.com", "유저1");
-        Member member2 = createMember("testUser2", "test2@example.com", "유저2");
-        memberRepositoryJpa.saveAll(List.of(member1, member2));
-
-        Member fromMember = memberRepository.findOne(member1.getId());
-        Member toMember = memberRepository.findOne(member2.getId());
+        Member fromMember = createMember("member1", "test1@example.com", "name1");
+        Member toMember = createMember("member2", "test2@example.com", "name2");
+        memberRepositoryJpa.saveAll(List.of(fromMember, toMember));
 
         Subscribe subscribe = createSubscribe(fromMember, toMember);
         subscribeRepositoryJpa.save(subscribe);
@@ -85,14 +73,19 @@ public class SubscribeServiceTest extends IntegrationTestSupport {
     @Test
     void deleteSubscribe() throws Exception {
         //given
-        Long fromMemberId = 1L;
-        Long toMemberId = 2L;
+        Member fromMember = createMember("member1", "test1@example.com", "name1");
+        Member toMember = createMember("member2", "test2@example.com", "name2");
+        memberRepositoryJpa.saveAll(List.of(fromMember, toMember));
+
+        Subscribe subscribe = createSubscribe(fromMember, toMember);
+        subscribeRepositoryJpa.save(subscribe);
 
         //when
-        DataResponse dataResponse = subscribeService.deleteSubscribe(fromMemberId, toMemberId);
+        subscribeService.deleteSubscribe(fromMember.getId(), toMember.getId());
 
-        //then
-        assertThat(dataResponse.getResult()).isEqualTo(ResultStatus.SUCCESS);
+        // then
+        Optional<Subscribe> findSubscribe = subscribeRepositoryJpa.findById(subscribe.getId());
+        assertThat(findSubscribe.isPresent()).isFalse();
     }
 
     private Member createMember(String username, String email, String name) {

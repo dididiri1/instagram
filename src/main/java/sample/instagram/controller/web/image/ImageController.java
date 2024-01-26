@@ -10,10 +10,10 @@ import sample.instagram.config.auth.PrincipalDetails;
 @Controller
 public class ImageController {
 
-    @GetMapping({"/","/image/story"})
+    @GetMapping("/")
     public String story() {
 
-        return "image/story";
+        return "index";
     }
 
     @GetMapping("/image/popular")

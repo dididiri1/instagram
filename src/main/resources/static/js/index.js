@@ -14,7 +14,7 @@ let page = 0;
 function storyLoad() {
     $.ajax({
         type: "get",
-        url:"/api/v1/members/"+memberId+"/story?page="+page,
+        url:"/api/v1/members/"+memberId+"/subscribe/story?page="+page,
         dataType:"json"
     }).done(res=>{
         res.data.forEach((data) =>{

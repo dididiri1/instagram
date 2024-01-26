@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sample.instagram.dto.ApiResponse;
-import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
@@ -29,8 +29,8 @@ public class ImageApiController {
         if(imageCreateRequest.getFile().isEmpty()) {
             throw new ValidationException("이미지가 첨부되지 않았습니다.");
         }
-        ImageResponse imageResponse = imageService.createImage(imageCreateRequest);
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "이미지 등록 성공", imageResponse), HttpStatus.CREATED);
+        ImageCreateResponse imageCreateResponse = imageService.createImage(imageCreateRequest);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "이미지 등록 성공", imageCreateResponse), HttpStatus.CREATED);
     }
 
     @PostMapping("/api/v1/images/{imageId}/likes/{memberId}")

@@ -9,7 +9,7 @@ import sample.instagram.domain.image.ImageQueryRepository;
 import sample.instagram.domain.image.ImageRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
-import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.aws.S3UploaderService;
@@ -34,21 +34,29 @@ public class ImageService {
     private static final String FOLDER_NAME = "story";
 
     @Transactional
-    public ImageResponse createImage(ImageCreateRequest imageCreateRequest) {
+    public ImageCreateResponse createImage(ImageCreateRequest imageCreateRequest) {
         Member member = memberRepository.findOne(imageCreateRequest.getMemberId());
         String imageUrl = getImageUrl(imageCreateRequest);
         Image image = imageCreateRequest.toEntity(imageUrl, member);
         Image imageEntity = imageRepositoryJpa.save(image);
 
-        return ImageResponse.of(imageEntity);
+        return ImageCreateResponse.of(imageEntity);
     }
 
     private String getImageUrl(ImageCreateRequest imageCreateRequest) {
         return s3UploaderService.uploadFileS3(imageCreateRequest.getFile(), FOLDER_NAME);
     }
 
+    public List<ImageStoryResponse> getMyStory(Long memberId, Pageable pageable) {
+        List<Image> images = imageQueryRepository.findMySubscriptionStory(memberId, pageable);
+
+        return images.stream()
+                .map(image -> ImageStoryResponse.of(image, memberId))
+                .collect(Collectors.toList());
+    }
+
     public List<ImageStoryResponse> getStory(Long memberId, Pageable pageable) {
-        List<Image> images = imageQueryRepository.findAllWithMemberById(memberId, pageable);
+        List<Image> images = imageQueryRepository.findAllStory(memberId, pageable);
 
         return images.stream()
                 .map(image -> ImageStoryResponse.of(image, memberId))

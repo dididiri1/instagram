@@ -7,7 +7,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import sample.instagram.controller.api.image.ImageApiController;
 import sample.instagram.docs.RestDocsSupport;
-import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
@@ -52,10 +52,10 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
                 .build();
 
         given(imageService.createImage(any(ImageCreateRequest.class)))
-                .willReturn(ImageResponse.builder()
+                .willReturn(ImageCreateResponse.builder()
                         .id(1L)
                         .caption("이미지 소개")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                         .build());
 
         // expected
@@ -168,13 +168,13 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
                         ImagePopularResponse.builder()
                                 .id(1L)
                                 .caption("이미지 소개1")
-                                .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                                .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                                 .likeCount(3)
                                 .build(),
                         ImagePopularResponse.builder()
                                 .id(2L)
                                 .caption("이미지 소개2")
-                                .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                                .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                                 .likeCount(0)
                                 .build()
                 ));

@@ -94,7 +94,17 @@ public class MemberApiController {
 
     /**
      * @Method: getStory
-     * @Description: 회원 스토리 정보 조회
+     * @Description: 회원 구독자 스토리 정보 조회
+     */
+    @GetMapping("/api/v1/members/{id}/subscribe/story")
+    public ResponseEntity<?> getMyStory(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {
+        List<ImageStoryResponse> imageResponses = imageService.getMyStory(memberId, pageable);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "구독자 스토리 조회 성공", imageResponses), HttpStatus.OK);
+    }
+
+    /**
+     * @Method: getStory
+     * @Description: 회원 나의 스토리 정보 조회
      */
     @GetMapping("/api/v1/members/{id}/story")
     public ResponseEntity<?> getStory(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {

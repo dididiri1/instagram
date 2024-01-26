@@ -79,7 +79,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
     @Test
     void getMember() throws Exception {
         //given
-        Member member = createMember("testUser","test@example.com", "홍길동");
+        Member member = createMember("member1","test@example.com", "name1");
         memberRepositoryJpa.save(member);
 
         //when
@@ -87,16 +87,16 @@ public class MemberServiceTest extends IntegrationTestSupport {
 
         //then
         assertThat(memberResponse).isNotNull();
-        assertThat(memberResponse.getUsername()).isEqualTo("testUser");
+        assertThat(memberResponse.getUsername()).isEqualTo("member1");
         assertThat(memberResponse.getEmail()).isEqualTo("test@example.com");
-        assertThat(memberResponse.getName()).isEqualTo("홍길동");
+        assertThat(memberResponse.getName()).isEqualTo("name1");
     }
 
     @DisplayName("회원을 수정 한다.")
     @Test
     void updateMember() throws Exception {
         //given
-        Member member = createMember("testUser","test@example.com", "홍길동");
+        Member member = createMember("member1","test@naver.com", "홍길동");
         memberRepositoryJpa.save(member);
 
         MemberUpdateRequest request = MemberUpdateRequest.builder()
@@ -118,7 +118,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
     @Test
     void getMemberProfile() throws Exception {
         //given
-        Member member = createMember("member1","test@example.com", "홍길동");
+        Member member = createMember("member1","test@example.com", "name1");
         Member saveMember = memberRepositoryJpa.save(member);
 
         Image image1 = createImage("caption1", saveMember);
@@ -132,13 +132,13 @@ public class MemberServiceTest extends IntegrationTestSupport {
         assertThat(memberProfileResponse).isNotNull();
         assertThat(memberProfileResponse)
                 .extracting("pageOwnerState", "imageCount", "subscribeState", "subscribeCount" , "name")
-                .contains(true, 2, false, 0, "홍길동");
+                .contains(true, 2, false, 0, "name1");
 
         assertThat(memberProfileResponse.getImages()).hasSize(2)
                 .extracting("caption", "imageUrl")
                 .containsExactlyInAnyOrder(
-                        tuple("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png"),
-                        tuple("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        tuple("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg"),
+                        tuple("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                 );
     }
 
@@ -207,7 +207,7 @@ public class MemberServiceTest extends IntegrationTestSupport {
     private Image createImage(String caption, Member member) {
         return Image.builder()
                 .caption(caption)
-                .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                 .member(member)
                 .build();
     }

@@ -218,3 +218,7 @@
   border: 2px solid #8a3ab8;
 }
 
+.user_content {
+  cursor: pointer;
+}
+

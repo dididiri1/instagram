@@ -11,18 +11,18 @@ import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.controller.api.member.MemberApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.comment.response.CommentResponse;
+import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reponse.ImageResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
-import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.request.ProfileImageRequest;
 import sample.instagram.dto.member.request.ProfileImageResponse;
 import sample.instagram.dto.member.response.MemberProfileResponse;
 import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.dto.member.response.MemberSubscribeResponse;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
-import sample.instagram.dto.member.response.MemberSubscribeResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,7 +36,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -194,7 +193,6 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("유저 정보를 수정하는 API")
     void updateMember() throws Exception {
-
         // given
         long memberId = 1L;
 
@@ -267,12 +265,14 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 ImageResponse.builder()
                         .id(1L)
                         .caption("이미지 소개1")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
+                        .likeCount(5)
                         .build(),
                 ImageResponse.builder()
                         .id(2L)
                         .caption("이미지 소개2")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
+                        .likeCount(2)
                         .build()
         );
 
@@ -283,7 +283,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .subscribeState(false)
                         .subscribeCount(0)
                         .name("홍길동")
-                        .profileImageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                         .images(images)
                         .build());
 
@@ -319,6 +319,8 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("구독 갯수"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
                                         .description("회원 이름"),
+                                fieldWithPath("likeCount").type(JsonFieldType.STRING)
+                                        .description("회원 이름"),
                                 fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
                                         .description("회원 프로필사진"),
                                 fieldWithPath("images[].id").type(JsonFieldType.NUMBER)
@@ -335,7 +337,6 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("유저의 구독을 조회 API")
     void getSubscribes() throws Exception {
-
         // given
         long pageMemberId = 1L;
         long memberId = 1L;
@@ -402,36 +403,23 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
 
         List<ImageStoryResponse> result = List.of(
                 ImageStoryResponse.builder()
-                        .id(2L)
-                        .caption("이미지 소개2")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .id(1L)
+                        .caption("이미지 소개1")
+                        .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                         .username("member1")
                         .likeState(true)
                         .likeCount(1)
                         .comments(List.of(
                                 CommentResponse.builder()
-                                        .id(3L)
-                                        .content("댓글 내용3")
-                                        .username("member1")
-                                        .build(),
-                                CommentResponse.builder()
                                         .id(2L)
                                         .content("댓글 내용2")
-                                        .username("member2")
-                                        .build()
-                        ))
-                        .build(),
-                ImageStoryResponse.builder()
-                        .id(1L)
-                        .caption("이미지 소개1")
-                        .imageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
-                        .username("member2")
-                        .likeState(false)
-                        .likeCount(0)
-                        .comments(List.of(
+                                        .memberId(3L)
+                                        .username("member3")
+                                        .build(),
                                 CommentResponse.builder()
                                         .id(1L)
                                         .content("댓글 내용1")
+                                        .memberId(2L)
                                         .username("member2")
                                         .build()
                         ))
@@ -479,6 +467,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("comments").type(JsonFieldType.ARRAY).description("댓글 리스트"),
                                 fieldWithPath("comments[].id").type(JsonFieldType.NUMBER).description("댓글 ID"),
                                 fieldWithPath("comments[].content").type(JsonFieldType.STRING).description("댓글 내용"),
+                                fieldWithPath("comments[].memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
                                 fieldWithPath("comments[].username").type(JsonFieldType.STRING).description("사용자명")
                         )
                 ));
@@ -496,7 +485,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
 
         given(memberService.updateProfileImage(any(ProfileImageRequest.class)))
                 .willReturn(ProfileImageResponse.builder()
-                        .profileImageUrl("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png")
+                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                         .build());
 
         // expected

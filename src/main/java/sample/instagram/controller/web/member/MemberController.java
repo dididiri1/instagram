@@ -18,6 +18,8 @@ public class MemberController {
 
         model.addAttribute("pageMemberId", pageMemberId);
         model.addAttribute("memberId", principalDetails.getMember().getId());
+        model.addAttribute("username", principalDetails.getMember().getUsername());
+
 
         return "member/profile";
     }

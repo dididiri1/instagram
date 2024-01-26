@@ -24,7 +24,7 @@ public class ImageRepositoryTest extends IntegrationTestSupport {
     void createImage() throws Exception {
         //given
         Member member = memberRepository.findOne(1L);
-        Image image = createImage("이미지 소개", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member);
+        Image image = createImage("이미지 소개", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member);
         imageRepositoryJpa.save(image);
 
         //when
@@ -33,7 +33,7 @@ public class ImageRepositoryTest extends IntegrationTestSupport {
         //then
         assertThat(saveImage).isNotNull();
         assertThat(saveImage.getCaption()).isEqualTo("이미지 소개");
-        assertThat(saveImage.getImageUrl()).isEqualTo("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png");
+        assertThat(saveImage.getImageUrl()).isEqualTo("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg");
 
     }
 

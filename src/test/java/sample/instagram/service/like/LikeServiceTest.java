@@ -46,7 +46,7 @@ public class LikeServiceTest extends IntegrationTestSupport {
         Member member = createMember("member1", "name1");
         Member saveMember = memberRepositoryJpa.save(member);
 
-        Image image = createImage("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", saveMember);
+        Image image = createImage("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", saveMember);
         Image saveImage = imageRepositoryJpa.save(image);
 
         //when
@@ -66,7 +66,7 @@ public class LikeServiceTest extends IntegrationTestSupport {
         Member member = createMember("member1", "name1");
         memberRepositoryJpa.save(member);
 
-        Image image = createImage("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member);
+        Image image = createImage("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member);
         imageRepositoryJpa.save(image);
 
         Like like = createLike(image, member);

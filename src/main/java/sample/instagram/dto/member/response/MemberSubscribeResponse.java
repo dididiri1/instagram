@@ -9,13 +9,15 @@ import sample.instagram.domain.subscribe.Subscribe;
 public class MemberSubscribeResponse {
 
     private Long memberId;
+    private String profileImageUrl;
     private String username;
     private int subscribeState;
     private int equalMemberState;
 
     @Builder
-    private MemberSubscribeResponse(Long memberId, String username, int subscribeState, int equalMemberState) {
+    private MemberSubscribeResponse(Long memberId, String profileImageUrl, String username, int subscribeState, int equalMemberState) {
         this.memberId = memberId;
+        this.profileImageUrl = profileImageUrl;
         this.username = username;
         this.subscribeState = subscribeState;
         this.equalMemberState = equalMemberState;
@@ -24,6 +26,7 @@ public class MemberSubscribeResponse {
     public static MemberSubscribeResponse of(Member member, Long memberId) {
         return MemberSubscribeResponse.builder()
                 .memberId(member.getId())
+                .profileImageUrl(member.getProfileImageUrl())
                 .username(member.getUsername())
                 .subscribeState(isSubscribeState(member, memberId, member.getId()) ? 1 : 0)
                 .equalMemberState(isEqualMemberState(member.getId(), memberId))

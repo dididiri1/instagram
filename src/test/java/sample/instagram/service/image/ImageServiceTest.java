@@ -17,7 +17,7 @@ import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
 import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
-import sample.instagram.dto.image.reponse.ImageResponse;
+import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.image.reqeust.ImageCreateRequest;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
@@ -59,7 +59,7 @@ public class ImageServiceTest extends IntegrationTestSupport {
     @Test
     void createImage() throws Exception {
         //given
-        String imageUrl = "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png";
+        String imageUrl = "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg";
         ImageCreateRequest request = ImageCreateRequest.builder()
                 .memberId(1L)
                 .caption("자기소개")
@@ -71,12 +71,12 @@ public class ImageServiceTest extends IntegrationTestSupport {
                 .thenReturn(imageUrl);
 
         //when
-        ImageResponse imageResponse = imageService.createImage(request);
+        ImageCreateResponse imageCreateResponse = imageService.createImage(request);
 
         //then
-        assertThat(imageResponse).isNotNull();
-        assertThat(imageResponse.getImageUrl()).isEqualTo(imageUrl);
-        assertThat(imageResponse.getCaption()).isEqualTo("자기소개");
+        assertThat(imageCreateResponse).isNotNull();
+        assertThat(imageCreateResponse.getImageUrl()).isEqualTo(imageUrl);
+        assertThat(imageCreateResponse.getCaption()).isEqualTo("자기소개");
     }
 
     @DisplayName("스토리 정보 첫번째 페이지를 조회한다.")
@@ -93,10 +93,10 @@ public class ImageServiceTest extends IntegrationTestSupport {
         Subscribe subscribe2 = Subscribe.create(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
-        Image image1 = createImage("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image2 = createImage("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image3 = createImage("caption3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image4 = createImage("caption4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image1 = createImage("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image2 = createImage("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image3 = createImage("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image4 = createImage("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
         Like like1 = createLike(image3, member1);
@@ -110,9 +110,9 @@ public class ImageServiceTest extends IntegrationTestSupport {
         assertThat(images).hasSize(3)
                 .extracting("caption", "imageUrl", "username", "likeState", "likeCount")
                 .containsExactlyInAnyOrder(
-                        tuple("caption4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2", true, 1),
-                        tuple("caption3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2", true, 1),
-                        tuple("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2",  false, 0)
+                        tuple("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2", true, 1),
+                        tuple("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2", true, 1),
+                        tuple("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2",  false, 0)
                 );
     }
 
@@ -130,10 +130,10 @@ public class ImageServiceTest extends IntegrationTestSupport {
         Subscribe subscribe2 = Subscribe.create(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
-        Image image1 = createImage("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image2 = createImage("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image3 = createImage("caption3", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
-        Image image4 = createImage("caption4", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image1 = createImage("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image2 = createImage("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image3 = createImage("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image4 = createImage("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
         Like like1 = createLike(image3, member1);
@@ -147,7 +147,7 @@ public class ImageServiceTest extends IntegrationTestSupport {
         assertThat(images).hasSize(1)
                 .extracting("caption", "imageUrl", "username", "likeState", "likeCount")
                 .containsExactlyInAnyOrder(
-                        tuple("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", "member2", false , 0)
+                        tuple("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2", false , 0)
                 );
     }
 
@@ -165,8 +165,8 @@ public class ImageServiceTest extends IntegrationTestSupport {
         Subscribe subscribe2 = Subscribe.create(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
-        Image image1 = createImage("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member1);
-        Image image2 = createImage("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", member2);
+        Image image1 = createImage("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
+        Image image2 = createImage("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
         imageRepositoryJpa.saveAll(List.of(image1, image2));
 
         Like like1 = createLike(image1, member2);
@@ -182,8 +182,8 @@ public class ImageServiceTest extends IntegrationTestSupport {
         assertThat(images).hasSize(2)
                 .extracting("caption", "imageUrl", "likeCount")
                 .containsExactly(
-                        tuple("caption2", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", 3),
-                        tuple("caption1", "https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", 1)
+                        tuple("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", 3),
+                        tuple("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", 1)
                 );
 
     }

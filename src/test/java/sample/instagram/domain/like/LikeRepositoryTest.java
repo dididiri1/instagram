@@ -33,10 +33,10 @@ public class LikeRepositoryTest extends IntegrationTestSupport {
     @Test
     void createLike() throws Exception {
         //given
-        Member member = createMember("testUser","test@naver.com", "유저");
+        Member member = createMember("member1","test@example.com", "name1");
         Member saveMember = memberRepositoryJpa.save(member);
 
-        Image image = createImage("https://s3.ap-northeast-2.amazonaws.com/kangmin-s3-bucket/example.png", saveMember);
+        Image image = createImage("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", saveMember);
         imageRepositoryJpa.save(image);
         Like like = createLike(image, member);
 

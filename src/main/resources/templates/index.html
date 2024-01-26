@@ -7,9 +7,9 @@
 
     <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
     <script th:inline="javascript">
-        let memberId = [[${memberId}]];
+        let memberId = [[${#authentication.principal.member.id}]];
     </script>
-    <script th:src="@{/js/image/story.js}"></script>
+    <script th:src="@{/js/index.js}"></script>
 </head>
 
 <main layout:fragment="content" class="main">

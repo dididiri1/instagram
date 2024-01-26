@@ -6,7 +6,7 @@ import lombok.Getter;
 import sample.instagram.domain.image.Image;
 
 @Getter
-public class ImageResponse {
+public class ImageCreateResponse {
 
     private Long id;
 
@@ -14,23 +14,19 @@ public class ImageResponse {
 
     private String imageUrl;
 
-    private int likeCount;
-
     @QueryProjection
     @Builder
-    public ImageResponse(Long id, String caption, String imageUrl, int likeCount) {
+    public ImageCreateResponse(Long id, String caption, String imageUrl) {
         this.id = id;
         this.caption = caption;
         this.imageUrl = imageUrl;
-        this.likeCount = likeCount;
     }
 
-    public static ImageResponse of(Image image) {
-        return ImageResponse.builder()
+    public static ImageCreateResponse of(Image image) {
+        return ImageCreateResponse.builder()
                 .id(image.getId())
                 .caption(image.getCaption())
                 .imageUrl(image.getImageUrl())
-                .likeCount(image.getLikes().size())
                 .build();
 
     }

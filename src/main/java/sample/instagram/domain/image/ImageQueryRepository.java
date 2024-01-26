@@ -23,7 +23,7 @@ public class ImageQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<Image> findAllWithMemberById(Long memberId, Pageable pageable) {
+    public List<Image> findMySubscriptionStory(Long memberId, Pageable pageable) {
         List<Long> ids = queryFactory
                 .select(subscribe.toMember.id)
                 .from(subscribe)
@@ -35,6 +35,20 @@ public class ImageQueryRepository {
                 .from(image)
                 .join(image.member, member).fetchJoin()
                 .where(image.member.id.in(ids))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(image.id.desc())
+                .fetch();
+
+        return images;
+    }
+
+    public List<Image> findAllStory(Long memberId, Pageable pageable) {
+        List<Image> images = queryFactory
+                .select(image)
+                .from(image)
+                .join(image.member, member).fetchJoin()
+                .where(image.member.id.eq(memberId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(image.id.desc())

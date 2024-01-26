@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.subscribe.Subscribe;
+import sample.instagram.dto.comment.response.CommentResponse;
+import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reponse.ImageResponse;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +46,7 @@ public class MemberProfileResponse {
                 .profileImageUrl(member.getProfileImageUrl())
                 .images(member.getImages().stream()
                         .map(image -> ImageResponse.of(image))
+                        .sorted(Comparator.comparing(ImageResponse::getId).reversed())
                         .collect(Collectors.toList())
                 )
                 .build();

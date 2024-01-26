@@ -56,10 +56,10 @@ function memberProfileInfo(data) {
 function addImageItem(data) {
     let item = '';
     for (let i = 0; i < data.images.length; i++) {
-        item += '<div class="img-box">';
+        item += '<div class="img-box" onclick="myStoryOpen(\''+username+'\')">';
         item += '<a href=""> <img src="'+data.images[i].imageUrl+'"/></a>';
         item += '<div class="comment">';
-        item += '<a href="#" class=""> <i class="fas fa-heart"></i><span>0</span></a>';
+        item += '<a href="#" class=""> <i class="fas fa-heart"></i><span>'+data.images[i].likeCount+'</span></a>';
         item += '</div>';
         item += '</div>';
     }
@@ -103,10 +103,6 @@ function toggleSubscribe(toUserId, obj) {
 function subscribeInfoModalOpen(pageUserId) {
     $(".modal-subscribe").css("display", "flex");
 
-    console.log("pageUserId:"+pageUserId);
-    console.log("memberId:"+memberId);
-    console.log("============================")
-
     $.ajax({
         type:"get",
         url:"/api/v1/members/"+pageUserId+"/subscribe/"+memberId,
@@ -139,8 +135,7 @@ function subscribeInfoModalOpen(pageUserId) {
 function getSubscribeModalItem(m) {
     let item = '<div class="subscribe__item" id="subscribeModalItem-'+m.memberId+'">' +
         '<div class="subscribe__img">' +
-        //'<img src="/upload/'+u.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'"/>' +
-        '<img src="/upload/" onerror="this.src=\'/images/person.jpeg\'"/>' +
+        '<img src="'+m.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'"/>' +
         '</div>' +
         '<div class="subscribe__text">' +
         '<h2>'+m.username+'</h2>' +
@@ -240,5 +235,18 @@ function modalImage() {
 function modalClose() {
     $(".modal-subscribe").css("display", "none");
     location.reload();
+}
+
+function imageInfoModalOpen() {
+    $(".modal-image-info").css("display", "flex");
+
+}
+
+function modalInfoClose() {
+    $(".modal-image-info").css("display", "none");
+}
+
+function myStoryOpen(username) {
+    location.href = "/story/"+username
 }
 

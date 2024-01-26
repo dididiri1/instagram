@@ -20,7 +20,7 @@ include::{snippets}/member-create/response-fields.adoc[]
 
 
 [[member-one]]
-=== 회원 정보 조회
+=== 회원 단건 조회
 ==== HTTP Request
 include::{snippets}/member-one/http-request.adoc[]
 include::{snippets}/member-one/path-parameters.adoc[]
@@ -30,7 +30,7 @@ include::{snippets}/member-one/http-response.adoc[]
 include::{snippets}/member-one/response-fields.adoc[]
 
 [[member-update]]
-=== 회원 정보 수정
+=== 회원 수정
 ==== HTTP Request
 include::{snippets}/member-update/http-request.adoc[]
 include::{snippets}/member-update/path-parameters.adoc[]
@@ -42,7 +42,7 @@ include::{snippets}/member-update/response-fields.adoc[]
 
 
 [[member-get-profile]]
-=== 회원 프로필 정보 조회
+=== 회원 프로필 조회
 ==== HTTP Request
 include::{snippets}/member-get-profile/http-request.adoc[]
 include::{snippets}/member-get-profile/path-parameters.adoc[]
@@ -53,7 +53,7 @@ include::{snippets}/member-get-profile/http-response.adoc[]
 include::{snippets}/member-get-profile/response-fields.adoc[]
 
 [[member-subscribe]]
-=== 회원 구독 정보 조회
+=== 회원 구독 조회
 ==== HTTP Request
 include::{snippets}/member-subscribe/http-request.adoc[]
 include::{snippets}/member-subscribe/path-parameters.adoc[]
@@ -64,7 +64,7 @@ include::{snippets}/member-subscribe/http-response.adoc[]
 include::{snippets}/member-subscribe/response-fields.adoc[]
 
 [[member-all-story]]
-=== 회원 스토리 정보 조회
+=== 회원 스토리 조회
 ==== HTTP Request
 include::{snippets}/member-all-story/http-request.adoc[]
 include::{snippets}/member-all-story/path-parameters.adoc[]
@@ -76,7 +76,7 @@ include::{snippets}/member-all-story/http-response.adoc[]
 include::{snippets}/member-all-story/response-fields.adoc[]
 
 [[member-profileImage-change]]
-=== 프로필 이미지 변경
+=== 회원 프로필 이미지 변경
 ==== HTTP Request
 include::{snippets}/member-profileImage-change/http-request.adoc[]
 include::{snippets}/member-profileImage-change/request-parameters.adoc[]

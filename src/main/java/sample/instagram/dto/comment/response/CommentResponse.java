@@ -9,12 +9,14 @@ public class CommentResponse {
 
     private Long id;
     private String content;
+    private Long memberId;
     private String username;
 
     @Builder
-    private CommentResponse(Long id, String content, String username) {
+    private CommentResponse(Long id, String content, Long memberId, String username) {
         this.id = id;
         this.content = content;
+        this.memberId = memberId;
         this.username = username;
     }
 
@@ -22,6 +24,7 @@ public class CommentResponse {
         return CommentResponse.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
+                .memberId(comment.getMember().getId())
                 .username(comment.getMember().getUsername())
                 .build();
     }

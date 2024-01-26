@@ -7,3 +7,13 @@ include::{snippets}/comment-create/request-fields.adoc[]
 ==== HTTP Response
 include::{snippets}/comment-create/http-response.adoc[]
 include::{snippets}/comment-create/response-fields.adoc[]
+
+[[comment-delete]]
+=== 댓글 삭제
+==== HTTP Request
+include::{snippets}/comment-delete/http-request.adoc[]
+include::{snippets}/comment-delete/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/comment-delete/http-response.adoc[]
+include::{snippets}/comment-delete/response-fields.adoc[]

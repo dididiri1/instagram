@@ -21,6 +21,10 @@ public class ImageStoryResponse {
 
     private String imageUrl;
 
+    private Long memberId;
+
+    private String profileImageUrl;
+
     private String username;
 
     private boolean likeState;
@@ -30,10 +34,12 @@ public class ImageStoryResponse {
     private List<CommentResponse> comments;
 
     @Builder
-    private ImageStoryResponse(Long id, String caption, String imageUrl, String username, boolean likeState, int likeCount, List<CommentResponse> comments) {
+    private ImageStoryResponse(Long id, String caption, String imageUrl, Long memberId, String profileImageUrl, String username, boolean likeState, int likeCount, List<CommentResponse> comments) {
         this.id = id;
         this.caption = caption;
         this.imageUrl = imageUrl;
+        this.memberId = memberId;
+        this.profileImageUrl = profileImageUrl;
         this.username = username;
         this.likeState = likeState;
         this.likeCount = likeCount;
@@ -45,6 +51,8 @@ public class ImageStoryResponse {
                 .id(image.getId())
                 .caption(image.getCaption())
                 .imageUrl(image.getImageUrl())
+                .memberId(image.getMember().getId())
+                .profileImageUrl(image.getMember().getProfileImageUrl())
                 .username(image.getMember().getUsername())
                 .likeState(isLikeState(image.getLikes(), memberId))
                 .likeCount(image.getLikes().size())

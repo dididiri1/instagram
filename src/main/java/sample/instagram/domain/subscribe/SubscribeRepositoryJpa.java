@@ -10,5 +10,6 @@ public interface SubscribeRepositoryJpa extends JpaRepository<Subscribe, Long> {
 
     Optional<Subscribe> findByFromMemberIdAndToMemberId(Long fromMemberId, Long toMemberId);
 
+    int countByFromMemberId(Long pageMemberId);
 }
 

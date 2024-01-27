@@ -422,6 +422,49 @@
   border-bottom: 1px solid #dbdbdb;
 }
 
+
+.modal-subscribe-info {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-subscribe-info .modal {
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.modal-subscribe-info .modal button {
+  border: 0;
+  background-color: transparent;
+  height: 48px;
+  cursor: pointer;
+}
+
+.modal__subscribe__img{
+  text-align:center;
+  padding-top:25px;
+}
+
+.modal__subscribe__img img{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+
+.modal-subscribe-info .modal button:not(:last-child) {
+  border-bottom: 1px solid #dbdbdb;
+}
+
 /* Animation */
 @keyframes loading {
   100% {

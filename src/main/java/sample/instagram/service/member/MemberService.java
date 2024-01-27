@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberQueryRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
+import sample.instagram.domain.subscribe.Subscribe;
+import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.request.ProfileImageResponse;
@@ -30,6 +32,8 @@ public class MemberService {
     private final MemberRepositoryJpa memberRepositoryJpa;
 
     private final MemberQueryRepository memberQueryRepository;
+
+    private final SubscribeRepositoryJpa subscribeRepositoryJpa;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -77,7 +81,20 @@ public class MemberService {
 
     public MemberProfileResponse getMemberProfile(Long pageMemberId, Long memberId) {
         Member member = validateDuplicateMember(pageMemberId);
-        return MemberProfileResponse.of(member, memberId);
+
+        int subscribeCount = subscribeRepositoryJpa.countByFromMemberId(pageMemberId);
+        System.out.println("subscribeCount = " + subscribeCount);
+
+        List<Subscribe> subscribes = member.getSubscribes();
+        System.out.println("size:"+subscribes.size());
+        for (Subscribe subscribe : subscribes) {
+            System.out.println("subscribe.getId() = " + subscribe.getId());
+            System.out.println("subscribe.getFromMember() = " + subscribe.getFromMember());
+            System.out.println("subscribe.getToMember() = " + subscribe.getToMember());
+
+        }
+
+        return MemberProfileResponse.of(member, memberId, subscribeCount);
     }
 
     private Member validateDuplicateMember(Long memberId) {

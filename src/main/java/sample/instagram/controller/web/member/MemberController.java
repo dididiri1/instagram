@@ -13,13 +13,9 @@ import sample.instagram.config.auth.PrincipalDetails;
 public class MemberController {
 
     @GetMapping("/member/{pageMemberId}")
-    public String profile(@PathVariable int pageMemberId, Model model
-                            , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-
+    public String profile(@PathVariable int pageMemberId, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         model.addAttribute("pageMemberId", pageMemberId);
         model.addAttribute("memberId", principalDetails.getMember().getId());
-        model.addAttribute("username", principalDetails.getMember().getUsername());
-
 
         return "member/profile";
     }

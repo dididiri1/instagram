@@ -485,7 +485,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
 
         given(memberService.updateProfileImage(any(ProfileImageRequest.class)))
                 .willReturn(ProfileImageResponse.builder()
-                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
+                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/default.png")
                         .build());
 
         // expected

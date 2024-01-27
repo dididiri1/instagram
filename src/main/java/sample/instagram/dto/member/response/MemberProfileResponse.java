@@ -21,27 +21,30 @@ public class MemberProfileResponse {
     private int imageCount;
     private boolean subscribeState;
     private int subscribeCount;
+    private String username;
     private String name;
     private String profileImageUrl;
     private List<ImageResponse> images;
 
     @Builder
-    public MemberProfileResponse(boolean pageOwnerState, int imageCount, boolean subscribeState, int subscribeCount, String name, String profileImageUrl, List<ImageResponse> images) {
+    public MemberProfileResponse(boolean pageOwnerState, int imageCount, boolean subscribeState, int subscribeCount, String username, String name, String profileImageUrl, List<ImageResponse> images) {
         this.pageOwnerState = pageOwnerState;
         this.imageCount = imageCount;
         this.subscribeState = subscribeState;
         this.subscribeCount = subscribeCount;
+        this.username = username;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.images = images;
     }
 
-    public static MemberProfileResponse of(Member member, Long memberId) {
+    public static MemberProfileResponse of(Member member, Long memberId, int subscribeCount) {
         return MemberProfileResponse.builder()
                 .pageOwnerState(isPageOwnerState(member.getId(), memberId))
                 .imageCount(member.getImages().size())
                 .subscribeState(isSubscribeState(member.getSubscribes(), memberId, member.getId()))
-                .subscribeCount(member.getSubscribes().size())
+                .subscribeCount(subscribeCount)
+                .username(member.getUsername())
                 .name(member.getName())
                 .profileImageUrl(member.getProfileImageUrl())
                 .images(member.getImages().stream()

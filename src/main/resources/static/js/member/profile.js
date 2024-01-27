@@ -24,7 +24,7 @@ function getMemberProfile() {
     }).done(res => {
         console.log(res);
         memberProfileInfo(res.data);
-        addImageItem(res.data);
+        addImageItem(res.data, res.data.username);
     }).fail(error => {
         if(error.responseJSON.data == null){
             alert(error.responseJSON.message);
@@ -53,7 +53,7 @@ function memberProfileInfo(data) {
     }
 }
 
-function addImageItem(data) {
+function addImageItem(data, username) {
     let item = '';
     for (let i = 0; i < data.images.length; i++) {
         item += '<div class="img-box" onclick="myStoryOpen(\''+username+'\')">';
@@ -99,19 +99,75 @@ function toggleSubscribe(toUserId, obj) {
     }
 }
 
+function toggleItemSubscribe(toUserId, obj) {
+    if ($(obj).text() === "구독취소") {
+        $.ajax({
+            type:"get",
+            url:"/api/v1/members/"+toUserId,
+            dataType:"json",
+        }).done(res=>{
+            $("#ms-username").text(res.data.username);
+            if (res.data.profileImageUrl != null) {
+                $("#ms-profileImageUrl").attr("src", res.data.profileImageUrl);
+            } else {
+                $("#ms-profileImageUrl").attr("src", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/default.png");
+            }
+            $("#toMemberId").val(toUserId);
+            $(".modal-subscribe-info").css("display", "flex");
+        }).fail(error=>{
+            console.log("error",error);
+            if(error.responseJSON.data == null){
+                alert(error.responseJSON.message);
+            }else{
+                alert(JSON.stringify(error.responseJSON.data));
+            }
+        });
+        $(".modal-subscribe-info").css("display", "flex");
+    } else {
+        $.ajax({
+            type:"post",
+            url:"/api/v1/subscribe/"+memberId+"/"+toUserId,
+            dataType:"json",
+        }).done(res=>{
+            $(obj).text("구독취소");
+            $(obj).toggleClass("blue");
+        }).fail(error=>{
+            console.log("구독하기실패",error);
+            if(error.responseJSON.data == null){
+                alert(error.responseJSON.message);
+            }else{
+                alert(JSON.stringify(error.responseJSON.data));
+            }
+        });
+    }
+}
+
+function cancelSubscribe() {
+    let toMemberId = $("#toMemberId").val();
+    $.ajax({
+        type:"delete",
+        url:"/api/v1/subscribe/"+memberId+"/"+toMemberId,
+        dataType:"json"
+    }).done(res => {
+        $(".modal-subscribe-info").css("display", "none");
+        $("#unSubscribe-"+toMemberId).text("구독하기");
+        $("#unSubscribe-"+toMemberId).toggleClass("blue");
+    }).fail(error => {
+        console.log("구독취소실패",error);
+    });
+}
+
 // (2) 구독자 정보  모달 보기
 function subscribeInfoModalOpen(pageUserId) {
     $(".modal-subscribe").css("display", "flex");
-
+    $(".subscribe-list").children().remove();
     $.ajax({
         type:"get",
         url:"/api/v1/members/"+pageUserId+"/subscribe/"+memberId,
         dataType:"json",
     }).done(res=>{
         console.log(res);
-
         res.data.forEach((m)=>{
-            console.log(m.username)
             let item = getSubscribeModalItem(m);
             $(".subscribe-list").append(item);
         });
@@ -135,17 +191,17 @@ function subscribeInfoModalOpen(pageUserId) {
 function getSubscribeModalItem(m) {
     let item = '<div class="subscribe__item" id="subscribeModalItem-'+m.memberId+'">' +
         '<div class="subscribe__img">' +
-        '<img src="'+m.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'"/>' +
+        '<img class="user_content" onclick="profileInfo(\''+m.memberId+'\')" src="'+m.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'"/>' +
         '</div>' +
         '<div class="subscribe__text">' +
-        '<h2>'+m.username+'</h2>' +
+        '<h2 class="user_content" onclick="profileInfo(\''+m.memberId+'\')">'+m.username+'</h2>' +
         '</div>' +
         '<div class="subscribe__btn">';
-    if(!m.equalMemberState) { // 동일 유저가 아닐 떄 버튼이 만들어져야함.
-        if(m.subscribeState) { // 구독한 상태
-            item += '<button class="cta blue" onclick="toggleSubscribe(\''+m.memberId+'\', this)">구독취소</button>';
-        }	else{ // 구동안한 상태
-            item += '<button class="cta" onclick="toggleSubscribe(\''+m.memberId+'\', this)">구독하기</button>';
+    if(!m.equalMemberState) {
+        if(m.subscribeState) {
+            item += '<button class="cta blue" id="unSubscribe-'+m.memberId+'" onclick="toggleItemSubscribe(\''+m.memberId+'\', this)">구독취소</button>';
+        }	else{
+            item += '<button class="cta" id="inSubscribe-'+m.memberId+'" onclick="toggleItemSubscribe(\''+m.memberId+'\', this)">구독하기</button>';
         }
     }
     item += '</div>' +
@@ -226,6 +282,10 @@ function modalInfo() {
     $(".modal-info").css("display", "none");
 }
 
+function modalSubscribeInfo() {
+    $(".subscribe-info").css("display", "none");
+}
+
 // (7) 사용자 프로필 이미지 메뉴(사진업로드, 취소) 모달
 function modalImage() {
     $(".modal-image").css("display", "none");
@@ -250,3 +310,6 @@ function myStoryOpen(username) {
     location.href = "/story/"+username
 }
 
+function profileInfo(memberId) {
+    location.href = "/member/"+memberId;
+}

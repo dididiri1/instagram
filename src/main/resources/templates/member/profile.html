@@ -9,7 +9,6 @@
     <script th:inline="javascript">
         let pageMemberId = [[${pageMemberId}]];
         let memberId = [[${memberId}]];
-        let username = [[${username}]];
 
     </script>
     <script th:src="@{/js/member/profile.js}"></script>
@@ -40,7 +39,7 @@
                 <h2 id="profileName">TherePrograming</h2>
 
                 <button class="cta none" id="imageUploadBtn" onclick="location.href='/image/upload'">사진등록</button>
-                <button class="cta blue none" id="unSubscribeBtn" th:onclick="'toggleSubscribe('+${pageMemberId}+', this)'">구독취소</button>
+                <button class="cta blue none" id="unSubscribeBtn" data-su th:onclick="'toggleSubscribe('+${pageMemberId}+', this)'">구독취소</button>
                 <button class="cta none" id="inSubscribeBtn" th:onclick="'toggleSubscribe('+${pageMemberId}+', this)'">구독하기</button>
                 <button class="modi" onclick="popup('.modal-info')">
                     <i class="fas fa-cog"></i>
@@ -49,7 +48,7 @@
 
             <div class="subscribe">
                 <ul>
-                    <li><a href=""> 게시물<span id="imageCount">0</span>
+                    <li><a href="javascript:void(0)"> 게시물<span id="imageCount">0</span>
                     </a></li>
                     <li><a href="javascript:void(0)" th:onclick="'subscribeInfoModalOpen('+${pageMemberId}+')'"> 구독정보<span id="subscribeCount">0</span>
                     </a></li>
@@ -90,9 +89,21 @@
 
 <div class="modal-info" onclick="modalInfo()">
     <div class="modal">
-        <button onclick="location.href='/member/1/update'">회원정보 변경</button>
-        <button onclick="location.href='/logout'">로그아웃</button>
-        <button onclick="closePopup('.modal-info')">취소</button>
+        <button type="button" onclick="location.href='/member/'+memberId+'/update'">회원정보 변경</button>
+        <button type="button" onclick="location.href='/logout'">로그아웃</button>
+        <button type="button" onclick="closePopup('.modal-info')">취소</button>
+    </div>
+</div>
+
+<div class="modal-subscribe-info" onclick="modalSubscribeInfo()">
+    <div class="modal">
+        <div class="modal__subscribe__img">
+            <img id="ms-profileImageUrl" src="#"/>
+        </div>
+        <button type="button"><span id="ms-username" style="color: #000;font-weight: 700;"></span>님의 구독을 취소하시겠어요?</button>
+        <button type="button" onclick="cancelSubscribe()"><span style="color: red;">구독 취소</span></button>
+        <button type="button" onclick="closePopup('.modal-subscribe-info')">취소</button>
+        <input type="hidden" id="toMemberId" value="">
     </div>
 </div>
 

@@ -113,6 +113,8 @@
   border-radius: 4px;
   color: #fff;
   cursor: pointer;
+  width: 80px;
+  font-size: 15px;
 }
 
 .none {

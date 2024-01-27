@@ -54,6 +54,7 @@ function imageChoose(obj) {
 
     let reader = new FileReader();
     reader.onload = (e) => {
+        $("#imageUploadPreview").removeClass("none");
         $("#imageUploadPreview").attr("src", e.target.result);
     }
     reader.readAsDataURL(f);

@@ -214,6 +214,10 @@
 .popular {
   width: 100%;
 }
+.p-img-box {
+  cursor: pointer;
+}
+
 .popular .profileContainer {
   flex-direction: column;
 }

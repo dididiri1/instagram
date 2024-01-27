@@ -34,7 +34,7 @@ $(document).ready(function() {
 function getMember() {
     $.ajax({
         type: "get",
-        url: "/api/members/"+memberId,
+        url: "/api/v1/members/"+memberId,
         dataType: "json",
     }).done(res => {
         $("input[name=name]").val(res.data.name);
@@ -54,7 +54,7 @@ function updateMember() {
     let formData = new FormData($("#profileUpdate")[0]);
     $.ajax({
         type: "patch",
-        url: "/api/members/"+memberId,
+        url: "/api/v1/members/"+memberId,
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: "application/json;charset=utf-8",
         dataType: 'json',

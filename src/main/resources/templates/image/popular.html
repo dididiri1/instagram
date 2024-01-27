@@ -6,45 +6,13 @@
     <!-- 컨텐츠페이지의 CSS 영역이 들어감 -->
 
     <!-- 컨텐츠페이지의 스크립트 영역이 들어감 -->
-    <script th:inline="javascript">
-        let pageMemberId = [[${pageMemberId}]];
-        let memberId = [[${memberId}]];
-
-    </script>
     <script th:src="@{/js/image/popular.js}"></script>
 </head>
 <main layout:fragment="content" class="popular">
     <div class="exploreContainer">
-
-        <!--인기게시글 갤러리(GRID배치)-->
         <div class="popular-gallery">
-
-            <div class="p-img-box">
-                <a href="/user/profile"> <img src="/images/home.jpg"/>
-                </a>
-            </div>
-            <div class="p-img-box">
-                <a href="/user/profile"> <img src="/images/home.jpg"/>
-                </a>
-            </div>
-            <div class="p-img-box">
-                <a href="/user/profile"> <img src="/images/home.jpg"/>
-                </a>
-            </div>
-            <div class="p-img-box">
-                <a href="/user/profile"> <img src="/images/home.jpg"/>
-                </a>
-            </div>
-            <div class="p-img-box">
-                <a href="/user/profile"> <img src="/images/home.jpg"/>
-                </a>
-            </div>
-            <div class="p-img-box">
-                <a href="/user/profile"> <img src="/images/home.jpg"/>
-                </a>
-            </div>
-            <div class="p-img-box">
-                <a href="/user/profile"> <img src="/images/home.jpg"/>
+            <div class="p-img-box" th:each="images : ${images}">
+                <a th:onclick="|location.href='@{|/member/${images.memberId}|}'|"> <img th:src="${images.imageUrl}"/>
                 </a>
             </div>
         </div>

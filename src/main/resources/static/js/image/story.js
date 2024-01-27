@@ -9,6 +9,9 @@
 
 let page = 0;
 
+$(document).ready(function(){
+    storyLoad();
+});
 
 // (1) 스토리 로드하기
 function storyLoad() {
@@ -25,8 +28,6 @@ function storyLoad() {
         console.log("오류",error);
     });
 }
-
-storyLoad();
 
 function getStoryItem(data) {
     let item = '';

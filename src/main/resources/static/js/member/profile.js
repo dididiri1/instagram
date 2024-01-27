@@ -24,7 +24,7 @@ function getMemberProfile() {
     }).done(res => {
         console.log(res);
         memberProfileInfo(res.data);
-        addImageItem(res.data, res.data.username);
+        addImageItem(res.data, pageMemberId);
     }).fail(error => {
         if(error.responseJSON.data == null){
             alert(error.responseJSON.message);
@@ -53,10 +53,10 @@ function memberProfileInfo(data) {
     }
 }
 
-function addImageItem(data, username) {
+function addImageItem(data, memberId) {
     let item = '';
     for (let i = 0; i < data.images.length; i++) {
-        item += '<div class="img-box" onclick="myStoryOpen(\''+username+'\')">';
+        item += '<div class="img-box" onclick="myStoryOpen(\''+memberId+'\')">';
         item += '<a href=""> <img src="'+data.images[i].imageUrl+'"/></a>';
         item += '<div class="comment">';
         item += '<a href="#" class=""> <i class="fas fa-heart"></i><span>'+data.images[i].likeCount+'</span></a>';
@@ -306,8 +306,8 @@ function modalInfoClose() {
     $(".modal-image-info").css("display", "none");
 }
 
-function myStoryOpen(username) {
-    location.href = "/story/"+username
+function myStoryOpen(memberId) {
+    location.href = "/story/"+memberId;
 }
 
 function profileInfo(memberId) {

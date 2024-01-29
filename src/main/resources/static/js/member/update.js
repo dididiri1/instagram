@@ -37,9 +37,13 @@ function getMember() {
         url: "/api/v1/members/"+memberId,
         dataType: "json",
     }).done(res => {
+        if (res.data.profileImageUrl != null) {
+            $("#profileImageUrl").attr("src", res.data.profileImageUrl);
+        }
+        $("#username").text(res.data.username);
         $("input[name=name]").val(res.data.name);
-        $("input[name=username]").val(res.data.username);
         $("input[name=email]").val(res.data.email);
+        $("textarea[name=bio]").text(res.data.bio);
 
     }).fail(error => {
         if(error.responseJSON.data == null){

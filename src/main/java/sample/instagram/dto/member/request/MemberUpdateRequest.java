@@ -23,11 +23,14 @@ public class MemberUpdateRequest {
     @NotBlank(message = "이름 타입은 필수입니다.")
     private String name;
 
+    private String bio;
+
     @Builder
-    public MemberUpdateRequest(String password, String email, String name) {
+    public MemberUpdateRequest(String password, String email, String name, String bio) {
         this.password = password;
         this.email = email;
         this.name = name;
+        this.bio = bio;
     }
 
     public Member toEntity(String password) {
@@ -35,6 +38,7 @@ public class MemberUpdateRequest {
                 .password(password)
                 .email(email)
                 .name(name)
+                .bio(bio)
                 .build();
     }
 }

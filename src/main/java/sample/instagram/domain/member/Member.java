@@ -33,6 +33,8 @@ public class Member extends BaseEntity {
 
     private String profileImageUrl;
 
+    private String bio;
+
     @JsonIgnore
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -47,12 +49,13 @@ public class Member extends BaseEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    private Member(Long id, String username, String password, String email, String name, Role role) {
+    private Member(Long id, String username, String password, String email, String name, Role role, String bio) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
         this.role = role;
+        this.bio = bio;
     }
 }

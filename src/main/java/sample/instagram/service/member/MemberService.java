@@ -67,7 +67,14 @@ public class MemberService {
     @Transactional
     public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
         Member memberEntity = findByMemberEntity(id);
-        memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        System.out.println("request = " + request.getPassword());
+
+        if (!request.getPassword().equals("") && request.getPassword() != null) {
+            memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        }
+        if (!request.getBio().equals("") && request.getBio() != null) {
+            memberEntity.setBio(request.getBio());
+        }
         memberEntity.setName(request.getName());
         memberEntity.setEmail(request.getEmail());
 

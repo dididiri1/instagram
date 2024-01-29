@@ -35,6 +35,7 @@ function getMemberProfile() {
 }
 
 function memberProfileInfo(data) {
+    $("#bio").text(data.bio);
     if (data.profileImageUrl != null) {
         $("#userProfileImage").attr("src", data.profileImageUrl);
     }
@@ -43,6 +44,7 @@ function memberProfileInfo(data) {
     $("#subscribeCount").text(data.subscribeCount);
 
     if (data.pageOwnerState) {
+        $("#profileUploadBtn").removeClass("none");
         $("#imageUploadBtn").removeClass("none");
     } else {
         if (data.subscribeState) {

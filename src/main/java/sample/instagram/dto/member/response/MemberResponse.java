@@ -11,16 +11,18 @@ public class MemberResponse {
     private String username;
     private String email;
     private String name;
-    private String profileImageUrl;;
+    private String profileImageUrl;
+    private String bio;
 
 
     @Builder
-    private MemberResponse(Long id, String username, String email, String name, String profileImageUrl) {
+    private MemberResponse(Long id, String username, String email, String name, String profileImageUrl, String bio) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+        this.bio = bio;
     }
 
     public static MemberResponse of(Member member) {
@@ -30,6 +32,7 @@ public class MemberResponse {
                 .email(member.getEmail())
                 .name(member.getName())
                 .profileImageUrl(member.getProfileImageUrl())
+                .bio(member.getBio())
                 .build();
     }
 }

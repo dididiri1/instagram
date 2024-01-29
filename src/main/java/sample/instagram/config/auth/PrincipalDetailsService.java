@@ -17,13 +17,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        System.out.println("username = " + username);
-
         Member memberEntity = memberRepositoryJpa.findByUsername(username);
-
-        System.out.println("memberEntity = " + memberEntity);
-
         if(memberEntity == null){
             return null;
         } else {

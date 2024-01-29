@@ -19,13 +19,10 @@ public class PrincipalDetails implements UserDetails {
         this.member = member;
     }
 
-    // 권한 : 한개가 아닐 수 있음
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         Collection<GrantedAuthority> collector = new ArrayList<>();
         collector.add(() -> {
-            System.out.println("role::"+member.getRole().toString());
             return member.getRole().toString();
         });
         return collector;

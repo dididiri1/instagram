@@ -24,10 +24,11 @@ public class MemberProfileResponse {
     private String username;
     private String name;
     private String profileImageUrl;
+    private String bio;
     private List<ImageResponse> images;
 
     @Builder
-    public MemberProfileResponse(boolean pageOwnerState, int imageCount, boolean subscribeState, int subscribeCount, String username, String name, String profileImageUrl, List<ImageResponse> images) {
+    public MemberProfileResponse(boolean pageOwnerState, int imageCount, boolean subscribeState, int subscribeCount, String username, String name, String profileImageUrl, String bio, List<ImageResponse> images) {
         this.pageOwnerState = pageOwnerState;
         this.imageCount = imageCount;
         this.subscribeState = subscribeState;
@@ -35,6 +36,7 @@ public class MemberProfileResponse {
         this.username = username;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+        this.bio = bio;
         this.images = images;
     }
 
@@ -47,6 +49,7 @@ public class MemberProfileResponse {
                 .username(member.getUsername())
                 .name(member.getName())
                 .profileImageUrl(member.getProfileImageUrl())
+                .bio(member.getBio())
                 .images(member.getImages().stream()
                         .map(image -> ImageResponse.of(image))
                         .sorted(Comparator.comparing(ImageResponse::getId).reversed())

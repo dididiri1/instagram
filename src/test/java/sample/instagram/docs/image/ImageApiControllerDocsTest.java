@@ -166,14 +166,12 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
         given(imageService.getPopularImages())
                 .willReturn(List.of(
                         ImagePopularResponse.builder()
-                                .id(1L)
-                                .caption("이미지 소개1")
+                                .memberId(1L)
                                 .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                                 .likeCount(3)
                                 .build(),
                         ImagePopularResponse.builder()
-                                .id(2L)
-                                .caption("이미지 소개2")
+                                .memberId(2L)
                                 .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                                 .likeCount(0)
                                 .build()
@@ -196,10 +194,8 @@ public class ImageApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("data").type(JsonFieldType.ARRAY)
                                         .description("데이터")
                         ).andWithPrefix("data[].",
-                                fieldWithPath("id").type(JsonFieldType.NUMBER)
-                                        .description("이미지 ID"),
-                                fieldWithPath("caption").type(JsonFieldType.STRING)
-                                        .description("이미지 설명"),
+                                fieldWithPath("memberId").type(JsonFieldType.NUMBER)
+                                        .description("회원 ID"),
                                 fieldWithPath("imageUrl").type(JsonFieldType.STRING)
                                         .description("이미지 주소"),
                                 fieldWithPath("likeCount").type(JsonFieldType.NUMBER)

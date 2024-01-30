@@ -12,9 +12,7 @@ import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.request.ProfileImageResponse;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.member.response.MemberResponse;
-import sample.instagram.dto.member.response.MemberSubscribeResponse;
+import sample.instagram.dto.member.response.*;
 import sample.instagram.handler.ex.CustomApiDuplicateKey;
 import sample.instagram.handler.ex.CustomApiException;
 import sample.instagram.handler.ex.CustomException;
@@ -51,12 +49,12 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponse createMember(MemberCreateRequest request) {
+    public MemberCreateResponse createMember(MemberCreateRequest request) {
         String rawPassword = request.getPassword();
         Member member = request.toEntity(bCryptPasswordEncoder.encode(rawPassword));
         Member memberEntity = memberRepositoryJpa.save(member);
 
-        return MemberResponse.of(memberEntity);
+        return MemberCreateResponse.of(memberEntity);
     }
 
     public MemberResponse getMember(Long id) {
@@ -65,20 +63,20 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
+    public MemberUpdateResponse updateMember(Long id, MemberUpdateRequest request) {
         Member memberEntity = findByMemberEntity(id);
         System.out.println("request = " + request.getPassword());
 
-        if (!request.getPassword().equals("") && request.getPassword() != null) {
+        if (request.getPassword() != null && !request.getPassword().equals("")) {
             memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         }
-        if (!request.getBio().equals("") && request.getBio() != null) {
+        if (request.getBio() != null && !request.getBio().equals("")) {
             memberEntity.setBio(request.getBio());
         }
         memberEntity.setName(request.getName());
         memberEntity.setEmail(request.getEmail());
 
-        return MemberResponse.of(memberEntity);
+        return MemberUpdateResponse.of(memberEntity);
     }
 
     private Member findByMemberEntity(Long id) {

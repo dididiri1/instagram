@@ -9,8 +9,6 @@ import sample.instagram.domain.like.Like;
 import sample.instagram.domain.like.LikeRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
-import sample.instagram.dto.DataResponse;
-import sample.instagram.dto.ResultStatus;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -34,8 +32,7 @@ public class LikeService {
     }
 
     @Transactional
-    public DataResponse deleteLike(Long imageId, Long memberId) {
+    public void deleteLike(Long imageId, Long memberId) {
         likeRepositoryJpa.deleteByImageIdAndMemberId(imageId, memberId);
-        return DataResponse.of(ResultStatus.SUCCESS);
     }
 }

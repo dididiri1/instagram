@@ -44,9 +44,11 @@ function memberProfileInfo(data) {
     $("#subscribeCount").text(data.subscribeCount);
 
     if (data.pageOwnerState) {
+        $("#modalInfo").removeClass("none");
         $("#profileUploadBtn").removeClass("none");
         $("#imageUploadBtn").removeClass("none");
     } else {
+        $("#modalMemberInfo").removeClass("none");
         if (data.subscribeState) {
             $("#unSubscribeBtn").removeClass("none");
         } else {

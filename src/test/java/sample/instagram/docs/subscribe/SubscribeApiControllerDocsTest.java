@@ -5,15 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import sample.instagram.controller.api.subscribe.SubscribeApiController;
 import sample.instagram.docs.RestDocsSupport;
-import sample.instagram.dto.DataResponse;
-import sample.instagram.dto.ResultStatus;
 import sample.instagram.dto.subscribe.response.SubscribeResponse;
 import sample.instagram.service.subscribe.SubscribeService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;

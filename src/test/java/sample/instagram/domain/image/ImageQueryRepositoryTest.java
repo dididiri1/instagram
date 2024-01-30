@@ -18,7 +18,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sample.instagram.domain.member.Role.ROLE_USER;
+import static sample.instagram.dto.Role.ROLE_USER;
 
 @Transactional
 public class ImageQueryRepositoryTest extends IntegrationTestSupport {
@@ -67,7 +67,7 @@ public class ImageQueryRepositoryTest extends IntegrationTestSupport {
         em.clear();
 
         //when
-        List<Image> images = imageQueryRepository.findAllWithMemberById(memberId, pageRequest);
+        List<Image> images = imageQueryRepository.findMySubscriptionStory(memberId, pageRequest);
 
         //then
         assertThat(images.size()).isEqualTo(2);

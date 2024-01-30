@@ -16,7 +16,7 @@ import sample.instagram.domain.member.MemberRepositoryJpa;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sample.instagram.domain.member.Role.ROLE_USER;
+import static sample.instagram.dto.Role.ROLE_USER;
 
 public class LikeServiceTest extends IntegrationTestSupport {
 

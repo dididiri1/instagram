@@ -64,7 +64,6 @@ public class ImageService {
     }
 
     public List<ImagePopularResponse> getPopularImages() {
-        //List<Image> images = imageRepositoryJpa.findAllByOrderByIdDesc();
         List<Image> images = imageQueryRepository.findAllWithMemberLikes();
 
         return images.stream()

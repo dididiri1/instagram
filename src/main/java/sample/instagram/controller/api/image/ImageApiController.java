@@ -24,6 +24,10 @@ public class ImageApiController {
 
     private final LikeService likeService;
 
+    /**
+     * @Method: createImage
+     * @Description: 이미지 등록
+     */
     @PostMapping("/api/v1/images")
     public ResponseEntity<?> createImage(@Valid @ModelAttribute ImageCreateRequest imageCreateRequest, BindingResult bindingResult) {
         if(imageCreateRequest.getFile().isEmpty()) {
@@ -33,14 +37,22 @@ public class ImageApiController {
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "이미지 등록 성공", imageCreateResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method: createLike
+     * @Description: 좋아요 등록
+     */
     @PostMapping("/api/v1/images/{imageId}/likes/{memberId}")
-    public ResponseEntity<?> likes(@PathVariable Long imageId, @PathVariable Long memberId) {
+    public ResponseEntity<?> createLike(@PathVariable Long imageId, @PathVariable Long memberId) {
         likeService.createLike(imageId, memberId);
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "좋아요 성공", null), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method: deleteLike
+     * @Description: 좋아요 취소
+     */
     @DeleteMapping("/api/v1/images/{imageId}/likes/{memberId}")
-    public ResponseEntity<?> unlikes(@PathVariable Long imageId, @PathVariable Long memberId) {
+    public ResponseEntity<?> deleteLike(@PathVariable Long imageId, @PathVariable Long memberId) {
         likeService.deleteLike(imageId, memberId);
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "좋아요 취소 성공", null), HttpStatus.OK);
     }

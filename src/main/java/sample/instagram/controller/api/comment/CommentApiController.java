@@ -17,6 +17,10 @@ public class CommentApiController {
 
     private final CommentService commentService;
 
+    /**
+     * @Method: createComment
+     * @Description: 댓글 등록
+     */
     @PostMapping("/api/v1/comment")
     public ResponseEntity<?> createComment(@Valid @RequestBody CommentRequest request) {
         CommentResponse commentResponse = commentService.createComment(request);
@@ -24,6 +28,10 @@ public class CommentApiController {
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "댓글 등록 성공", commentResponse), HttpStatus.CREATED);
     }
 
+    /**
+     * @Method: deleteComment
+     * @Description: 댓글 삭제
+     */
     @DeleteMapping("/api/v1/comment/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long id) {
         commentService.deleteComment(id);

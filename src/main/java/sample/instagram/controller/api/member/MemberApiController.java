@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import sample.instagram.dto.ApiResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
 import sample.instagram.dto.member.request.ProfileImageResponse;
+import sample.instagram.dto.member.response.*;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
-import sample.instagram.dto.member.response.MemberSubscribeResponse;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.member.response.MemberResponse;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.request.ProfileImageRequest;
@@ -48,8 +46,8 @@ public class MemberApiController {
      */
     @PostMapping("/api/v1/members/new")
     public ResponseEntity<?> createMember(@RequestBody @Valid MemberCreateRequest request) {
-        MemberResponse memberResponse = memberService.createMember(request);
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "회원 등록 성공", memberResponse), HttpStatus.CREATED);
+        MemberCreateResponse response = memberService.createMember(request);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "회원 등록 성공", response), HttpStatus.CREATED);
     }
 
     /**
@@ -58,8 +56,8 @@ public class MemberApiController {
      */
     @GetMapping("/api/v1/members/{id}")
     public ResponseEntity<?> getMember(@PathVariable("id") Long id) {
-        MemberResponse memberResponse = memberService.getMember(id);
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "회원 조회 성공", memberResponse), HttpStatus.OK);
+        MemberResponse response = memberService.getMember(id);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "회원 조회 성공", response), HttpStatus.OK);
     }
 
     /**
@@ -68,8 +66,8 @@ public class MemberApiController {
      */
     @PatchMapping("/api/v1/members/{id}")
     public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest request) {
-        MemberResponse memberResponse = memberService.updateMember(id, request);
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "회원 수정 성공", memberResponse), HttpStatus.OK);
+        MemberUpdateResponse response = memberService.updateMember(id, request);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "회원 수정 성공", response), HttpStatus.OK);
     }
 
     /**
@@ -98,8 +96,8 @@ public class MemberApiController {
      */
     @GetMapping("/api/v1/members/{id}/subscribe/story")
     public ResponseEntity<?> getMyStory(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {
-        List<ImageStoryResponse> imageResponses = imageService.getMyStory(memberId, pageable);
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "구독자 스토리 조회 성공", imageResponses), HttpStatus.OK);
+        List<ImageStoryResponse> response = imageService.getMyStory(memberId, pageable);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "구독자 스토리 조회 성공", response), HttpStatus.OK);
     }
 
     /**
@@ -108,8 +106,8 @@ public class MemberApiController {
      */
     @GetMapping("/api/v1/members/{id}/story")
     public ResponseEntity<?> getStory(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {
-        List<ImageStoryResponse> imageResponses = imageService.getStory(memberId, pageable);
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "스토리 조회 성공", imageResponses), HttpStatus.OK);
+        List<ImageStoryResponse> response = imageService.getStory(memberId, pageable);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "스토리 조회 성공", response), HttpStatus.OK);
     }
 
     /**
@@ -121,9 +119,9 @@ public class MemberApiController {
         if(request.getFile().isEmpty()) {
             throw new ValidationException("이미지가 첨부되지 않았습니다.");
         }
-        ProfileImageResponse profileImageResponse = memberService.updateProfileImage(request);
+        ProfileImageResponse response = memberService.updateProfileImage(request);
 
-        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "프로필사진 변경 성공", profileImageResponse), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "프로필사진 변경 성공", response), HttpStatus.OK);
     }
 
 }

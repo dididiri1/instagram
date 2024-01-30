@@ -17,10 +17,8 @@ import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.request.ProfileImageResponse;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.member.response.MemberResponse;
+import sample.instagram.dto.member.response.*;
 import sample.instagram.dto.member.request.ProfileImageRequest;
-import sample.instagram.dto.member.response.MemberSubscribeResponse;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static sample.instagram.domain.member.Role.ROLE_USER;
+import static sample.instagram.dto.Role.ROLE_USER;
 
 public class MemberServiceTest extends IntegrationTestSupport {
 
@@ -59,20 +57,20 @@ public class MemberServiceTest extends IntegrationTestSupport {
     void createMember() throws Exception {
         //given
         MemberCreateRequest request = MemberCreateRequest.builder()
-                .username("testUser1")
+                .username("test")
                 .password(bCryptPasswordEncoder.encode("1234"))
                 .email("test@example.com")
                 .name("홍길동")
                 .build();
 
         //when
-        MemberResponse memberResponse = memberService.createMember(request);
+        MemberCreateResponse response = memberService.createMember(request);
 
         //then
-        assertThat(memberResponse).isNotNull();
-        assertThat(memberResponse.getUsername()).isEqualTo("testUser1");
-        assertThat(memberResponse.getEmail()).isEqualTo("test@example.com");
-        assertThat(memberResponse.getName()).isEqualTo("홍길동");
+        assertThat(response).isNotNull();
+        assertThat(response.getUsername()).isEqualTo("test");
+        assertThat(response.getEmail()).isEqualTo("test@example.com");
+        assertThat(response.getName()).isEqualTo("홍길동");
     }
 
     @DisplayName("회원 정보를 조회 한다.")
@@ -83,13 +81,13 @@ public class MemberServiceTest extends IntegrationTestSupport {
         memberRepositoryJpa.save(member);
 
         //when
-        MemberResponse memberResponse = memberService.getMember(member.getId());
+        MemberResponse response = memberService.getMember(member.getId());
 
         //then
-        assertThat(memberResponse).isNotNull();
-        assertThat(memberResponse.getUsername()).isEqualTo("member1");
-        assertThat(memberResponse.getEmail()).isEqualTo("test@example.com");
-        assertThat(memberResponse.getName()).isEqualTo("name1");
+        assertThat(response).isNotNull();
+        assertThat(response.getUsername()).isEqualTo("member1");
+        assertThat(response.getEmail()).isEqualTo("test@example.com");
+        assertThat(response.getName()).isEqualTo("name1");
     }
 
     @DisplayName("회원을 수정 한다.")
@@ -103,15 +101,16 @@ public class MemberServiceTest extends IntegrationTestSupport {
                 .password(bCryptPasswordEncoder.encode("1234"))
                 .email("test@gmail.com")
                 .name("김구라")
+                .bio("자기소개")
                 .build();
 
         //when
-        MemberResponse memberResponse = memberService.updateMember(member.getId(), request);
+        MemberUpdateResponse response = memberService.updateMember(member.getId(), request);
 
         //then
-        assertThat(memberResponse).isNotNull();
-        assertThat(memberResponse.getEmail()).isEqualTo("test@gmail.com");
-        assertThat(memberResponse.getName()).isEqualTo("김구라");
+        assertThat(response).isNotNull();
+        assertThat(response.getEmail()).isEqualTo("test@gmail.com");
+        assertThat(response.getName()).isEqualTo("김구라");
     }
 
     @DisplayName("회원 프로필을 조회 한다.")
@@ -126,15 +125,15 @@ public class MemberServiceTest extends IntegrationTestSupport {
         imageRepositoryJpa.saveAll(List.of(image1, image2));
 
         //when
-        MemberProfileResponse memberProfileResponse = memberService.getMemberProfile(member.getId(), member.getId());
+        MemberProfileResponse response = memberService.getMemberProfile(member.getId(), member.getId());
 
         //then
-        assertThat(memberProfileResponse).isNotNull();
-        assertThat(memberProfileResponse)
+        assertThat(response).isNotNull();
+        assertThat(response)
                 .extracting("pageOwnerState", "imageCount", "subscribeState", "subscribeCount" , "name")
                 .contains(true, 2, false, 0, "name1");
 
-        assertThat(memberProfileResponse.getImages()).hasSize(2)
+        assertThat(response.getImages()).hasSize(2)
                 .extracting("caption", "imageUrl")
                 .containsExactlyInAnyOrder(
                         tuple("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg"),
@@ -158,11 +157,11 @@ public class MemberServiceTest extends IntegrationTestSupport {
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2, subscribe3, subscribe4));
 
         //when
-        List<MemberSubscribeResponse> memberSubscribeResponses = memberService.getMemberSubscribes(member1.getId(), member1.getId());
+        List<MemberSubscribeResponse> response = memberService.getMemberSubscribes(member1.getId(), member1.getId());
 
         //then
-        assertThat(memberSubscribeResponses).isNotNull();
-        assertThat(memberSubscribeResponses).hasSize(2)
+        assertThat(response).isNotNull();
+        assertThat(response).hasSize(2)
                 .extracting("username", "subscribeState", "equalMemberState")
                 .containsExactlyInAnyOrder(
                         tuple("member2", 1, 0),
@@ -188,10 +187,10 @@ public class MemberServiceTest extends IntegrationTestSupport {
                 .thenReturn(profileImageUrl);
 
         //when
-        ProfileImageResponse profileImageResponse = memberService.updateProfileImage(request);
+        ProfileImageResponse response = memberService.updateProfileImage(request);
 
         //then
-        assertThat(profileImageResponse.getProfileImageUrl()).isEqualTo(profileImageUrl);
+        assertThat(response.getProfileImageUrl()).isEqualTo(profileImageUrl);
     }
 
     private Member createMember(String username, String email, String name) {

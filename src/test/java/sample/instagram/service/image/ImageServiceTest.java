@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static sample.instagram.domain.member.Role.ROLE_USER;
+import static sample.instagram.dto.Role.ROLE_USER;
 
 public class ImageServiceTest extends IntegrationTestSupport {
 
@@ -93,14 +93,14 @@ public class ImageServiceTest extends IntegrationTestSupport {
         Subscribe subscribe2 = Subscribe.create(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
-        Image image1 = createImage("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
-        Image image2 = createImage("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
-        Image image3 = createImage("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
-        Image image4 = createImage("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image1 = createImage("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
+        Image image2 = createImage("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
+        Image image3 = createImage("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
+        Image image4 = createImage("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
-        Like like1 = createLike(image3, member1);
-        Like like2 = createLike(image4, member1);
+        Like like1 = createLike(image3, member2);
+        Like like2 = createLike(image4, member2);
         likeRepositoryJpa.saveAll(List.of(like1, like2));
 
         //when
@@ -110,9 +110,9 @@ public class ImageServiceTest extends IntegrationTestSupport {
         assertThat(images).hasSize(3)
                 .extracting("caption", "imageUrl", "username", "likeState", "likeCount")
                 .containsExactlyInAnyOrder(
-                        tuple("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2", true, 1),
-                        tuple("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2", true, 1),
-                        tuple("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2",  false, 0)
+                        tuple("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member1", false, 1),
+                        tuple("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member1", false, 1),
+                        tuple("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member1",  false, 0)
                 );
     }
 
@@ -130,14 +130,14 @@ public class ImageServiceTest extends IntegrationTestSupport {
         Subscribe subscribe2 = Subscribe.create(member2, member1);
         subscribeRepositoryJpa.saveAll(List.of(subscribe1, subscribe2));
 
-        Image image1 = createImage("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
-        Image image2 = createImage("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
-        Image image3 = createImage("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
-        Image image4 = createImage("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member2);
+        Image image1 = createImage("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
+        Image image2 = createImage("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
+        Image image3 = createImage("caption3", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
+        Image image4 = createImage("caption4", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", member1);
         imageRepositoryJpa.saveAll(List.of(image1, image2, image3, image4));
 
-        Like like1 = createLike(image3, member1);
-        Like like2 = createLike(image4, member1);
+        Like like1 = createLike(image3, member2);
+        Like like2 = createLike(image4, member2);
         likeRepositoryJpa.saveAll(List.of(like1, like2));
 
         //when
@@ -147,7 +147,7 @@ public class ImageServiceTest extends IntegrationTestSupport {
         assertThat(images).hasSize(1)
                 .extracting("caption", "imageUrl", "username", "likeState", "likeCount")
                 .containsExactlyInAnyOrder(
-                        tuple("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member2", false , 0)
+                        tuple("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", "member1", false , 0)
                 );
     }
 
@@ -180,10 +180,10 @@ public class ImageServiceTest extends IntegrationTestSupport {
 
         //then
         assertThat(images).hasSize(2)
-                .extracting("caption", "imageUrl", "likeCount")
+                .extracting("imageUrl", "likeCount")
                 .containsExactly(
-                        tuple("caption2", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", 3),
-                        tuple("caption1", "https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", 1)
+                        tuple("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", 3),
+                        tuple("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg", 1)
                 );
 
     }

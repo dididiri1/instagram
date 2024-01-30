@@ -1,23 +1,14 @@
-/**
- 2. 스토리 페이지
- (1) 스토리 로드하기
- (2) 스토리 스크롤 페이징하기
- (3) 좋아요, 안좋아요
- (4) 댓글쓰기
- (5) 댓글삭제
- */
-
 let page = 0;
 
 $(document).ready(function(){
     storyLoad();
 });
 
-// (1) 스토리 로드하기
+// 스토리 로드
 function storyLoad() {
     $.ajax({
         type: "get",
-        url:"/api/v1/members/"+memberId+"/story?page="+page,
+        url:"/api/v1/members/"+pageMemberId+"/story?page="+page,
         dataType:"json"
     }).done(res=>{
         res.data.forEach((data) =>{
@@ -89,7 +80,7 @@ $(window).scroll(() => {
 
 
 
-// (3) 좋아요, 안좋아요
+// 좋아요
 function toggleLike(imageId) {
     let likeIcon = $("#storyLikeIcon-"+imageId);
     if (likeIcon.hasClass("far")) {
@@ -132,25 +123,19 @@ function toggleLike(imageId) {
     }
 }
 
-// (4) 댓글쓰기
+// 댓글쓰기
 function addComment(imageId) {
-
-    console.log("imageId:"+imageId);
-
     let commentInput = $("#storyCommentInput-"+imageId);
     let commentList = $("#storyCommentList-"+imageId);
-
     let data = {
         memberId: memberId,
         imageId: imageId,
         content: commentInput.val()
     }
-
     if (data.content === "") {
         alert("댓글을 작성해주세요!");
         return;
     }
-
     $.ajax({
         type:"post",
         url:"/api/v1/comment",
@@ -171,7 +156,7 @@ function addComment(imageId) {
 }
 
 
-// (5) 댓글 삭제
+// 댓글 삭제
 function deleteComment(commentId) {
     $.ajax({
         type:"delete",

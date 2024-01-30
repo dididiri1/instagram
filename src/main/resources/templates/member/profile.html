@@ -37,12 +37,14 @@
         <div class="profile-right">
             <div class="name-group">
                 <h2 id="profileName"></h2>
-
                 <button class="cta none" id="imageUploadBtn" onclick="location.href='/image/upload'">게시물 등록</button>
                 <button class="cta none" id="profileUploadBtn" onclick="location.href='/member/'+memberId+'/update'">프로필 편집</button>
                 <button class="cta blue none" id="unSubscribeBtn" data-su th:onclick="'toggleSubscribe('+${pageMemberId}+', this)'">구독취소</button>
                 <button class="cta none" id="inSubscribeBtn" th:onclick="'toggleSubscribe('+${pageMemberId}+', this)'">구독하기</button>
-                <button class="modi" onclick="popup('.modal-info')">
+                <button class="modi none" id="modalInfo" onclick="popup('.modal-info')">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="modi none" id="modalMemberInfo" onclick="popup('.modal-member-info')">
                     <i class="fas fa-cog"></i>
                 </button>
             </div>
@@ -95,7 +97,17 @@
     </div>
 </div>
 
-<div class="modal-subscribe-info" onclick="modalSubscribeInfo()">
+    <div class="modal-member-info" onclick="modalInfo()">
+        <div class="modal">
+            <button type="button" style="color: red">차단</button>
+            <button type="button" style="color: red">제한</button>
+            <button type="button" style="color: red">신고</button>
+            <button type="button" onclick="closePopup('.modal-member-info')">취소</button>
+        </div>
+    </div>
+
+
+    <div class="modal-subscribe-info" onclick="modalSubscribeInfo()">
     <div class="modal">
         <div class="modal__subscribe__img">
             <img id="ms-profileImageUrl" src="#"/>

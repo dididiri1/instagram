@@ -18,9 +18,7 @@ import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.request.ProfileImageRequest;
 import sample.instagram.dto.member.request.ProfileImageResponse;
-import sample.instagram.dto.member.response.MemberProfileResponse;
-import sample.instagram.dto.member.response.MemberResponse;
-import sample.instagram.dto.member.response.MemberSubscribeResponse;
+import sample.instagram.dto.member.response.*;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.service.member.MemberService;
 
@@ -62,7 +60,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 .build();
 
         given(memberService.createMember(any(MemberCreateRequest.class)))
-                .willReturn(MemberResponse.builder()
+                .willReturn(MemberCreateResponse.builder()
                         .id(1L)
                         .username("kangmin")
                         .email("kmkim6368@gmail.com")
@@ -146,16 +144,17 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("유저 단건 조회 API")
     void getMember() throws Exception {
-
         // given
         long memberId = 1L;
 
         given(memberService.getMember(memberId))
                 .willReturn(MemberResponse.builder()
                         .id(1L)
-                        .username("kangmin")
-                        .email("kmkim6368@gmail.com")
-                        .name("김강민")
+                        .username("love")
+                        .email("test@gmail.com")
+                        .name("홍길동")
+                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/default.png")
+                        .bio("자기소개")
                         .build());
 
         // expected
@@ -185,7 +184,11 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("email").type(JsonFieldType.STRING)
                                         .description("이메일"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
-                                        .description("이름")
+                                        .description("이름"),
+                                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                                        .description("프로필 이미지"),
+                                fieldWithPath("bio").type(JsonFieldType.STRING)
+                                        .description("자기소개")
                         )
                 ));
     }
@@ -200,14 +203,16 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                 .password("1234")
                 .email("test@gmail.com")
                 .name("김구라")
+                .bio("자기소개")
                 .build();
 
         given(memberService.updateMember(any(Long.class), any(MemberUpdateRequest.class)))
-                .willReturn(MemberResponse.builder()
+                .willReturn(MemberUpdateResponse.builder()
                         .id(memberId)
                         .username("testUser")
                         .email("test@gmail.com")
                         .name("김구라")
+                        .bio("자기소개")
                         .build());
 
         // expected
@@ -231,7 +236,9 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("이메일"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
                                         .optional()
-                                        .description("이름")
+                                        .description("이름"),
+                                fieldWithPath("bio").type(JsonFieldType.STRING)
+                                        .description("자기소개")
                         ),
                         responseFields (
                                 fieldWithPath("status").type(JsonFieldType.NUMBER)
@@ -248,7 +255,9 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("email").type(JsonFieldType.STRING)
                                         .description("이메일"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
-                                        .description("이름")
+                                        .description("이름"),
+                                fieldWithPath("bio").type(JsonFieldType.STRING)
+                                        .description("자기소개")
                         )
                 ));
     }
@@ -282,7 +291,9 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .imageCount(2)
                         .subscribeState(false)
                         .subscribeCount(0)
+                        .username("love")
                         .name("홍길동")
+                        .bio("자기소개")
                         .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
                         .images(images)
                         .build());
@@ -317,18 +328,22 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("구독 상태"),
                                 fieldWithPath("subscribeCount").type(JsonFieldType.NUMBER)
                                         .description("구독 갯수"),
+                                fieldWithPath("username").type(JsonFieldType.STRING)
+                                        .description("사용자명"),
                                 fieldWithPath("name").type(JsonFieldType.STRING)
-                                        .description("회원 이름"),
-                                fieldWithPath("likeCount").type(JsonFieldType.STRING)
                                         .description("회원 이름"),
                                 fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
                                         .description("회원 프로필사진"),
+                                fieldWithPath("bio").type(JsonFieldType.STRING)
+                                        .description("자기소개"),
                                 fieldWithPath("images[].id").type(JsonFieldType.NUMBER)
                                         .description("이미지 ID"),
                                 fieldWithPath("images[].caption").type(JsonFieldType.STRING)
                                         .description("이미지 소개"),
                                 fieldWithPath("images[].imageUrl").type(JsonFieldType.STRING)
-                                        .description("이미지 URL")
+                                        .description("이미지 URL"),
+                                fieldWithPath("images[].likeCount").type(JsonFieldType.NUMBER)
+                                        .description("좋아요 갯수")
 
                         )
                 ));
@@ -344,12 +359,14 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
         List<MemberSubscribeResponse> result = List.of(
                 MemberSubscribeResponse.builder()
                         .memberId(2L)
+                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/profile/default.png")
                         .username("member2")
                         .subscribeState(1)
                         .equalMemberState(0)
                         .build(),
                 MemberSubscribeResponse.builder()
                         .memberId(3L)
+                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/profile/default.png")
                         .username("member3")
                         .subscribeState(1)
                         .equalMemberState(0)
@@ -382,6 +399,8 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         ).andWithPrefix("data",
                                 fieldWithPath("[].memberId").type(JsonFieldType.NUMBER)
                                         .description("회원 ID"),
+                                fieldWithPath("[].profileImageUrl").type(JsonFieldType.STRING)
+                                        .description("프로필 이미지"),
                                 fieldWithPath("[].username").type(JsonFieldType.STRING)
                                         .description("회원 이름"),
                                 fieldWithPath("[].subscribeState").type(JsonFieldType.NUMBER)
@@ -406,7 +425,9 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .id(1L)
                         .caption("이미지 소개1")
                         .imageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/sample.jpg")
+                        .memberId(1L)
                         .username("member1")
+                        .profileImageUrl("https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/test/default.png")
                         .likeState(true)
                         .likeCount(1)
                         .comments(List.of(
@@ -458,8 +479,12 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                                         .description("이미지 설명"),
                                 fieldWithPath("imageUrl").type(JsonFieldType.STRING)
                                         .description("이미지 주소"),
+                                fieldWithPath("memberId").type(JsonFieldType.NUMBER)
+                                        .description("회원 ID"),
                                 fieldWithPath("username").type(JsonFieldType.STRING)
                                         .description("회원 이름"),
+                                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                                        .description("프로필 이미지"),
                                 fieldWithPath("likeState").type(JsonFieldType.BOOLEAN)
                                         .description("좋아요 상태"),
                                 fieldWithPath("likeCount").type(JsonFieldType.NUMBER)
@@ -476,7 +501,6 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     @Test
     @DisplayName("회원 프로필 사진을 변경 API")
     void updateProfileImage() throws Exception {
-
         // given
         ProfileImageRequest request = ProfileImageRequest.builder()
                 .memberId(1L)

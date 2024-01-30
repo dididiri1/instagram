@@ -14,15 +14,13 @@ import sample.instagram.domain.image.Image;
 import sample.instagram.domain.image.ImageRepositoryJpa;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepositoryJpa;
-import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.dto.comment.request.CommentRequest;
 import sample.instagram.dto.comment.response.CommentResponse;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sample.instagram.domain.member.Role.ROLE_USER;
+import static sample.instagram.dto.Role.ROLE_USER;
 
 @Transactional
 public class CommentServiceTest extends IntegrationTestSupport {

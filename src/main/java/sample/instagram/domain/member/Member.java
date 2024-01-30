@@ -6,6 +6,7 @@ import sample.instagram.domain.BaseEntity;
 import sample.instagram.domain.comment.Comment;
 import sample.instagram.domain.image.Image;
 import sample.instagram.domain.subscribe.Subscribe;
+import sample.instagram.dto.Role;
 
 import javax.persistence.*;
 import java.util.ArrayList;

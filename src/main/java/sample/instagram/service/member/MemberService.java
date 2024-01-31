@@ -50,8 +50,8 @@ public class MemberService {
 
     @Transactional
     public MemberCreateResponse createMember(MemberCreateRequest request) {
-        String rawPassword = request.getPassword();
-        Member member = request.toEntity(bCryptPasswordEncoder.encode(rawPassword));
+        validateDuplicateUsername(request.getUsername());
+        Member member = request.toEntity(bCryptPasswordEncoder.encode(request.getPassword()));
         Member memberEntity = memberRepositoryJpa.save(member);
 
         return MemberCreateResponse.of(memberEntity);
@@ -65,8 +65,6 @@ public class MemberService {
     @Transactional
     public MemberUpdateResponse updateMember(Long id, MemberUpdateRequest request) {
         Member memberEntity = findByMemberEntity(id);
-        System.out.println("request = " + request.getPassword());
-
         if (request.getPassword() != null && !request.getPassword().equals("")) {
             memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         }

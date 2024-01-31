@@ -9,7 +9,7 @@ import sample.instagram.dto.Role;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 public class MemberCreateRequest {
 

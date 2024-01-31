@@ -33,30 +33,16 @@ $(document).ready(function(){
             name: "이름을 입력해주세요."
         },
         submitHandler: function(){
-            let username = $("input[name=username]").val();
-
-            $.ajax({
-                type: "get",
-                url: "/api/v1/members/checkUsername/"+username,
-                dataType: "json"
-            }).done(res => {
-                createMember();
-            }).fail(error => {
-                if(error.responseJSON.data == null){
-                    alert(error.responseJSON.message);
-                }else{
-                    alert(JSON.stringify(error.responseJSON.data));
-                }
-            });
+            createMember();
         }
     });
 });
 
 function createMember() {
-    let formData = new FormData($("#insertForm")[0]);
+    let formData = new FormData($("#form")[0]);
     $.ajax({
         type: "post",
-        url: "/api/v1/members",
+        url: "/api/v1/members/new",
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: "application/json;charset=utf-8",
         dataType: 'json',

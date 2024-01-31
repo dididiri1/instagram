@@ -5,12 +5,12 @@ spring:
   h2:
     console:
       enabled: true
-  datasource:
+  #datasource:
     # url: jdbc:h2:mem:~/cafeKioskApplication
-    url: jdbc:h2:tcp://localhost/~/cafeKioskApplication
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    #url: jdbc:h2:tcp://localhost/~/cafeKioskApplication
+    #driver-class-name: org.h2.Driver
+    #username: sa
+    #password:
 
   jpa:
     hibernate:
@@ -65,6 +65,30 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+
+  sql:
+    init:
+      mode: never
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://instagram-db.c9agiocrwpsu.ap-northeast-2.rds.amazonaws.com:3306/instagram?serverTimezone=Asia/Seoul
+    username: root
+    password: kangmin1!
+
+  jpa:
+    hibernate:
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:

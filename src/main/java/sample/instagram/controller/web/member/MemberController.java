@@ -20,11 +20,16 @@ public class MemberController {
         return "member/profile";
     }
 
-    @GetMapping("/member/{memberId}/update")
-    public String update(@PathVariable int memberId, Model model) {
-        model.addAttribute("memberId", memberId);
+    @GetMapping("/member/edit")
+    public String edit(Model model,@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        model.addAttribute("memberId", principalDetails.getMember().getId());
 
-        return "member/update";
+        return "member/edit";
     }
 
+    @GetMapping("/error/404")
+    public String error_404() {
+
+        return "error/404";
+    }
 }

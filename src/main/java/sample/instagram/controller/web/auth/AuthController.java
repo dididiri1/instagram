@@ -1,22 +1,19 @@
 package sample.instagram.controller.web.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import sample.instagram.dto.ApiResponse;
 import sample.instagram.service.auth.AuthService;
-import sample.instagram.domain.member.Member;
-import sample.instagram.dto.member.request.MemberCreateRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @Controller
@@ -37,17 +34,14 @@ public class AuthController {
         return "auth/signin";
     }
 
-    @GetMapping("/auth/signup")
-    public String signupForm() {
-
-        return "auth/signup";
+    @GetMapping("/health")
+    public ResponseEntity<?> healthCheck() {
+        return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "체크 성공", null), HttpStatus.OK);
     }
 
-    @PostMapping("/auth/signup")
-    public String signup(@ModelAttribute @Valid MemberCreateRequest request, BindingResult bindingResult) {
-        Member member = authService.createMember(request);
-
-        return "auth/signin";
+    @GetMapping("/auth/signup")
+    public String signupForm() {
+        return "auth/signup";
     }
 
 }

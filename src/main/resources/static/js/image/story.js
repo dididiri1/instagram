@@ -25,7 +25,7 @@ function getStoryItem(data) {
     item += '<div class="story-list__item">';
     item += '<div class="sl__item__header">';
     item += '<div class="user_content" onclick="profileInfo(\''+data.memberId+'\')">';
-    item += '<img class="profile-image" src="'+data.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'" />';
+    item += '<img class="profile-image" src="'+data.profileImageUrl+'" onerror="this.src=\'/images/default.png\'" />';
     item += '</div>';
     item += '<div class="user_content" onclick="profileInfo(\''+data.memberId+'\')">'+data.username+'</div>';
     item += '</div>';

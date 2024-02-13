@@ -18,7 +18,7 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    @GetMapping("/")
+    @GetMapping({"/", "/index"})
     public String story() {
 
         return "index";

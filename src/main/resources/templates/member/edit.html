@@ -11,27 +11,20 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
-    <script th:src="@{/js/member/update.js}"></script>
+    <script th:src="@{/js/member/edit.js}"></script>
 </head>
 
 <main layout:fragment="content" class="main">
-    <!--프로필셋팅 섹션-->
     <section class="setting-container">
-        <!--프로필셋팅 아티클-->
         <article class="setting__content">
-
-            <!--프로필셋팅 아이디영역-->
             <div class="content-item__01">
                 <div class="item__img">
-                    <img id="profileImageUrl" src="#" onerror="this.src='/images/dafault.png'"/>
+                    <img id="profileImageUrl" src="#" onerror="this.src='/images/default.png'"/>
                 </div>
                 <div class="item__username" style="padding-top: 25px;">
                     <h2 id="username">TherePrograming</h2>
                 </div>
             </div>
-            <!--프로필셋팅 아이디영역end-->
-
-            <!--프로필 수정-->
             <form id="profileUpdate">
             <div class="content-item__02">
                 <div class="item__title">이름</div>
@@ -63,18 +56,13 @@
                     <textarea name="bio" rows="3" placeholder="소개"></textarea>
                 </div>
             </div>
-
-            <!--제출버튼-->
             <div class="content-item__11">
                 <div class="item__title"></div>
                 <div class="item__input">
                     <button type="submit">제출</button>
                 </div>
             </div>
-            <!--제출버튼end-->
-
             </form>
-            <!--프로필수정 form end-->
         </article>
     </section>
 </main>

@@ -1,17 +1,20 @@
 spring:
   profiles:
-    default: local
+    default: prod
 
   h2:
     console:
       enabled: true
-  #datasource:
+  datasource:
     # url: jdbc:h2:mem:~/cafeKioskApplication
-    #url: jdbc:h2:tcp://localhost/~/cafeKioskApplication
-    #driver-class-name: org.h2.Driver
-    #username: sa
-    #password:
-
+    url: jdbc:h2:tcp://localhost/~/cafeKioskApplication
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  servlet:
+    multipart:
+      maxFileSize: 20MB
+      maxRequestSize: 20MB
   jpa:
     hibernate:
       ddl-auto: none
@@ -79,7 +82,7 @@ spring:
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://instagram-db.c9agiocrwpsu.ap-northeast-2.rds.amazonaws.com:3306/instagram?serverTimezone=Asia/Seoul

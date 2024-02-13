@@ -1,21 +1,9 @@
-/**
- 1. 유저 프로필 페이지
- (1) 유저 프로필 페이지 구독하기, 구독취소
- (2) 구독자 정보 모달 보기
- (3) 구독자 정보 모달에서 구독하기, 구독취소
- (4) 유저 프로필 사진 변경
- (5) 사용자 정보 메뉴 열기 닫기
- (6) 사용자 정보(회원정보, 로그아웃, 닫기) 모달
- (7) 사용자 프로파일 이미지 메뉴(사진업로드, 취소) 모달
- (8) 구독자 정보 모달 닫기
- (9) 유저 프로필 페이지 조회
- */
 
 $(document).ready(function(){
     getMemberProfile();
 });
 
-// (9) 유저 프로필 페이지 조회
+// 유저 프로필 페이지 조회
 function getMemberProfile() {
     $.ajax({
         type: "get",
@@ -26,11 +14,7 @@ function getMemberProfile() {
         memberProfileInfo(res.data);
         addImageItem(res.data, pageMemberId);
     }).fail(error => {
-        if(error.responseJSON.data == null){
-            alert(error.responseJSON.message);
-        }else{
-            alert(JSON.stringify(error.responseJSON.data));
-        }
+        location.href = "/error/404";
     });
 }
 

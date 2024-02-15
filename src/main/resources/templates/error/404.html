@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+  <meta charset="UTF-8" />
+  <title>페이지를 찾을 수 없습니다</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico" />
+  <link rel="stylesheet" th:href="@{/css/common.css}"/>
+</head>
+<section class="wrap_error" layout:fragment="content">
+  <section class="error_massage">
+    <h2>죄송합니다. 페이지를 사용할 수 없습니다.</h2>
+    <p>클릭하신 링크가 잘못되었거나 페이지가 삭제되었습니다. <a href="/">Instagram으로 돌아가기</a></p>
+  </section>
+</section>
+</html>

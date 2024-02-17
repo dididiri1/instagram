@@ -104,9 +104,9 @@ public class MemberApiController {
      * @Method: getStory
      * @Description: 회원 나의 스토리 정보 조회
      */
-    @GetMapping("/api/v1/members/{id}/story")
-    public ResponseEntity<?> getStory(@PathVariable("id") Long memberId, @PageableDefault(size = 3) Pageable pageable) {
-        List<ImageStoryResponse> response = imageService.getStory(memberId, pageable);
+    @GetMapping("/api/v1/members/{pageMemberId}/story/{id}")
+    public ResponseEntity<?> getStory(@PathVariable("pageMemberId") Long pageMemberId, @PathVariable("id") Long id, @PageableDefault(size = 3) Pageable pageable) {
+        List<ImageStoryResponse> response = imageService.getStory(pageMemberId, id, pageable);
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "스토리 조회 성공", response), HttpStatus.OK);
     }
 
@@ -120,7 +120,6 @@ public class MemberApiController {
             throw new ValidationException("이미지가 첨부되지 않았습니다.");
         }
         ProfileImageResponse response = memberService.updateProfileImage(request);
-
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "프로필사진 변경 성공", response), HttpStatus.OK);
     }
 

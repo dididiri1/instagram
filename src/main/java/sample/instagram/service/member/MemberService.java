@@ -7,16 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberQueryRepository;
 import sample.instagram.domain.member.MemberRepositoryJpa;
-import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.member.request.MemberCreateRequest;
 import sample.instagram.dto.member.request.MemberUpdateRequest;
 import sample.instagram.dto.member.request.ProfileImageResponse;
 import sample.instagram.dto.member.response.*;
 import sample.instagram.handler.ex.CustomApiDuplicateKey;
-import sample.instagram.handler.ex.CustomApiException;
 import sample.instagram.handler.ex.CustomException;
-import sample.instagram.service.aws.S3UploaderService;
+import sample.instagram.service.aws.S3UploadService;
 import sample.instagram.dto.member.request.ProfileImageRequest;
 
 import java.util.List;
@@ -35,7 +33,7 @@ public class MemberService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final S3UploaderService s3UploaderService;
+    private final S3UploadService s3UploaderService;
 
     public void checkUsername(String username) {
         validateDuplicateUsername(username);
@@ -58,13 +56,13 @@ public class MemberService {
     }
 
     public MemberResponse getMember(Long id) {
-        Member memberEntity = findByMemberEntity(id);
+        Member memberEntity = validateDuplicateMember(id);
         return MemberResponse.of(memberEntity);
     }
 
     @Transactional
     public MemberUpdateResponse updateMember(Long id, MemberUpdateRequest request) {
-        Member memberEntity = findByMemberEntity(id);
+        Member memberEntity = validateDuplicateMember(id);
         if (request.getPassword() != null && !request.getPassword().equals("")) {
             memberEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         }
@@ -77,25 +75,9 @@ public class MemberService {
         return MemberUpdateResponse.of(memberEntity);
     }
 
-    private Member findByMemberEntity(Long id) {
-        return memberRepositoryJpa.findById(id)
-                .orElseThrow(() -> new CustomApiException("해당 ID에 해당하는 회원을 찾을 수 없습니다."));
-    }
-
     public MemberProfileResponse getMemberProfile(Long pageMemberId, Long memberId) {
         Member member = validateDuplicateMember(pageMemberId);
-
         int subscribeCount = subscribeRepositoryJpa.countByFromMemberId(pageMemberId);
-        System.out.println("subscribeCount = " + subscribeCount);
-
-        List<Subscribe> subscribes = member.getSubscribes();
-        System.out.println("size:"+subscribes.size());
-        for (Subscribe subscribe : subscribes) {
-            System.out.println("subscribe.getId() = " + subscribe.getId());
-            System.out.println("subscribe.getFromMember() = " + subscribe.getFromMember());
-            System.out.println("subscribe.getToMember() = " + subscribe.getToMember());
-
-        }
 
         return MemberProfileResponse.of(member, memberId, subscribeCount);
     }
@@ -116,7 +98,7 @@ public class MemberService {
 
     @Transactional
     public ProfileImageResponse updateProfileImage(ProfileImageRequest request) {
-        Member findMember = findByMemberEntity(request.getMemberId());
+        Member findMember = validateDuplicateMember(request.getMemberId());
         String profileImageUrl = s3UploaderService.uploadFileS3(request.getFile(), "profile");
         findMember.setProfileImageUrl(profileImageUrl);
 

@@ -417,6 +417,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
     @WithMockUser(authorities = "ROLE_USER")
     void getStory() throws Exception {
         // given
+        Long pageMemberId = 1L;
         Long memberId = 1L;
         int page = 0;
 
@@ -447,11 +448,11 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         .build()
         );
 
-        given(imageService.getStory(any(Long.class), any(Pageable.class)))
+        given(imageService.getStory(any(Long.class), any(Long.class), any(Pageable.class)))
                 .willReturn(result);
 
         // when // then
-        this.mockMvc.perform(get("/api/v1/members/{id}/story", memberId)
+        this.mockMvc.perform(get("/api/v1/members/{pageMemberId}/story/{id}", pageMemberId ,memberId)
                         .param("page", String.valueOf(page))
                 )
                 .andDo(print())
@@ -460,6 +461,7 @@ public class MemberApiControllerDocsTest extends RestDocsSupport {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
+                                parameterWithName("pageMemberId").description("페이지 회원 ID"),
                                 parameterWithName("id").description("회원 ID")
                         ),
                         requestParameters (

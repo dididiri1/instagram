@@ -19,7 +19,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class S3UploaderService {
+public class S3UploadService {
 
     private final AmazonS3Client amazonS3Client;
 

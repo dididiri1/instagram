@@ -8,7 +8,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import sample.instagram.controller.api.image.ImageApiController;
 import sample.instagram.docs.RestDocsSupport;
 import sample.instagram.dto.image.reponse.ImageCreateResponse;
-import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.dto.image.request.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
 import sample.instagram.service.like.LikeService;

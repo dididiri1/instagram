@@ -7,7 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sample.instagram.dto.ApiResponse;
 import sample.instagram.dto.image.reponse.ImageCreateResponse;
-import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.dto.image.request.ImageCreateRequest;
 import sample.instagram.service.image.ImageService;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
 import sample.instagram.service.like.LikeService;

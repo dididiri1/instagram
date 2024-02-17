@@ -8,7 +8,7 @@ $(document).ready(function(){
 function storyLoad() {
     $.ajax({
         type: "get",
-        url:"/api/v1/members/"+pageMemberId+"/story?page="+page,
+        url:"/api/v1/members/"+pageMemberId+"/story/"+memberId+"?page="+page,
         dataType:"json"
     }).done(res=>{
         res.data.forEach((data) =>{

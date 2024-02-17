@@ -11,8 +11,8 @@ import sample.instagram.domain.member.Member;
 import sample.instagram.domain.member.MemberRepository;
 import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
-import sample.instagram.dto.image.reqeust.ImageCreateRequest;
-import sample.instagram.service.aws.S3UploaderService;
+import sample.instagram.dto.image.request.ImageCreateRequest;
+import sample.instagram.service.aws.S3UploadService;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
 
 import java.util.Comparator;
@@ -30,7 +30,7 @@ public class ImageService {
 
     private final MemberRepository memberRepository;
 
-    private final S3UploaderService s3UploaderService;
+    private final S3UploadService s3UploaderService;
     private static final String FOLDER_NAME = "story";
 
     @Transactional
@@ -55,8 +55,8 @@ public class ImageService {
                 .collect(Collectors.toList());
     }
 
-    public List<ImageStoryResponse> getStory(Long memberId, Pageable pageable) {
-        List<Image> images = imageQueryRepository.findAllStory(memberId, pageable);
+    public List<ImageStoryResponse> getStory(Long pageMemberId, Long memberId, Pageable pageable) {
+        List<Image> images = imageQueryRepository.findAllStory(pageMemberId, pageable);
 
         return images.stream()
                 .map(image -> ImageStoryResponse.of(image, memberId))

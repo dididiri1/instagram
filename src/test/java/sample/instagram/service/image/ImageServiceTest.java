@@ -19,7 +19,7 @@ import sample.instagram.domain.subscribe.Subscribe;
 import sample.instagram.domain.subscribe.SubscribeRepositoryJpa;
 import sample.instagram.dto.image.reponse.ImageCreateResponse;
 import sample.instagram.dto.image.reponse.ImageStoryResponse;
-import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.dto.image.request.ImageCreateRequest;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
 
 import java.util.List;
@@ -104,7 +104,7 @@ public class ImageServiceTest extends IntegrationTestSupport {
         likeRepositoryJpa.saveAll(List.of(like1, like2));
 
         //when
-        List<ImageStoryResponse> images = imageService.getStory(member1.getId(), pageRequest);
+        List<ImageStoryResponse> images = imageService.getStory(member1.getId(), member1.getId(), pageRequest);
 
         //then
         assertThat(images).hasSize(3)
@@ -141,7 +141,7 @@ public class ImageServiceTest extends IntegrationTestSupport {
         likeRepositoryJpa.saveAll(List.of(like1, like2));
 
         //when
-        List<ImageStoryResponse> images = imageService.getStory(member1.getId(), pageRequest);
+        List<ImageStoryResponse> images = imageService.getStory(member1.getId(), member1.getId(), pageRequest);
 
         //then
         assertThat(images).hasSize(1)

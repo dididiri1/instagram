@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import sample.instagram.ControllerTestSupport;
-import sample.instagram.dto.image.reqeust.ImageCreateRequest;
+import sample.instagram.dto.image.request.ImageCreateRequest;
 import sample.instagram.dto.image.reponse.ImagePopularResponse;
 
 import java.io.IOException;

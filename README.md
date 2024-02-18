@@ -1,13 +1,21 @@
+<br>
+<br>
+
+<div align="center">
+  <a href="https://kangmin.me">
+    <img src="https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/etc/log.png" alt="Logo" width="80" height="80">
+  </a>
+</div>
+
+<h4 align="center"><a href="https://kangmin.me">👉사이트 바로가기</a></h4>
 
 ## 프로젝트 소개
 스프링부트 SNS프로젝트 인스타그램 사이트를 mocking한 개인 프로젝트 입니다.
 
-이지업의 [[메타코딩] 스프링부트 SNS프로젝트 - 포토그램 만들기](https://easyupclass.e-itwill.com/course/course_view.jsp?id=27&rtype=0&ch=course) 강의를 수강하면서 CSS, HTML를 사용했습니다.
-
 ## Stack
 
 - Spring Boot, Security, AOP
-- JPA, Spring Data JPA, Querydsl, jpql
+- JPA, Spring Data JPA, Querydsl
 - Thymeleaf, Jquery
 - MySQL
 - AWS EC2, S3, RDS, Route53
@@ -18,6 +26,7 @@
 
 ## Spring REST Docs
 - [Docs 바로가기](https://kangmin.me/docs/index.html)
+
 ![](https://github.com/dididiri1/instagram/blob/main/src/main/resources/static/images/docs.png?raw=true)
 
 ## ERD 

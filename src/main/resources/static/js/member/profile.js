@@ -55,7 +55,7 @@ function addImageItem(data, memberId) {
     $("#image-content-item").html(item);
 }
 
-// (1) 유저 프로필 페이지 구독하기, 구독취소
+// 유저 프로필 페이지 구독하기, 구독취소
 function toggleSubscribe(toUserId, obj) {
     if ($(obj).text() === "구독취소") {
         $.ajax({
@@ -179,7 +179,7 @@ function subscribeInfoModalOpen(pageUserId) {
 function getSubscribeModalItem(m) {
     let item = '<div class="subscribe__item" id="subscribeModalItem-'+m.memberId+'">' +
         '<div class="subscribe__img">' +
-        '<img class="user_content" onclick="profileInfo(\''+m.memberId+'\')" src="'+m.profileImageUrl+'" onerror="this.src=\'/images/person.jpeg\'"/>' +
+        '<img class="user_content" onclick="profileInfo(\''+m.memberId+'\')" src="'+m.profileImageUrl+'" onerror="this.src=\'/images/default.png\'"/>' +
         '</div>' +
         '<div class="subscribe__text">' +
         '<h2 class="user_content" onclick="profileInfo(\''+m.memberId+'\')">'+m.username+'</h2>' +
@@ -199,7 +199,7 @@ function getSubscribeModalItem(m) {
 }
 
 
-// (3) 구독자 정보 모달에서 구독하기, 구독취소
+// 구독자 정보 모달에서 구독하기, 구독취소
 function toggleSubscribeModal(obj) {
     if ($(obj).text() === "구독취소") {
         $(obj).text("구독하기");
@@ -210,7 +210,7 @@ function toggleSubscribeModal(obj) {
     }
 }
 
-// (4) 유저 프로필 사진 변경
+// 유저 프로필 사진 변경
 function profileImageUpload(pageMemberId, memberId) {
     if(pageMemberId != memberId){
         alert("프로필 사진을 수정할 수 없는 유저입니다.");
@@ -255,7 +255,7 @@ function profileImageUpload(pageMemberId, memberId) {
 }
 
 
-// (5) 사용자 정보 메뉴 열기 닫기
+// 사용자 정보 메뉴 열기 닫기
 function popup(obj) {
     $(obj).css("display", "flex");
 }
@@ -265,7 +265,7 @@ function closePopup(obj) {
 }
 
 
-// (6) 사용자 정보(회원정보, 로그아웃, 닫기) 모달
+// 사용자 정보(회원정보, 로그아웃, 닫기) 모달
 function modalInfo() {
     $(".modal-info").css("display", "none");
 }
@@ -274,12 +274,12 @@ function modalSubscribeInfo() {
     $(".subscribe-info").css("display", "none");
 }
 
-// (7) 사용자 프로필 이미지 메뉴(사진업로드, 취소) 모달
+// 사용자 프로필 이미지 메뉴(사진업로드, 취소) 모달
 function modalImage() {
     $(".modal-image").css("display", "none");
 }
 
-// (8) 구독자 정보 모달 닫기
+// 구독자 정보 모달 닫기
 function modalClose() {
     $(".modal-subscribe").css("display", "none");
     location.reload();

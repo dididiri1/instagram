@@ -207,12 +207,13 @@ class MemberApiControllerTest extends ControllerTestSupport {
     @WithMockUser(authorities = "ROLE_USER")
     void getStories() throws Exception {
         // given
+        Long pageMemberId = 1L;
         Long memberId = 1L;
         int page = 0;
         int size = 3;
 
         // when // then
-        mockMvc.perform(get("/api/v1/members/{id}/story", memberId)
+        mockMvc.perform(get("/api/v1/members/{pageMemberId}/story/{id}", pageMemberId, memberId)
                         .param("page", String.valueOf(page))
                         .param("size", String.valueOf(size))
                 )

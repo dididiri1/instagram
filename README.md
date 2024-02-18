@@ -6,11 +6,23 @@
     <img src="https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/etc/log.png" alt="Logo" width="80" height="80">
   </a>
 </div>
+<h3 align="center">Instagram Clone</h3>
 
-<h4 align="center"><a href="https://kangmin.me">👉사이트 바로가기</a></h4>
+<p align="center">
+    Spring Boot와 Thymeleaf로 만든 Instagram 웹 사이트 
+    <br/>
+    <br>
+    <a href="https://kangmin.me"><strong>👉사이트 바로가기 »</strong></a>
+</p>
 
 ## 프로젝트 소개
 스프링부트 SNS프로젝트 인스타그램 사이트를 mocking한 개인 프로젝트 입니다.
+
+### GIF 소개
+<div style="display:flex;flex-direction:row;justify-content:space-between;align-items:center">
+  <img src="https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/etc/intro.gif" height="650">
+</div>
+
 
 ## Stack
 

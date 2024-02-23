@@ -36,6 +36,7 @@ public class SecurityConfig {
         http.headers().frameOptions().disable(); // iframe 허용 안함.
         http.authorizeRequests()
                 .antMatchers("/api/v1/members/new").permitAll() // 특정 URL 제외
+                .antMatchers("/jenkins/**").permitAll()
                 .antMatchers("/", "/member/**", "/image/**", "/subscribe/**", "/story/**", "/api/**").authenticated()
                 .anyRequest().permitAll()
                 .and()

@@ -23,15 +23,15 @@ cloud:
   aws:
     credentials:
       instance-profile: false
-      accessKey: AKIA4JHZUL4EY4NEHJUT
-      secretKey: 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
+      accessKey: AKIA3FLD2S7OJCUDPP6E
+      secretKey: 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
     region:
       auto: false
       static: ap-northeast-2
     stack:
       auto: false
     s3:
-      bucket: kangmin-s3-bucket
+      bucket: kangmin-s3
       endPoint: https://s3.ap-northeast-2.amazonaws.com
       folder: storage
 
@@ -43,7 +43,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -78,6 +78,11 @@ spring:
     init:
       mode: never
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
 ---
 spring:
   config:
@@ -85,7 +90,7 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://instagram-db.c9agiocrwpsu.ap-northeast-2.rds.amazonaws.com:3306/instagram?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://instagram-rds.cf2o86am67n9.ap-northeast-2.rds.amazonaws.com:3306/instagram?serverTimezone=Asia/Seoul
     username: root
     password: kangmin1!
 

@@ -23,8 +23,8 @@ cloud:
   aws:
     credentials:
       instance-profile: false
-      accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      accessKey: ${{secrets.AWS_ACCESS_KEY_ID}}
+      secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
     region:
       auto: false
       static: ap-northeast-2

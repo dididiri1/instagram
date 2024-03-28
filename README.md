@@ -3,7 +3,7 @@
 
 <div align="center">
   <a href="https://kangmin.me">
-    <img src="https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/etc/log.png" alt="Logo" width="80" height="80">
+    <img src="https://kangmin-s3.s3.ap-northeast-2.amazonaws.com/storage/etc/log.png" alt="Logo" width="80" height="80">
   </a>
 </div>
 <h3 align="center">Instagram Clone</h3>
@@ -13,6 +13,11 @@
     <br/>
     <br>
     <a href="https://kangmin.me"><strong>👉사이트 바로가기 »</strong></a>
+    <br>
+    <br>
+    <strong>테스트 계정</strong><br>
+    ID: kangmin<br/>
+    PWD: 123
 </p>
 
 ## 프로젝트 소개
@@ -21,7 +26,7 @@
 
 ## GIF 소개
 <div style="display:flex;flex-direction:row;justify-content:space-between;align-items:center">
-  <img src="https://kangmin-s3-bucket.s3.ap-northeast-2.amazonaws.com/storage/etc/intro.gif" height="650">
+  <img src="https://kangmin-s3.s3.ap-northeast-2.amazonaws.com/storage/etc/intro.gif" height="650">
 </div>
 
 

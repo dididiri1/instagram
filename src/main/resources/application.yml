@@ -23,8 +23,8 @@ cloud:
   aws:
     credentials:
       instance-profile: false
-      accessKey: ${{secrets.AWS_ACCESS_KEY_ID}}
-      secretKey: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      accessKey: ${aws.s3.accessKey}
+      secretKey: ${aws.s3.secretKey}
     region:
       auto: false
       static: ap-northeast-2
@@ -90,9 +90,9 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://instagram-rds.cf2o86am67n9.ap-northeast-2.rds.amazonaws.com:3306/instagram?serverTimezone=Asia/Seoul
-    username: root
-    password: kangmin1!
+    url: ${aws.rds.mysql.url}
+    username: ${aws.rds.mysql.username}
+    password: ${aws.rds.mysql.password}
 
   jpa:
     hibernate:

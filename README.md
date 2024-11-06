@@ -20,10 +20,6 @@
     PWD: 123
 </p>
 
-## 프로젝트 소개
-[[메타코딩] 스프링부트 SNS프로젝트 - 포토그램 만들기](https://easyupclass.e-itwill.com/course/course_view.jsp?id=27&rtype=0&ch=course) 강의를 수강하면서, 기존 JSP와 Native Query를 사용한  
-기존 코드를 마이그레이션 하여 Thymeleaf, QueryDSL Spring Data JPA, 그리고 TDD를 사용하여 새롭게 구현해보았습니다.
-
 ## GIF 소개
 <div style="display:flex;flex-direction:row;justify-content:space-between;align-items:center">
   <img src="https://kangmin-s3.s3.ap-northeast-2.amazonaws.com/storage/etc/intro.gif" height="650">
